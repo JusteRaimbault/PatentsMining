@@ -1,9 +1,50 @@
 \begin{thebibliography}{}
 
+\bibitem[Archibugi, 1988]{archibugi1988search}
+Archibugi, D. (1988).
+\newblock In search of a useful measure of technological innovation (to make
+  economists happy without) discontenting technologists).
+\newblock {\em Technological Forecasting and Social Change}, 34(3):253--277.
+
+\bibitem[Basberg, 1987]{basberg1987patents}
+Basberg, B.~L. (1987).
+\newblock Patents and the measurement of technological change: a survey of the
+  literature.
+\newblock {\em Research policy}, 16(2):131--141.
+
+\bibitem[Chavalarias and Cointet, 2013]{chavalarias2013phylomemetic}
+Chavalarias, D. and Cointet, J.-P. (2013).
+\newblock Phylomemetic patterns in science evolution---the rise and fall of
+  scientific fields.
+\newblock {\em Plos One}, 8(2):e54847.
+
+\bibitem[Newman, 2010]{newman2010networks}
+Newman, M. (2010).
+\newblock {\em Networks: an introduction}.
+\newblock Oxford University Press.
+
+\bibitem[{Newman}, 2013]{2013arXiv1310.8220N}
+{Newman}, M.~E.~J. (2013).
+\newblock {Prediction of highly cited papers}.
+\newblock {\em ArXiv e-prints}.
+
+\bibitem[{Sarig{\"o}l} et~al., 2014]{2014arXiv1402.7268S}
+{Sarig{\"o}l}, E., {Pfitzner}, R., {Scholtes}, I., {Garas}, A., and
+  {Schweitzer}, F. (2014).
+\newblock {Predicting Scientific Success Based on Coauthorship Networks}.
+\newblock {\em ArXiv e-prints}.
+
 \bibitem[Shibata et~al., 2008]{shibata2008detecting}
 Shibata, N., Kajikawa, Y., Takeda, Y., and Matsushima, K. (2008).
 \newblock Detecting emerging research fronts based on topological measures in
   citation networks of scientific publications.
 \newblock {\em Technovation}, 28(11):758--775.
+
+\bibitem[Yoon and Park, 2004]{yoon2004text}
+Yoon, B. and Park, Y. (2004).
+\newblock A text-mining-based patent network: Analytical tool for
+  high-technology trend.
+\newblock {\em The Journal of High Technology Management Research},
+  15(1):37--50.
 
 \end{thebibliography}

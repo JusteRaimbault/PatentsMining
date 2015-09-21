@@ -14,7 +14,7 @@
 
 
 \begin{abstract}
-Patents are a central proxy in the study of the economy of innovation. Indeed, the information contained in relations between patents reflects the underlying structure of the socio-technological system of research and development in innovative companies. Whereas recent focus was mainly on the study of patterns in the inter-patent citation network, taking technological fields as externally fixed, we propose a novel approach based on semantic analysis of patents textual contents. Indeed, measures such as co-occurences and repetitions of keywords should contain a slightly different information than the one extracted from the citation network, as for example links between domains, or informal domains that could appear as communities in the semantic network. The aim of this project is to investigate the nature and extent of this information, by the mining of regular patterns in features that should be established. We expect to test various features crossing measures extracted from both dynamic citation and semantic network, by unsupervised, and supervised if needed, datamining techniques. Expected results are to unveil the potentialities of such approach, and in the case of significant information, to apply it to classify patents and identify innovatives
+Patents are a central proxy in the study of the economy of innovation. Indeed, the information contained in relations between patents reflects the underlying structure of the socio-technological system of research and development in innovative companies. Whereas recent focus was mainly on the study of patterns in the inter-patent citation network, taking technological fields as externally fixed, we propose a novel approach based on semantic analysis of patents textual contents. Indeed, measures such as co-occurences and repetitions of keywords should contain a slightly different information than the one extracted from the citation network, as for example links between domains, or informal domains that could appear as communities in the semantic network. The aim of this project is to investigate the nature and extent of this information, by the mining of regular patterns in features that should be established. We expect to test various features crossing measures extracted from both dynamic citation and semantic network, by unsupervised, and supervised if needed, datamining techniques. Expected results are to unveil the potentialities of such approach, and in the case of significant information, to apply it to classify patents and be able to systematically differentiate innovatives from imitating patents.
 \end{abstract}
 
 
@@ -23,12 +23,8 @@ Patents are a central proxy in the study of the economy of innovation. Indeed, t
 
 % state-of-the-art and recent works.
 
-The study of innovation through the lens of technological patents is not a novel idea~\cite{}%old paper studying patents
-but the recent rise of new methods and computational abilities, including datamining and network analysis~\cite{}%newman networks
-has shed a new light on the approach. With methods relatively close to applied epistemology studies such as science mapping~\cite{}
-or autorships networks analysis~\cite{}
-, recent works have studied patents citation network to understand the processes of technological innovation.
 
+The study of innovation through the lens of technological patents is not a novel idea~\cite{basberg1987patents} but the recent rise of new methods and computational abilities, including datamining and network analysis~\cite{newman2010networks} has shed a new light on the approach. With methods relatively close to applied epistemology studies such as citation dynamics modeling~\cite{2013arXiv1310.8220N} or co-autorships networks analysis~\cite{2014arXiv1402.7268S}, recent works have studied patents citation network to understand the processes of technological innovation.
 
 
 
@@ -38,10 +34,24 @@ or autorships networks analysis~\cite{}
 %%%%%%%%%%%%%%%%%%%%
 \section{Research objectives}
 
-The identification of so-called \emph{emerging research fronts} was done in the case of scientific publications in~\cite{shibata2008detecting}. In the same spirit, our guiding research objective is to identify such fronts for patents, i.e. to be able to classify patents in order to distinguish the ``real innovations'' from 
+
+\subsection{Research question}
+
+The identification of so-called \emph{emerging research fronts} was done in the case of scientific publications in~\cite{shibata2008detecting}. In the same spirit, our guiding research objective is to identify such fronts for patents, i.e. to be able to classify patents in order to distinguish the ``real innovations'' from imitations of existing technologies. That is relatively close to the issue of defining a relevant measure of innovation~\cite{archibugi1988search}
 
 
 % cross domains ? -> Youn paper. \cite{Youn:2015fk}
+
+
+\subsection{Link with previous work}
+
+% particular state-of-the-art ; how are we positioned ?
+
+A consequent amount of research already proposed to use semantic networks to study technological domains. One of the first works to enhance the approach was~\cite{yoon2004text}, where the idea of visualizing keywords network was introduced and illustrated on a small technological domain.
+
+The novelty of our project relies on various points, including the systematic unsupervized research of patterns, the possibility to build hybrid features from both semantic and citation networks, the combination of various techniques from datamining to network analysis.
+
+
 
 %%%%%%%%%%%%%%%%%%%%
 \section{Proposed approach}
@@ -49,6 +59,7 @@ The identification of so-called \emph{emerging research fronts} was done in the 
 %%%%%%%%%%%%%%%%%%%%
 \subsection{General description}
 
+This project is based on the assumption that semantic relations between patents contents must include some information on the underlying technological innovation processes. The idea is strongly inspired from the semantic science mapping proposed in~\cite{chavalarias2013phylomemetic}, where dynamics of scientific fields was reconstructed by keywords co-occurence networks analysis. The assets of such an approach include
 
 
 
@@ -62,6 +73,16 @@ The identification of so-called \emph{emerging research fronts} was done in the 
 
 %%%%%%%%%%%%%%%%%%%%
 \section{Project organisation}
+
+
+\begin{itemize}
+\item Project definition, litterature review - AB, JR, PA - ETA 10h
+\item Thematic framing (possible features, precise objectives) - AB, JR - ETA 4h
+\item Technical aspects (database management, text-mining implementation) - JR - ETA 10h
+\item Empirical datamining - AB, JR - ETA 20h
+\item Theoretical feedback, revision of mining techniques - AB, JR, PA - ETA 10h
+\item Theoretical modeling, results interpretation, perspectives - AB, PA - ETA ?
+\end{itemize}
 
 
 
