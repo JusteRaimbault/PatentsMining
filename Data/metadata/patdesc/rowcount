@@ -1,0 +1,3 @@
+$(`cat Data/raw/patdesc/patdesc.csv | wc -l`) = 2521577
+sqlite> SELECT COUNT(*) FROM patdesc; = 2399248
+

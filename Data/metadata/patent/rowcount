@@ -1,0 +1,3 @@
+$(`cat Data/raw/patent/patent.csv | wc -l`) = 4243973
+sqlite> SELECT COUNT(*) FROM patent; = 4243972
+
