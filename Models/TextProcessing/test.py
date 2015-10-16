@@ -1,15 +1,44 @@
 
 import nltk,sqlite3,time,locale
 
-# connect to the database
-conn = sqlite3.connect('../../Data/raw/patdesc/patdesc.sqlite3')
-cursor = conn.cursor()
 
-# retrieve records
-cursor.execute('SELECT patent,title,abstract FROM patdesc WHERE abstract!=\'\' LIMIT 100')
-res=cursor.fetchall()
-first=res[0]
-raw_text = first[0]+". "+first[1]
+
+# tests
+
+def test():
+    # test_kw()
+    test_db()
+
+
+def test_db():
+    for patent in get_patent_data(2000,100):
+        print(patent)
+
+
+def test_kw():
+    for patent in res :
+        print(extract_keywords(patent[1]+". "+patent[2],patent[0]))
+
+
+
+## Functions
+
+
+def get_patent_data(year,limit) :
+    # connect to the database
+    conn = sqlite3.connect('../../Data/raw/patdesc/patdesc.sqlite3')
+    cursor = conn.cursor()
+    # attach patent data
+    cursor.execute('ATTACH DATABASE \'../../Data/raw/patent/patent.sqlite3\' as \'patent\'')
+
+    #cursor.execute('SELECT patdesc.patent,patent.patent FROM patent,patdesc WHERE patent.patent=patdesc.patent LIMIT 10;')
+    # retrieve records
+    cursor.execute('SELECT title,abstract,GYear,patent.patent FROM patdesc,patent WHERE patdesc.patent = patent.patent AND abstract!=\'\' AND GYear = '+str(year)+' LIMIT '+str(limit)+";")
+    res=cursor.fetchall()
+    #first=res[0]
+    #raw_text = first[0]+". "+first[1]
+    return res
+
 
 # tagged of the form (word,TAG)
 def potential_multi_term(tagged) :
@@ -50,11 +79,13 @@ def extract_keywords(raw_text,id):
     return multiterms
 
 
+def main():
+    #print(extract_keywords(raw_text))
+    start = time.time()
 
-#print(extract_keywords(raw_text))
-start = time.time()
+    test()
 
-for patent in res :
-     print(extract_keywords(patent[1]+". "+patent[2],patent[0]))
+    print(time.time() - start)
 
-print(time.time() - start)
+
+main()
