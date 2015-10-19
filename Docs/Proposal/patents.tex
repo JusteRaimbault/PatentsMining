@@ -37,8 +37,8 @@ The study of innovation through the lens of technological patents is not a novel
 
 \subsection{Research question}
 
-The identification of so-called \emph{emerging research fronts} was done in the case of scientific publications in~\cite{shibata2008detecting}. In the same spirit, our guiding research objective is to identify such fronts for patents, i.e. to be able to classify patents in order to distinguish the ``real innovations'' from imitations of existing technologies. That is relatively close to the issue of defining a relevant measure of innovation~\cite{archibugi1988search}
-
+The identification of so-called \emph{emerging research fronts} was done in the case of scientific publications in~\cite{shibata2008detecting}. In the same spirit, our guiding research objective is to identify such fronts for patents, i.e. to be able to classify patents in order to distinguish the ``real innovations'' from imitations of existing technologies. That is relatively close to the issue of defining a relevant measure of innovation~\cite{archibugi1988search}. The goal of the study is therefore to build a new database based on USPTO patent applications from 1975 to 2014 where each patent would be link with an index between 0 and 1, 1 being a patent corresponding to a new product and 0 being a patent corresponding to an improvment on an existing product. This question is of major importance in mordern growth theories (see Klenow et al. (forthcoming) especially to measure growth induced by incumbent improving on their own innovations \cite{KletteKortum2002}.
+% Klenow: How destructive is innovation
 
 % cross domains ? -> Youn paper. \cite{Youn:2015fk}
 
@@ -73,6 +73,9 @@ measure will be high. Radicalness is more difficult to define. It is
 constructed in the same way as the originality index but here we only consider
 the technology classes of patents cited by patent $i$ but to which patent $i$
 does not belong. These two indicators are good proxies and great start to estimate if a patent is protecting a new product that can hardly be classified into the official technological field space.
+
+Our strategy will rely on differences between our network based on semantic comparison and the two existing network defined above. The underlying assumption being that highly innovative new product are not well classified by the technological class space and should struggle to cite previous related patents. Hence, we expect such patent to have a large distance in terms of semantic analysis with patents it cite and patents in the same technological class.
+
 
 %%%%%%%%%%%%%%%%%%%%
 \subsection{Technical details}
