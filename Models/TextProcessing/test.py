@@ -14,7 +14,7 @@ def test():
     test_dico()
 
 def test_dico():
-    construct_occurrence_dico(2000,100)
+    construct_occurrence_dico(2000,1000)
 
 def test_db():
     for patent in get_patent_data(2000,100):
@@ -65,15 +65,15 @@ def construct_occurrence_dico(year,limit) :
     kw_p = open('../../Data/processed/test_kwp_'+str(year)+'_'+str(limit)+'_'+str(datetime.datetime.now())+'.csv','w')
 
     for k in p_kw_dico.keys():
-        p_kw.write(k)
+        p_kw.write(k+";")
         for kw in p_kw_dico[k]:
-            p_kw.write(kw)
+            p_kw.write(kw+";")
         p_kw.write('\n')
 
     for k in kw_p_dico.keys():
-        kw_p.write(k)
+        kw_p.write(k+";")
         for kw in kw_p_dico[k]:
-            kw_p.write(kw)
+            kw_p.write(kw+";")
         kw_p.write('\n')
 
 
