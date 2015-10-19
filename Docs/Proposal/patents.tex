@@ -61,6 +61,18 @@ The novelty of our project relies on various points, including the systematic un
 
 This project is based on the assumption that semantic relations between patents contents must include some information on the underlying technological innovation processes. The idea is strongly inspired from the semantic science mapping proposed in~\cite{chavalarias2013phylomemetic}, where dynamics of scientific fields was reconstructed by keywords co-occurence networks analysis. The assets of such an approach include
 
+Every patent is associated with many details that have been made available by national and international patent offices. First, each patent is associated with one or several technological fields which are chosen from a list by patent office specialists after careful review of the content of the patent (see IPC class). Second, every patent has to make a list of citations to all the patents used in the process, this naturally define a network between entities that have some technologies in common. From these two features innovation economists have created various indices to measure the quality of a patent ( number of citations, scope of technological field...).
+
+Two other indicators are of particular interest for us: originality and radicalness. The originality measure is
+defined by Hall \textit{et al.} (2001) \cite{Hall2001} as $Ori_{i}%
+=1-\displaystyle\sum_{j=1}^{n_{i}}{cit_{i,j}^{2}}$ where $cit_{i,j}$ is the
+percentage of citations made by patent $i$ to a patent in class $j$ out of
+$n_{i}$ technological classes to which patent $i$ belongs. If the scope of
+technologies which the patent uses and cites is large, then the originality
+measure will be high. Radicalness is more difficult to define. It is
+constructed in the same way as the originality index but here we only consider
+the technology classes of patents cited by patent $i$ but to which patent $i$
+does not belong.
 
 
 %%%%%%%%%%%%%%%%%%%%
