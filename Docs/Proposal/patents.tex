@@ -79,7 +79,7 @@ Two other indicators are of particular interest for us: originality and radicaln
 defined by Hall \textit{et al.} (2001) \cite{Hall2001} as
 \[
 O_{i}%
-=1-\sum_{j=1}^{n_{i}}{c_{i,j}^{2}}\] where $c_{i,j}$
+=1-\sum_{j=1}^{n_{i}}{c_{i,j}^{2}} where $c_{i,j}$
 is the
 percentage of citations made by patent $i$ to a patent in class $j$ out of
 $n_{i}$ technological classes to which patent $i$ belongs. If the scope of
@@ -98,11 +98,16 @@ Our strategy will rely on differences between our network based on semantic comp
 
 \paragraph{Citation Network}
 
-% TBW : useful ?
+We define a binary relation between each pair of patents $Cit(i, j)$ = 1 if j cites i or i cites j. 
 
 \paragraph{Technological Class Network}
 
-% idem
+For each patent i, let $B_i$ be the set of technological class of i. We then define a relationship between each pair i and j as 2 times the number of technological class in common divided by the total number of class of i and j. 
+\[
+Class(i,j) = 2\frac{\left\vert{B_i\cap B_j}\right\vert}{\frac{\left\vert{B_i}\right\vert}+\frac{\left\vert{B_j}\right\vert}}
+\]
+
+Thus, if two patents have no class in common, $Class(i,j)=0$ while if the two patents are exactly identical in terms of their sets of technologial class $Class(i,j)=1$.
 
 \paragraph{Semantic Network}
 
