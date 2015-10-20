@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2014.6.17)  20 OCT 2015 21:00
+This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2014.6.17)  20 OCT 2015 21:44
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -345,13 +345,127 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  This may cause the page layout to be inconsistent, however.
 
 [2]
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 115.
- (/usr/local/texlive/2014/texmf-dist/tex/latex/base/omscmr.fd
+./patents.tex:110: Argument of \frac  has an extra }.
+<inserted text> 
+                \par 
+l.110 ...\vert}+\frac{\left\vert{B_j}\right\vert}}
+                                                  
+I've run across a `}' that doesn't seem to match anything.
+For example, `\def\a#1{...}' and `\a}' would produce
+this error. If you simply proceed now, the `\par' that
+I've just inserted will cause me to report a runaway
+argument that might be the root of the problem. But if
+your `}' was spurious, just type `2' and it will go away.
+
+Runaway argument?
+./patents.tex:110: Paragraph ended before \frac  was complete.
+<to be read again> 
+                   \par 
+l.110 ...\vert}+\frac{\left\vert{B_j}\right\vert}}
+                                                  
+I suspect you've forgotten a `}', causing me to apply this
+control sequence to too much text. How can we recover?
+My plan is to forget the whole thing and hope for the best.
+
+./patents.tex:110: Missing $ inserted.
+<inserted text> 
+                $
+l.110 ...\vert}+\frac{\left\vert{B_j}\right\vert}}
+                                                  
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+./patents.tex:110: Missing } inserted.
+<inserted text> 
+                }
+l.110 ...\vert}+\frac{\left\vert{B_j}\right\vert}}
+                                                  
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+./patents.tex:110: Missing } inserted.
+<inserted text> 
+                }
+l.110 ...\vert}+\frac{\left\vert{B_j}\right\vert}}
+                                                  
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+./patents.tex:110: Display math should end with $$.
+<to be read again> 
+                   \@@par 
+l.110 ...\vert}+\frac{\left\vert{B_j}\right\vert}}
+                                                  
+The `$' that I just saw supposedly matches a previous `$$'.
+So I shall assume that you typed `$$' both times.
+
+./patents.tex:110: Extra }, or forgotten \endgroup.
+\@par ... \@noitemerr {\@@par }\fi \else {\@@par }
+                                                  \fi 
+l.110 ...\vert}+\frac{\left\vert{B_j}\right\vert}}
+                                                  
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+./patents.tex:110: Extra }, or forgotten \endgroup.
+<recently read> }
+                 
+l.110 ...\vert}+\frac{\left\vert{B_j}\right\vert}}
+                                                  
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+
+./patents.tex:111: LaTeX Error: Bad math environment delimiter.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.111 \]
+        
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+./patents.tex:111: Missing $ inserted.
+<inserted text> 
+                $
+l.111 \]
+        
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+./patents.tex:111: Display math should end with $$.
+<to be read again> 
+                   \endgroup 
+l.111 \]
+        
+The `$' that I just saw supposedly matches a previous `$$'.
+So I shall assume that you typed `$$' both times.
+
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 119.
+(/usr/local/texlive/2014/texmf-dist/tex/latex/base/omscmr.fd
 File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10.95> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 115.
- [3] (/Users/Juste/Documents/ComplexSystems/PatentsMining/Docs/Proposal/.texpadtmp/patents.bbl) [4] (/Users/Juste/Documents/ComplexSystems/PatentsMining/Docs/Proposal/.texpadtmp/patents.aux) ) 
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 119.
+ [3] (/Users/Juste/Documents/ComplexSystems/PatentsMining/Docs/Proposal/.texpadtmp/patents.bbl [4]) [5] (/Users/Juste/Documents/ComplexSystems/PatentsMining/Docs/Proposal/.texpadtmp/patents.aux) ) 
 Here is how much of TeX's memory you used:
  3739 strings out of 493683
  50945 string characters out of 6151640
@@ -359,12 +473,12 @@ Here is how much of TeX's memory you used:
  7090 multiletter control sequences out of 15000+600000
  13123 words of font info for 49 fonts, out of 8000000 for 9000
  805 hyphenation exceptions out of 8191
- 38i,11n,43p,1338b,298s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 38i,11n,43p,1338b,318s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on /Users/Juste/Documents/ComplexSystems/PatentsMining/Docs/Proposal/.texpadtmp/patents.pdf (4 pages, 195301 bytes).
+Output written on /Users/Juste/Documents/ComplexSystems/PatentsMining/Docs/Proposal/.texpadtmp/patents.pdf (5 pages, 198589 bytes).
 PDF statistics:
- 85 PDF objects out of 1000 (max. 8388607)
- 61 compressed objects within 1 object stream
+ 88 PDF objects out of 1000 (max. 8388607)
+ 63 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 
