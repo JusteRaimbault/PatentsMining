@@ -11,8 +11,7 @@ An Hypernetwork Approach to Accurately Measure Technological Innovation
 \author{\noun{J. Raimbault}$^{1,2}$ and \noun{A. Bergeaud}$^{3,4}$\medskip\\
 $^{1}$ UMR CNRS 8504 G{\'e}ographie-cit{\'e}s\\
 $^{2}$ UMR-T IFSTTAR 9403 LVMT\\
-$^{3}$ London School of Economics\\
-$^{4}$ Coll{\`e}ge de France
+$^{3}$ London School of Economics
 }
 \date{}
 
@@ -34,10 +33,9 @@ Patents are a central proxy in the study of the economy of innovation. Indeed, t
 
 
 The study of innovation through the lens of technological patents is not a novel idea~\cite{basberg1987patents} but the recent rise of new methods and computational abilities, including datamining and network analysis~\cite{newman2010networks} has shed a new light on the approach. With methods relatively close to applied epistemology studies such as citation dynamics modeling~\cite{2013arXiv1310.8220N} or co-autorships networks analysis~\cite{2014arXiv1402.7268S}, recent works have studied patents citation network to understand the processes of technological innovation. As in science, where reflexivity is crucial and is becoming a mandatory step to build future research agendas, as e.g. in the recent analysis on 20th century physics~\cite{Sinatra:2015yu}, the structure of technology and particularly of technological innovation should show special patterns which understanding must have positive feedback on the economy.
-% TODO
-% Est-ce qu'il y a déjà un papier d'Aghion qui fait le lien entre croissance et connaissance de l'innovation ? Genre Aghion, P., & Howitt, P. (2005). Growth with quality-improving innovations: an integrated framework. Handbook of economic growth, 1, 67-110. ?
+% TODO Est-ce qu'il y a déjà un papier d'Aghion qui fait le lien entre croissance et connaissance de l'innovation ? Genre Aghion, P., & Howitt, P. (2005). Growth with quality-improving innovations: an integrated framework. Handbook of economic growth, 1, 67-110. ?
 % si oui est-ce que c'est intéressant de le citer à cet endroit ?
-
+This project aims thus to fullfill the objective of exploring the potentialities of a precise measure of innovation through the mining of different aspects of patents data.
 
 
 
@@ -59,7 +57,7 @@ The identification of so-called \emph{emerging research fronts} was done in the 
 
 % particular state-of-the-art ; how are we positioned ?
 
-A consequent amount of research already proposed to use semantic networks to study technological domains. One of the first works to enhance the approach was~\cite{yoon2004text}, where the idea of visualizing keywords network was introduced and illustrated on a small technological domain. We will also be interested in measures based on technological classification, as in~\cite{Youn:2015fk} where the study of the distribution of classes within patents leads to confirm the combinatory nature of the innovation process.
+A consequent amount of research already proposed to use semantic networks to study technological domains. One of the first works to enhance the approach was~\cite{yoon2004text}, where the idea of visualizing keywords network was introduced and illustrated on a small technological domain. Semantic analysis has already proved its efficiency in various fields, such as~\cite{choi2014patent,fattori2003text} for technology studies, or~\cite{2015arXiv151003797G} in political science for example. We will also be interested in measures based on technological classification, as in~\cite{Youn:2015fk} where the study of the distribution of classes within patents leads to confirm the combinatory nature of the innovation process. Advanced citation-based measures have been proposed in order to gain an order of information extracted from the citation network~\cite{2015arXiv150907285A}, but we will stay to rather simple indicators concerning this network as we will cross it with other type of data. Concerning dynamic analysis, models of citation processes have been proposed and fit to data such as in~\cite{valverde2007topology}, and depending on temporal patterns we observe on features, we may propose to use dynamic models for network evolution.
 
 The novelty of our project relies on various points, including the systematic unsupervized research of patterns, the possibility to build hybrid features from both semantic and citation networks, the combination of various techniques from datamining to multi-layer network analysis.
 
@@ -71,12 +69,23 @@ The novelty of our project relies on various points, including the systematic un
 %%%%%%%%%%%%%%%%%%%%
 \subsection{General description}
 
-This project is based on the assumption that semantic relations between patents contents must include some information on the underlying technological innovation processes. The idea is strongly inspired from the semantic science mapping proposed in~\cite{chavalarias2013phylomemetic}, where dynamics of scientific fields was reconstructed by keywords co-occurence networks analysis. The assets of such an approach include the fact to be not dependant on predefined fields or domains, what allows specifically to uncover effective domains by community detection. Extracting significant keywords (see technical details) from titles and abstracts
+This project is based on the assumption that semantic relations between patents contents must include some information on the underlying technological innovation processes. The idea is strongly inspired from the semantic science mapping proposed in~\cite{chavalarias2013phylomemetic}, where dynamics of scientific fields was reconstructed by keywords co-occurence networks analysis. The assets of such an approach include the fact to be not dependant on predefined fields or domains, what allows specifically to uncover effective domains by community detection. Extracting significant keywords (see technical details) from titles and abstracts allows to construct semantic networks between patents or keywords, in which community detection e.g. should reveal patterns of ``effective'' technological fields.
 
-Every patent is associated with many details that have been made available by national and international patent offices. First, each patent is associated with one or several technological fields which are chosen from a list by patent office specialists after careful review of the content of the patent (see IPC class). Second, every patent has to make a list of citations to all the patents used in the process, this naturally define a network between entities that have some technologies in common. From these two features innovation economists have created various indices to measure the quality of a patent ( number of citations, scope of technological field...).
+Every patent is associated with many details that have been made available by national and international patent offices. First, each patent is associated with one or several technological fields which are chosen from a list by patent office specialists after careful review of the content of the patent (see IPC class). Second, every patent has to make a list of citations to all the patents used in the process, this naturally define a network between entities that have some technologies in common. From these two features innovation economists have created various indices to measure the quality of a patent (number of citations, scope of technological field, etc. ). Two other indicators are of particular interest for us: originality and radicalness, their definition and expression being detailed in the next section.
 
-Two other indicators are of particular interest for us: originality and radicalness. The originality measure is
-defined by Hall \textit{et al.} (2001) \cite{Hall2001} as
+Our strategy will rely on comparisons between our network based on semantic comparison and the two existing network defined above. Simple correlations and diachronic dynamic analysis for time-dependant networks, combined with unsupervised datamining for rough data exploration, should be conducted first, and then completed by more refined datamining, using supervised learning if needed, i.e. if no significant pattern has emerged in the features constructed.
+The underlying assumption driving our work is that highly innovative new product are not well classified by the technological class space and should struggle to cite previous related patents. % TODO Ref thématique possible là-dessus ou c'est un feeling ?
+Hence, we expect such patent to have a large distance in terms of semantic analysis with patents it cites and patents in the same technological class.
+
+
+%%%%%%%%%%%%%%%%%%%%
+\subsection{Technical details}
+
+
+\paragraph{Originality Measures}
+
+The originality measure is
+defined by Hall \textit{et al.} (2001)~\cite{Hall2001} as
 \[
 O_{i}%
 =1-\sum_{j=1}^{n_{i}}{c_{i,j}^{2}}\] where $c_{i,j}$
@@ -89,11 +98,6 @@ constructed in the same way as the originality index but here we only consider
 the technology classes of patents cited by patent $i$ but to which patent $i$
 does not belong. These two indicators are good proxies and great start to estimate if a patent is protecting a new product that can hardly be classified into the official technological field space.
 
-Our strategy will rely on differences between our network based on semantic comparison and the two existing network defined above. The underlying assumption being that highly innovative new product are not well classified by the technological class space and should struggle to cite previous related patents. Hence, we expect such patent to have a large distance in terms of semantic analysis with patents it cite and patents in the same technological class.
-
-
-%%%%%%%%%%%%%%%%%%%%
-\subsection{Technical details}
 
 
 \paragraph{Citation Network}
@@ -106,7 +110,16 @@ Our strategy will rely on differences between our network based on semantic comp
 
 \paragraph{Semantic Network}
 
-We first assign to a patent $p$ a set of significant keywords $K(p)\in $
+We first assign to a patent $p$ a set of significant keywords $K(p)\in \bigcup_{n\in \mathbb{N}} {\mathcal{A}^{\ast}}^n$, that are precisely extracted following a similar procedure to the one detailed in~\cite{chavalarias2013phylomemetic} :
+\begin{itemize}
+\item Text parsing and tokenizing.
+\item Part-of-speech tagging, normalization.
+\item Stem extraction and multi-stems constructions.
+\item Relevant multi-stems filtering.
+\end{itemize}
+
+Text processing operations will be implemented in \texttt{python} in order to use the \texttt{nltk} library~\cite{} % cite nltk
+which is highly ergonomic and supports most advanced state-of-the-art natural language processing operations.
 
 
 \paragraph{Possible Features}

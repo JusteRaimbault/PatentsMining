@@ -1,5 +1,11 @@
 \begin{thebibliography}{}
 
+\bibitem[{Alstott} et~al., 2015]{2015arXiv150907285A}
+{Alstott}, J., {Triulzi}, G., {Yan}, B., and {Luo}, J. (2015).
+\newblock {Mapping Technology Space by Normalizing Technology Relatedness
+  Networks}.
+\newblock {\em ArXiv e-prints}.
+
 \bibitem[Archibugi, 1988]{archibugi1988search}
 Archibugi, D. (1988).
 \newblock In search of a useful measure of technological innovation (to make
@@ -17,6 +23,25 @@ Chavalarias, D. and Cointet, J.-P. (2013).
 \newblock Phylomemetic patterns in science evolution---the rise and fall of
   scientific fields.
 \newblock {\em Plos One}, 8(2):e54847.
+
+\bibitem[Choi and Hwang, 2014]{choi2014patent}
+Choi, J. and Hwang, Y.-S. (2014).
+\newblock Patent keyword network analysis for improving technology development
+  efficiency.
+\newblock {\em Technological Forecasting and Social Change}, 83:170--182.
+
+\bibitem[Fattori et~al., 2003]{fattori2003text}
+Fattori, M., Pedrazzi, G., and Turra, R. (2003).
+\newblock Text mining applied to patent mapping: a practical business case.
+\newblock {\em World Patent Information}, 25(4):335--342.
+
+\bibitem[{Gurciullo} et~al., 2015]{2015arXiv151003797G}
+{Gurciullo}, S., {Smallegan}, M., {Pereda}, M., {Battiston}, F., {Patania}, A.,
+  {Poledna}, S., {Hedblom}, D., {Tolga Oztan}, B., {Herzog}, A., {John}, P.,
+  and {Mikhaylov}, S. (2015).
+\newblock {Complex Politics: A Quantitative Semantic and Topological Analysis
+  of UK House of Commons Debates}.
+\newblock {\em ArXiv e-prints}.
 
 \bibitem[Hall et~al., 2001]{Hall2001}
 Hall, B., Jaffe, A., and Trajtenberg, M. (2001).
@@ -55,6 +80,11 @@ Shibata, N., Kajikawa, Y., Takeda, Y., and Matsushima, K. (2008).
 Sinatra, R., Deville, P., Szell, M., Wang, D., and Barabasi, A.-L. (2015).
 \newblock A century of physics.
 \newblock {\em Nat Phys}, 11(10):791--796.
+
+\bibitem[Valverde et~al., 2007]{valverde2007topology}
+Valverde, S., Sol{\'e}, R.~V., Bedau, M.~A., and Packard, N. (2007).
+\newblock Topology and evolution of technology innovation networks.
+\newblock {\em Physical Review E}, 76(5):056118.
 
 \bibitem[Yoon and Park, 2004]{yoon2004text}
 Yoon, B. and Park, Y. (2004).
