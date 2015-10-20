@@ -107,7 +107,7 @@ We define a binary relationship between each pair of patents $Cit(i, j) = 1$ if 
 
 For each patent i, let $B_i$ be the set of technological class of i. We then define a relationship between each pair i and j as 2 times the number of technological class in common divided by the total number of class of i and j. 
 \[
-Class(i,j) = 2\frac{\left\vert{B_i\cap B_j}\right\vert}{\frac{\left\vert{B_i}\right\vert}+\frac{\left\vert{B_j}\right\vert}}
+Class(i,j) = 2\frac{\left\vert{B_i\cap B_j}\right\vert}{\left\vert{B_i}\right\vert+\left\vert{B_j}\right\vert}
 \]
 
 Thus, if two patents have no class in common, $Class(i,j)=0$ while if the two patents are exactly identical in terms of their sets of technologial class $Class(i,j)=1$.
