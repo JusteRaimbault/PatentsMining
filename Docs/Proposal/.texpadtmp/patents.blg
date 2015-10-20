@@ -3,44 +3,44 @@ Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
 The top-level auxiliary file: patents.aux
 The style file: apalike.bst
 Database file #1: ../../../Biblio/patents.bib
-You've used 8 entries,
+You've used 12 entries,
             1935 wiz_defined-function locations,
-            524 strings with 5062 characters,
-and the built_in function-call counts, 2918 in all, are:
-= -- 284
-> -- 105
-< -- 6
-+ -- 36
-- -- 34
-* -- 246
-:= -- 522
-add.period$ -- 24
-call.type$ -- 8
-change.case$ -- 56
-chr.to.int$ -- 8
-cite$ -- 8
-duplicate$ -- 110
-empty$ -- 211
-format.name$ -- 46
-if$ -- 557
+            557 strings with 5859 characters,
+and the built_in function-call counts, 4526 in all, are:
+= -- 437
+> -- 187
+< -- 8
++ -- 66
+- -- 62
+* -- 395
+:= -- 812
+add.period$ -- 36
+call.type$ -- 12
+change.case$ -- 90
+chr.to.int$ -- 12
+cite$ -- 12
+duplicate$ -- 163
+empty$ -- 311
+format.name$ -- 80
+if$ -- 860
 int.to.chr$ -- 1
 int.to.str$ -- 0
-missing$ -- 9
-newline$ -- 43
-num.names$ -- 24
-pop$ -- 44
+missing$ -- 12
+newline$ -- 63
+num.names$ -- 36
+pop$ -- 70
 preamble$ -- 1
-purify$ -- 57
+purify$ -- 91
 quote$ -- 0
-skip$ -- 86
+skip$ -- 126
 stack$ -- 0
-substring$ -- 210
-swap$ -- 8
-text.length$ -- 0
+substring$ -- 309
+swap$ -- 12
+text.length$ -- 1
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 46
+type$ -- 70
 warning$ -- 0
-while$ -- 25
+while$ -- 36
 width$ -- 0
-write$ -- 103
+write$ -- 155

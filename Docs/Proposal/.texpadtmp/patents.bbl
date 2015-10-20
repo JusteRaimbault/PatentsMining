@@ -18,6 +18,17 @@ Chavalarias, D. and Cointet, J.-P. (2013).
   scientific fields.
 \newblock {\em Plos One}, 8(2):e54847.
 
+\bibitem[Hall et~al., 2001]{Hall2001}
+Hall, B., Jaffe, A., and Trajtenberg, M. (2001).
+\newblock {The NBER Patent Citations Data File: Lessons, Insights and
+  Methodological Tools}.
+\newblock Papers 2001-29, Tel Aviv.
+
+\bibitem[Klette and Kortum, 2004]{KletteKortum2002}
+Klette, T.~J. and Kortum, S. (2004).
+\newblock {Innovating Firms and Aggregate Innovation}.
+\newblock {\em Journal of Political Economy}, 112(5):986--1018.
+
 \bibitem[Newman, 2010]{newman2010networks}
 Newman, M. (2010).
 \newblock {\em Networks: an introduction}.
@@ -40,11 +51,21 @@ Shibata, N., Kajikawa, Y., Takeda, Y., and Matsushima, K. (2008).
   citation networks of scientific publications.
 \newblock {\em Technovation}, 28(11):758--775.
 
+\bibitem[Sinatra et~al., 2015]{Sinatra:2015yu}
+Sinatra, R., Deville, P., Szell, M., Wang, D., and Barabasi, A.-L. (2015).
+\newblock A century of physics.
+\newblock {\em Nat Phys}, 11(10):791--796.
+
 \bibitem[Yoon and Park, 2004]{yoon2004text}
 Yoon, B. and Park, Y. (2004).
 \newblock A text-mining-based patent network: Analytical tool for
   high-technology trend.
 \newblock {\em The Journal of High Technology Management Research},
   15(1):37--50.
+
+\bibitem[Youn et~al., 2015]{Youn:2015fk}
+Youn, H., Strumsky, D., Bettencourt, L. M.~A., and Lobo, J. (2015).
+\newblock Invention as a combinatorial process: evidence from us patents.
+\newblock {\em Journal of The Royal Society Interface}, 12(106).
 
 \end{thebibliography}

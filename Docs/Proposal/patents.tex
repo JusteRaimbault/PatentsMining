@@ -1,11 +1,20 @@
 \input{header.tex}
 
 
-\title{Mining Patents Data through Semantic Network Analysis\bigskip\\
+\title{
+% faut trouver un titre choc ^^
+%Mining Patents Data through Semantic Network Analysis
+An Hypernetwork Approach to Accurately Measure Technological Innovation
+\bigskip\\
 \textit{Project Proposal}
 }
-\author{\noun{J. Raimbault} \noun{A. Bergeaud})
-\date
+\author{\noun{J. Raimbault}$^{1,2}$ and \noun{A. Bergeaud}$^{3,4}$\medskip\\
+$^{1}$ UMR CNRS 8504 G{\'e}ographie-cit{\'e}s\\
+$^{2}$ UMR-T IFSTTAR 9403 LVMT\\
+$^{3}$ London School of Economics\\
+$^{4}$ Coll{\`e}ge de France
+}
+\date{}
 
 
 \maketitle
@@ -24,7 +33,10 @@ Patents are a central proxy in the study of the economy of innovation. Indeed, t
 % state-of-the-art and recent works.
 
 
-The study of innovation through the lens of technological patents is not a novel idea~\cite{basberg1987patents} but the recent rise of new methods and computational abilities, including datamining and network analysis~\cite{newman2010networks} has shed a new light on the approach. With methods relatively close to applied epistemology studies such as citation dynamics modeling~\cite{2013arXiv1310.8220N} or co-autorships networks analysis~\cite{2014arXiv1402.7268S}, recent works have studied patents citation network to understand the processes of technological innovation.
+The study of innovation through the lens of technological patents is not a novel idea~\cite{basberg1987patents} but the recent rise of new methods and computational abilities, including datamining and network analysis~\cite{newman2010networks} has shed a new light on the approach. With methods relatively close to applied epistemology studies such as citation dynamics modeling~\cite{2013arXiv1310.8220N} or co-autorships networks analysis~\cite{2014arXiv1402.7268S}, recent works have studied patents citation network to understand the processes of technological innovation. As in science, where reflexivity is crucial and is becoming a mandatory step to build future research agendas, as e.g. in the recent analysis on 20th century physics~\cite{Sinatra:2015yu}, the structure of technology and particularly of technological innovation should show special patterns which understanding must have positive feedback on the economy.
+% TODO
+% Est-ce qu'il y a déjà un papier d'Aghion qui fait le lien entre croissance et connaissance de l'innovation ? Genre Aghion, P., & Howitt, P. (2005). Growth with quality-improving innovations: an integrated framework. Handbook of economic growth, 1, 67-110. ?
+% si oui est-ce que c'est intéressant de le citer à cet endroit ?
 
 
 
@@ -37,19 +49,19 @@ The study of innovation through the lens of technological patents is not a novel
 
 \subsection{Research question}
 
-The identification of so-called \emph{emerging research fronts} was done in the case of scientific publications in~\cite{shibata2008detecting}. In the same spirit, our guiding research objective is to identify such fronts for patents, i.e. to be able to classify patents in order to distinguish the ``real innovations'' from imitations of existing technologies. That is relatively close to the issue of defining a relevant measure of innovation~\cite{archibugi1988search}. The goal of the study is therefore to build a new database based on USPTO patent applications from 1975 to 2014 where each patent would be link with an index between 0 and 1, 1 being a patent corresponding to a new product and 0 being a patent corresponding to an improvment on an existing product. This question is of major importance in mordern growth theories (see Klenow et al. (forthcoming) especially to measure growth induced by incumbent improving on their own innovations \cite{KletteKortum2002}.
+The identification of so-called \emph{emerging research fronts} was done in the case of scientific publications in~\cite{shibata2008detecting}. In the same spirit, our guiding research objective is to identify such fronts for patents, i.e. to be able to classify patents in order to distinguish the ``real innovations'' from imitations of existing technologies. That is relatively close to the issue of defining a relevant measure of innovation~\cite{archibugi1988search}. The goal of the study is therefore to build a new database based on USPTO patent applications from 1975 to 2014 where each patent would be link with an index between 0 and 1, 1 being a patent corresponding to a new product and 0 being a patent corresponding to an improvment on an existing product. This question is of major importance in modern growth theories (see Klenow et al. (forthcoming) especially to measure growth induced by incumbent improving on their own innovations \cite{KletteKortum2002}.
 % Klenow: How destructive is innovation
 
-% cross domains ? -> Youn paper. \cite{Youn:2015fk}
+
 
 
 \subsection{Link with previous work}
 
 % particular state-of-the-art ; how are we positioned ?
 
-A consequent amount of research already proposed to use semantic networks to study technological domains. One of the first works to enhance the approach was~\cite{yoon2004text}, where the idea of visualizing keywords network was introduced and illustrated on a small technological domain.
+A consequent amount of research already proposed to use semantic networks to study technological domains. One of the first works to enhance the approach was~\cite{yoon2004text}, where the idea of visualizing keywords network was introduced and illustrated on a small technological domain. We will also be interested in measures based on technological classification, as in~\cite{Youn:2015fk} where the study of the distribution of classes within patents leads to confirm the combinatory nature of the innovation process.
 
-The novelty of our project relies on various points, including the systematic unsupervized research of patterns, the possibility to build hybrid features from both semantic and citation networks, the combination of various techniques from datamining to network analysis.
+The novelty of our project relies on various points, including the systematic unsupervized research of patterns, the possibility to build hybrid features from both semantic and citation networks, the combination of various techniques from datamining to multi-layer network analysis.
 
 
 
@@ -59,13 +71,16 @@ The novelty of our project relies on various points, including the systematic un
 %%%%%%%%%%%%%%%%%%%%
 \subsection{General description}
 
-This project is based on the assumption that semantic relations between patents contents must include some information on the underlying technological innovation processes. The idea is strongly inspired from the semantic science mapping proposed in~\cite{chavalarias2013phylomemetic}, where dynamics of scientific fields was reconstructed by keywords co-occurence networks analysis. The assets of such an approach include
+This project is based on the assumption that semantic relations between patents contents must include some information on the underlying technological innovation processes. The idea is strongly inspired from the semantic science mapping proposed in~\cite{chavalarias2013phylomemetic}, where dynamics of scientific fields was reconstructed by keywords co-occurence networks analysis. The assets of such an approach include the fact to be not dependant on predefined fields or domains, what allows specifically to uncover effective domains by community detection. Extracting significant keywords (see technical details) from titles and abstracts
 
 Every patent is associated with many details that have been made available by national and international patent offices. First, each patent is associated with one or several technological fields which are chosen from a list by patent office specialists after careful review of the content of the patent (see IPC class). Second, every patent has to make a list of citations to all the patents used in the process, this naturally define a network between entities that have some technologies in common. From these two features innovation economists have created various indices to measure the quality of a patent ( number of citations, scope of technological field...).
 
 Two other indicators are of particular interest for us: originality and radicalness. The originality measure is
-defined by Hall \textit{et al.} (2001) \cite{Hall2001} as $Ori_{i}%
-=1-\displaystyle\sum_{j=1}^{n_{i}}{cit_{i,j}^{2}}$ where $cit_{i,j}$ is the
+defined by Hall \textit{et al.} (2001) \cite{Hall2001} as
+\[
+O_{i}%
+=1-\sum_{j=1}^{n_{i}}{c_{i,j}^{2}}\] where $c_{i,j}$
+is the
 percentage of citations made by patent $i$ to a patent in class $j$ out of
 $n_{i}$ technological classes to which patent $i$ belongs. If the scope of
 technologies which the patent uses and cites is large, then the originality
@@ -81,6 +96,21 @@ Our strategy will rely on differences between our network based on semantic comp
 \subsection{Technical details}
 
 
+\paragraph{Citation Network}
+
+% TBW : useful ?
+
+\paragraph{Technological Class Network}
+
+% idem
+
+\paragraph{Semantic Network}
+
+
+
+
+\paragraph{Possible Features}
+
 
 
 
@@ -92,8 +122,8 @@ Our strategy will rely on differences between our network based on semantic comp
 \begin{itemize}
 \item Project definition, litterature review - AB, JR, PA - ETA 10h
 \item Thematic framing (possible features, precise objectives) - AB, JR - ETA 4h
-\item Technical aspects (database management, text-mining implementation) - JR - ETA 10h
-\item Empirical datamining - AB, JR - ETA 20h
+\item Technical aspects (database management, text-mining implementation) - JR - ETA 15h
+\item Empirical datamining - AB, JR - ETA 25h
 \item Theoretical feedback, revision of mining techniques - AB, JR, PA - ETA 10h
 \item Theoretical modeling, results interpretation, perspectives - AB, PA - ETA ?
 \end{itemize}
