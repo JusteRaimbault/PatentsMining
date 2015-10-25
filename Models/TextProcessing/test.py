@@ -32,6 +32,64 @@ def test_kw():
 
 ## Functions
 
+
+def extract_relevant_keywords(year,limit,kwLimit):
+    [p_kw_dico,kw_p_dico]=construct_occurrence_dico(year,limit)
+    # compute unithoods
+    unithoods = dict()
+    for k in kw_p_dico.keys():
+        # TODO
+        l = 1 # l = len(strsplit(k,' '))
+        unithoods[k]=log(l+1)*len(kw_p_dico[k])
+    # sort and keep K*N keywords
+    ## TODO
+    selected_kws = dict()
+    # dictionary : kw -> index in matrix
+
+    # compute termhoods :: coocurrence matrix -> in \Theta(16 N^2) - N must thus stay 'small'
+    cooccs = []
+    for i in range(len(selected_kws.keys())):
+        cooccs.append(([0]*len(selected_kws.keys())))
+    # fill the cooc matrix
+    # for each patent : kws are coocurring if selected.
+    # Beware to filter BEFORE launching O(n^2) procedure
+
+    for p in p_kw_dico.keys() :
+        sel = []
+        for k in p_kw_dico[p] :
+            if k in selected_kws : sel.append(k)
+        for i in range(1,len(sel)-1):
+            for j in range(i+1,len(sel)):
+                ii = selected_kws[sel[i]] ; jj= selected_kws[sel[j]] ;
+                cooccs[ii][jj] = cooccs[ii][jj] + 1
+                cooccs[jj][ii] = cooccs[jj][ii] + 1
+
+    # compute termhoods
+    colSums = [sum(row) for row in cooccs]
+
+    termhoods = [0]*len(cooccs)
+    for i in range(len(coocs)):
+        s = 0;
+        for j in range(len(coocs)):
+            if j != i : s = s + (cooccs[i][j]-colSums[i]*colSums[j])^2/(colSums[i]*colSums[j])
+        termhoods[i]=s
+
+    # sort and filter on termhoods
+    # TODO
+    tselected = dict()
+
+    # reconstruct the patent -> tselected dico, finally necessary to build kw nw
+    p_tsel_dico = dict()
+    for p in p_kw_dico.keys() :
+        sel = []
+        for k in p_kw_dico[p] :
+            if k in selected_kws : sel.append(k)
+        p_tsel_dico[p] = sel
+
+    # eventually write to file ? -> do that in other proc (! atomicity)
+    return(p_tsel_dico)
+
+
 def construct_occurrence_dico(year,limit) :
     data = get_patent_data(year,limit)
     p_kw_dico = dict()
@@ -55,26 +113,25 @@ def construct_occurrence_dico(year,limit) :
             else :
                 p_kw_dico[patent_id] = [k]
 
-
-    print(p_kw_dico.keys())
-    print(p_kw_dico.values())
+    return([p_kw_dico,kw_p_dico])
+    #print(p_kw_dico.keys())
+    #print(p_kw_dico.values())
     #print(map(lambda l : len(l),dico.values()))
 
     # write to file
-    p_kw = open('../../Data/processed/test_pkw_'+str(year)+'_'+str(limit)+'_'+str(datetime.datetime.now())+'.csv','w')
-    kw_p = open('../../Data/processed/test_kwp_'+str(year)+'_'+str(limit)+'_'+str(datetime.datetime.now())+'.csv','w')
+    #export_dico_csv(p_kw_dico,'../../Data/processed/test_pkw_'+str(year)+'_'+str(limit))
+    #export_dico_csv(kw_p_dico,'../../Data/processed/test_kwp_'+str(year)+'_'+str(limit))
 
-    for k in p_kw_dico.keys():
-        p_kw.write(k+";")
-        for kw in p_kw_dico[k]:
-            p_kw.write(kw+";")
-        p_kw.write('\n')
 
-    for k in kw_p_dico.keys():
-        kw_p.write(k+";")
-        for kw in kw_p_dico[k]:
-            kw_p.write(kw+";")
-        kw_p.write('\n')
+
+# Exports a dictionary to a generalized csv, under the form key;val1;val2;...;valN
+def export_dico_csv(dico,fileprefix):
+    outfile=open(fileprefix+str(datetime.datetime.now())+'.csv','w')
+    for k in dico.keys():
+        outfile.write(k+";")
+        for kw in dico[k]:
+            outfile.write(kw+";")
+        outfile.write('\n')
 
 
 def get_patent_data(year,limit) :
