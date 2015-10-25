@@ -33,8 +33,24 @@ def test_kw():
 ## Functions
 
 
-def extract_relevant_keywords(year,limit,kwLimit):
-    [p_kw_dico,kw_p_dico]=construct_occurrence_dico(year,limit)
+# tests for a bootstrap technique to avoid subcorpus relevance bias
+def bootstrap_subcorpuses(corpus,kwLimit,subCorpusSize,bSize):
+    N = len(corpus)
+
+    # generate bSize extractions
+    #extractions =
+
+    # for each extraction, extract subcorpus and get relevant kws
+
+    # then for each patent, mean termhoods, and recompute relevant keywords ?
+
+
+
+
+
+# extract relevant keywords, using unithood and termhood
+def extract_relevant_keywords(corpus,kwLimit):
+    [p_kw_dico,kw_p_dico]=construct_occurrence_dico(corpus)
     # compute unithoods
     unithoods = dict()
     for k in kw_p_dico.keys():
@@ -90,8 +106,9 @@ def extract_relevant_keywords(year,limit,kwLimit):
     return(p_tsel_dico)
 
 
-def construct_occurrence_dico(year,limit) :
-    data = get_patent_data(year,limit)
+#
+def construct_occurrence_dico(data) :
+    #data = get_patent_data(year,limit)
     p_kw_dico = dict()
     kw_p_dico = dict()
     for patent in data :
