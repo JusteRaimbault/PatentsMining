@@ -1,0 +1,92 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Standard header for working papers
+%
+% WPHeader.tex
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[11pt]{article}
+
+%%%%%%%%%%%%%%%%%%%%
+%% Include general header where common packages are defined
+%%%%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Packages
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+% general packages without options
+\usepackage{amsmath,amssymb,bbm}
+
+% graphics
+\usepackage{graphicx}
+
+% text formatting
+\usepackage[document]{ragged2e}
+\usepackage{pagecolor,color}
+
+
+
+%%%%%%%%%%%%%%%%%%%%
+%% Idem general commands
+%%%%%%%%%%%%%%%%%%%%
+%% Commands
+
+\newcommand{\noun}[1]{\textsc{#1}}
+
+
+%% Math
+
+% Operators
+\DeclareMathOperator{\Cov}{Cov}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\E}{\mathbb{E}}
+\DeclareMathOperator{\Proba}{\mathbb{P}}
+
+\newcommand{\Covb}[2]{\ensuremath{\Cov\!\left[#1,#2\right]}}
+\newcommand{\Eb}[1]{\ensuremath{\E\!\left[#1\right]}}
+\newcommand{\Pb}[1]{\ensuremath{\Proba\!\left[#1\right]}}
+\newcommand{\Varb}[1]{\ensuremath{\Var\!\left[#1\right]}}
+
+% norm
+\newcommand{\norm}[1]{\| #1 \|}
+
+
+%% graphics
+
+% renew graphics command for relative path providment only ?
+%\renewcommand{\includegraphics[]{}}
+
+
+
+% geometry
+\usepackage[margin=2cm]{geometry}
+
+% layout : use fancyhdr package
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+
+\makeatletter
+
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+\fancyhead[RO,RE]{\textit{Project Proposal}}
+\fancyhead[LO,LE]{Patents Mining}
+\fancyfoot[RO,RE] {\thepage}
+\fancyfoot[LO,LE] {\noun{Raimbault} \& \noun{Bergeaud}}
+\fancyfoot[CO,CE] {}
+
+\makeatother
+
+
+%%%%%%%%%%%%%%%%%%%%%
+%% Begin doc
+%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+
+

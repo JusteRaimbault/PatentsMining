@@ -45,7 +45,7 @@ def bootstrap_subcorpuses(corpus,kwLimit,subCorpusSize,bSize):
     # then for each patent, mean termhoods, and recompute relevant keywords ?
 
 
-
+ bvbm
 
 
 # extract relevant keywords, using unithood and termhood

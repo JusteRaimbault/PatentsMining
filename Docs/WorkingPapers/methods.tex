@@ -1,0 +1,128 @@
+\input{header.tex}
+
+
+\title{
+An Hypernetwork Approach to Accurately Measure Technological Innovation
+\bigskip\\
+\textit{Methods and Results}
+}
+\author{\noun{J. Raimbault}$^{1,2}$ and \noun{A. Bergeaud}$^{3}$\medskip\\
+$^{1}$ UMR CNRS 8504 G{\'e}ographie-cit{\'e}s\\
+$^{2}$ UMR-T IFSTTAR 9403 LVMT\\
+$^{3}$ London School of Economics
+}
+\date{}
+
+
+\maketitle
+
+\justify
+
+
+\begin{abstract}
+This working paper details technical methods used in the project and gives a first overview of results.
+\end{abstract}
+
+%%%%%%%%%%%%%%%%%%%%
+\section{Introduction}
+%%%%%%%%%%%%%%%%%%%%
+
+\textit{See project Proposal}
+
+
+%%%%%%%%%%%%%%%%%%%%
+\section{Methods}
+%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+% Taken from Technical Details section of proposal 
+% -> develop more precisely if needed
+
+
+
+\paragraph{Originality Measures}
+
+The originality measure is
+defined by Hall \textit{et al.} (2001)~\cite{Hall2001} as
+\[
+O_{i}=1-\sum_{j=1}^{n_{i}}{c_{i,j}^{2}}
+\]
+where $c_{i,j}$is the percentage of citations made by patent $i$ to a patent in class $j$ out of
+$n_{i}$ technological classes to which patent $i$ belongs. If the scope of
+technologies which the patent uses and cites is large, then the originality
+measure will be high. Radicalness is more difficult to define. It is
+constructed in the same way as the originality index but here we only consider
+the technology classes of patents cited by patent $i$ but to which patent $i$
+does not belong. These two indicators are good proxies and great start to estimate if a patent is protecting a new product that can hardly be classified into the official technological field space.
+
+
+
+\paragraph{Citation Network}
+
+We define a binary relationship between each pair of patents $Cit(i, j) = 1$ if j cites i or i cites j, otherwise $Cit(i, j) = 0$. 
+
+\paragraph{Technological Class Network}
+
+For each patent i, let $B_i$ be the set of technological class of i. We then define a relationship between each pair i and j as 2 times the number of technological class in common divided by the total number of class of i and j. 
+\[
+Class(i,j) = 2\frac{\left\vert{B_i\cap B_j}\right\vert}{\left\vert{B_i}\right\vert+\left\vert{B_j}\right\vert}
+\]
+
+Thus, if two patents have no class in common, $Class(i,j)=0$ while if the two patents are exactly identical in terms of their sets of technologial class $Class(i,j)=1$.
+
+\paragraph{Semantic Network}
+
+We first assign to a patent $p$ a set of significant keywords $K(p)\in \bigcup_{n\in \mathbb{N}} {\mathcal{A}^{\ast}}^n$, that are precisely extracted following a similar procedure to the one detailed in~\cite{chavalarias2013phylomemetic} :
+\begin{itemize}
+\item Text parsing and tokenizing.
+\item Part-of-speech tagging, normalization.
+\item Stem extraction and multi-stems constructions.
+\item Relevant multi-stems filtering.
+\end{itemize}
+
+Text processing operations will be implemented in \texttt{python} in order to use the \texttt{nltk} library~\cite{} % cite nltk
+which is highly ergonomic and supports most advanced state-of-the-art natural language processing operations.
+
+
+\paragraph{Possible Features}
+
+
+
+
+
+
+\paragraph{Multilayer Network Analysis}
+Check out the method proposed in~\cite{iacovacci2015mesoscopic}. $\rightarrow$ Interesting for some kind of ``between-layers correlation'' ?
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%
+\section{Results}
+%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%
+%% Biblio
+%%%%%%%%%%%%%%%%%%%%
+
+\bibliographystyle{apalike}
+\bibliography{../../Biblio/patents}
+
+
+\end{document}
+
+
