@@ -114,7 +114,7 @@ Thus, if two patents have no class in common, $Class(i,j)=0$ while if the two pa
 
 \paragraph{Semantic Network}
 
-We first assign to a patent $p$ a set of significant keywords $K(p)\in \bigcup_{n\in \mathbb{N}} {\mathcal{A}^{\ast}}^n$, that are precisely extracted following a similar procedure to the one detailed in~\cite{chavalarias2013phylomemetic} :
+We first assign to a patent $p\in \mathcal{P}$ a set of significant keywords $K(p)\in \bigcup_{n\in \mathbb{N}} {\mathcal{A}^{\ast}}^n$, that are precisely extracted following a similar procedure to the one detailed in~\cite{chavalarias2013phylomemetic} :
 \begin{itemize}
 \item Text parsing and tokenizing.
 \item Part-of-speech tagging, normalization.
@@ -122,13 +122,24 @@ We first assign to a patent $p$ a set of significant keywords $K(p)\in \bigcup_{
 \item Relevant multi-stems filtering.
 \end{itemize}
 
-Text processing operations will be implemented in \texttt{python} in order to use the \texttt{nltk} library~\cite{} % cite nltk
-which is highly ergonomic and supports most advanced state-of-the-art natural language processing operations.
+The semantic network is then constructed by co-occurrences analysis : nodes are keywords, i.e. $V=\bigcup_{p\in\mathcal{P}}K(p)$, and edges represent co-occurrences : $E = \{(k,k') | \exists p \textrm{ s.t. } k, k' \in K(p)\}$. This specification aims to capture semantic communities that do necessarily have a thematic meaning and that should correspond to a specific domain, field, technology or technique.
+
+Text processing operations will be implemented in \texttt{python} in order to use the \texttt{nltk} library~\cite{nltk} which is highly ergonomic and supports most advanced state-of-the-art natural language processing operations.
 
 
 \paragraph{Possible Features}
 
+Content of the hypernetwork analysis is rather open at this stage of the project, as techniques used will depend on patterns found in the first explorations of each network alone and of first order structural correlations. From an unsupervised datamining perspective, relevant features to distinguish real innovation may for example include :
+\begin{itemize}
+\item Citation relative centrality regarding technological or semantic classes : given a partition of $\mathcal{P}$ represented by a classification function $C$ (constructed for example by clustering or community detection within technological or semantic networks), a vector feature is for patent $i$
+\[
+\left(\frac{\sum_{j\in c}Cit^{out}(i,j)}{\sum_{j\in c}Cit^{in}(i,j)}\right)_{c\in C(\mathcal{P})}
+\]
+\item Dynamic evolution of classification vector : if $C_t$ is stratified over successive time periods indexed by time $t$, either $\Delta \vec{C}_t (i)$ if $\vec{C}_t$ is a vector of probabilities to belong to each class (in case of a Bayesian approach), or $\Delta (C_t(j))_{Cit(i,j,t)\neq 0}$ in case of a deterministic approach, could both be interesting features.
+\item Deviation from the expected classes given position in other layers of the hypernetwork (it would need explorations if these conditional probabilities first can be well estimated, then if they contain relevant information).
+\end{itemize}
 
+ 
 
 
 
@@ -140,7 +151,7 @@ Proposed research agenda :
 \begin{itemize}
 \item Project definition, litterature review - AB, JR, PA - ETA 10h
 \item Thematic framing (possible features, precise objectives) - AB, JR - ETA 4h
-\item Technical aspects (database management, text-mining implementation) - JR - ETA 15h
+\item Technical aspects (database management, text-mining implementation : JR ; citation network, technological class network : AB) - AB, JR - ETA 20h
 \item Empirical datamining - AB, JR - ETA 25h
 \item Theoretical feedback, revision of mining techniques - AB, JR, PA - ETA 10h
 \item Theoretical modeling, results interpretation, perspectives - AB, PA - ETA ?
