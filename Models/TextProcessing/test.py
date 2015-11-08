@@ -1,5 +1,5 @@
 
-import nltk,sqlite3,time,locale,datetime
+import nltk,sqlite3,time,locale,datetime,operator,math
 
 # issue with multithreading
 #from multiprocessing import Pool
@@ -9,9 +9,17 @@ import nltk,sqlite3,time,locale,datetime
 # tests
 
 def test():
-    #test_kw()
-    #test_db()
-    test_dico()
+    test_termhood_extract()
+
+
+def test_termhood_extract():
+    corpus = get_patent_data(2000,10000)
+    [relevantkw,relevant_dico] = extract_relevant_keywords(corpus,100)
+    for k in relevant_dico.keys():
+        print(k+' : '+str(relevant_dico[k]))
+    export_dico_csv(relevant_dico,'../../data/processed/relevantDico_y2000_size100_kwLimit50')
+    export_list(relevantkw,'../../data/processed/relevantkw_y2000_size100_kwLimit50')
+
 
 def test_dico():
     construct_occurrence_dico(2000,1000)
@@ -45,27 +53,32 @@ def bootstrap_subcorpuses(corpus,kwLimit,subCorpusSize,bSize):
     # then for each patent, mean termhoods, and recompute relevant keywords ?
 
 
- bvbm
+
 
 
 # extract relevant keywords, using unithood and termhood
 def extract_relevant_keywords(corpus,kwLimit):
+    print('Extracting relevant keywords...')
     [p_kw_dico,kw_p_dico]=construct_occurrence_dico(corpus)
     # compute unithoods
+    print('Compute unithoods...')
     unithoods = dict()
     for k in kw_p_dico.keys():
-        # TODO
-        l = 1 # l = len(strsplit(k,' '))
-        unithoods[k]=log(l+1)*len(kw_p_dico[k])
-    # sort and keep K*N keywords
-    ## TODO
-    selected_kws = dict()
-    # dictionary : kw -> index in matrix
+        l = len(k.split(' '))
+        unithoods[k]=math.log(l+1)*len(kw_p_dico[k])
 
+    # sort and keep K*N keywords ; K = 4 for now ?
+    selected_kws = dict() # dictionary : kw -> index in matrix
+    sorted_unithoods = sorted(unithoods.items(), key=operator.itemgetter(1),reverse=True)
+    for i in range(4*kwLimit):
+        selected_kws[sorted_unithoods[i][0]] = i
+
+    # computing cooccurrences
+    print('Computing cooccurrences...')
     # compute termhoods :: coocurrence matrix -> in \Theta(16 N^2) - N must thus stay 'small'
-    cooccs = []
+    coocs = []
     for i in range(len(selected_kws.keys())):
-        cooccs.append(([0]*len(selected_kws.keys())))
+        coocs.append(([0]*len(selected_kws.keys())))
     # fill the cooc matrix
     # for each patent : kws are coocurring if selected.
     # Beware to filter BEFORE launching O(n^2) procedure
@@ -74,47 +87,54 @@ def extract_relevant_keywords(corpus,kwLimit):
         sel = []
         for k in p_kw_dico[p] :
             if k in selected_kws : sel.append(k)
-        for i in range(1,len(sel)-1):
+        for i in range(len(sel)-1):
             for j in range(i+1,len(sel)):
                 ii = selected_kws[sel[i]] ; jj= selected_kws[sel[j]] ;
-                cooccs[ii][jj] = cooccs[ii][jj] + 1
-                cooccs[jj][ii] = cooccs[jj][ii] + 1
+                coocs[ii][jj] = coocs[ii][jj] + 1
+                coocs[jj][ii] = coocs[jj][ii] + 1
 
     # compute termhoods
-    colSums = [sum(row) for row in cooccs]
+    colSums = [sum(row) for row in coocs]
 
-    termhoods = [0]*len(cooccs)
+    termhoods = [0]*len(coocs)
     for i in range(len(coocs)):
         s = 0;
         for j in range(len(coocs)):
-            if j != i : s = s + (cooccs[i][j]-colSums[i]*colSums[j])^2/(colSums[i]*colSums[j])
+            if j != i : s = s + (coocs[i][j]-colSums[i]*colSums[j])^2/(colSums[i]*colSums[j])
         termhoods[i]=s
 
     # sort and filter on termhoods
-    # TODO
+    sorting_termhoods = dict()
+    for k in selected_kws.keys():
+        sorting_termhoods[k]=termhoods[selected_kws[k]]
+    sorted_termhoods = sorted(sorting_termhoods.items(), key=operator.itemgetter(1),reverse=True)
+
     tselected = dict()
+    for i in range(kwLimit):
+        tselected[sorted_termhoods[i][0]] = i
 
     # reconstruct the patent -> tselected dico, finally necessary to build kw nw
     p_tsel_dico = dict()
     for p in p_kw_dico.keys() :
         sel = []
         for k in p_kw_dico[p] :
-            if k in selected_kws : sel.append(k)
+            if k in tselected : sel.append(k)
         p_tsel_dico[p] = sel
 
     # eventually write to file ? -> do that in other proc (! atomicity)
-    return(p_tsel_dico)
+    return([tselected.keys(),p_tsel_dico])
 
 
 #
 def construct_occurrence_dico(data) :
-    #data = get_patent_data(year,limit)
+    print('Constructing occurence dictionnaries...')
+
     p_kw_dico = dict()
     kw_p_dico = dict()
     for patent in data :
         patent_id = patent[0].encode('ascii','ignore')
         keywords = extract_keywords(patent[1]+". "+patent[2],patent_id)
-        print(keywords)
+        #print(keywords)
 
         for w in keywords :
             k = reduce(lambda s1,s2 : s1+' '+s2,w)
@@ -150,6 +170,10 @@ def export_dico_csv(dico,fileprefix):
             outfile.write(kw+";")
         outfile.write('\n')
 
+def export_list(l,fileprefix):
+    outfile=open(fileprefix+str(datetime.datetime.now())+'.csv','w')
+    for k in l :
+        outfile.write(k+'\n')
 
 def get_patent_data(year,limit) :
     # connect to the database
