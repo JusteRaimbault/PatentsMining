@@ -1,6 +1,8 @@
 library(rgexf)
 
+setwd(paste0(Sys.getenv('CS_HOME'),'/PatentsMining'))
 source('Models/Test/utils.R')
+
 
 # reconstruct maps 
 p_kw <- readMappingFile('Data/processed/test_pkw_2000_1000_2015-10-19 09:40:23.085621.csv',sep=";")

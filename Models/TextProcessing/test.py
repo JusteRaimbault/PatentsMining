@@ -13,12 +13,12 @@ def test():
 
 
 def test_termhood_extract():
-    corpus = get_patent_data(2000,10000)
-    [relevantkw,relevant_dico] = extract_relevant_keywords(corpus,100)
-    for k in relevant_dico.keys():
-        print(k+' : '+str(relevant_dico[k]))
-    export_dico_csv(relevant_dico,'../../data/processed/relevantDico_y2000_size100_kwLimit50')
-    export_list(relevantkw,'../../data/processed/relevantkw_y2000_size100_kwLimit50')
+    corpus = get_patent_data(2000,3000)
+    [relevantkw,relevant_dico] = extract_relevant_keywords(corpus,2000)
+    #for k in relevant_dico.keys():
+    #    print(k+' : '+str(relevant_dico[k]))
+    export_dico_csv(relevant_dico,'../../data/processed/relevantDico_y2000_size1000_kwLimit200')
+    export_list(relevantkw,'../../data/processed/relevantkw_y2000_size1000_kwLimit200')
 
 
 def test_dico():
@@ -161,19 +161,6 @@ def construct_occurrence_dico(data) :
 
 
 
-# Exports a dictionary to a generalized csv, under the form key;val1;val2;...;valN
-def export_dico_csv(dico,fileprefix):
-    outfile=open(fileprefix+str(datetime.datetime.now())+'.csv','w')
-    for k in dico.keys():
-        outfile.write(k+";")
-        for kw in dico[k]:
-            outfile.write(kw+";")
-        outfile.write('\n')
-
-def export_list(l,fileprefix):
-    outfile=open(fileprefix+str(datetime.datetime.now())+'.csv','w')
-    for k in l :
-        outfile.write(k+'\n')
 
 def get_patent_data(year,limit) :
     # connect to the database
@@ -239,7 +226,10 @@ def extract_keywords(raw_text,id):
 
 
 def main():
-    #print(extract_keywords(raw_text))
+
+    # import utils
+    execfile('../Utils/utils.py')
+
     start = time.time()
 
     test()
