@@ -28,7 +28,7 @@ public class TechnoDistance {
 	}
 	
 	// no hash needed for techno distance ; requirement on overlap already met.
-	/*
+	
 	@Override
 	public int hashCode(){
 		return patent1.hashCode()+patent2.hashCode();
@@ -40,5 +40,5 @@ public class TechnoDistance {
 				((((TechnoDistance)o).patent1.equals(patent1)&&((TechnoDistance)o).patent2.equals(patent2))||
 				(((TechnoDistance)o).patent1.equals(patent2)&&((TechnoDistance)o).patent2.equals(patent1)));
 	}
-	*/
+	
 }

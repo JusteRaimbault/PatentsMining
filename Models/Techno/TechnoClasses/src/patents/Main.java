@@ -129,12 +129,14 @@ public class Main {
 		int k = 0;
 		for(String s:sortedClasses.keySet()){classNames[k]=s;k++;}
 		
-		LinkedList<TechnoDistance> distances = new LinkedList<TechnoDistance>();
+		HashSet<TechnoDistance> distances = new HashSet<TechnoDistance>();
 		for(int i=0;i<n-1;i++){
 			System.out.println(i);
+			System.out.println(" dists : "+distances.size());
 			for(int j=i+1;j<n;j++){
 				System.out.println(j);
 				Patent[] overlap = overlap(sortedClasses.get(classNames[i]),sortedClasses.get(classNames[j]));
+				System.out.println("  s : "+overlap.length);
 				for(int p1 = 0;p1<overlap.length - 1;p1++){
 					for(int p2=p1+1;p2<overlap.length;p2++){
 						distances.add(new TechnoDistance(overlap[p1],overlap[p2]));
@@ -143,7 +145,7 @@ public class Main {
 			}
 		}
 		
-		Writer.writeList(distances, "res/distances_on_overlaps.csv");
+		Writer.writeSet(distances, "res/distances_on_overlaps.csv");
 		
 	}
 	
