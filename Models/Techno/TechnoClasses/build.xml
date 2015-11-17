@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--BuidFile for jarring project-->
+
+<project name="mining" default="jar" basedir=".">
+  <description>buildfile</description>
+
+  <!-- global properties -->
+  <!--<property name="src" location="src"/>-->
+  <!-- no need source, use lastly compiled classes-->
+  <property name="build" location="bin"/>
+  <property name="jar.dir" value="." />
+  <property name="main" value = "patents.Main"/>
+ <!-- <property name="bib" location="lib"/>-->
+
+<!--
+  <path id="classpath">
+    <fileset dir="lib" includes="*.jar"/>
+  </path>
+	
+	<target name="compile" description="compile the source " >
+	    <javac srcdir="src" destdir="${build}" classpathref="classpath"/>
+	  </target>
+	-->
+	
+  <target name="jar"><!-- depends="compile">-->
+  	
+  	<jar destfile="${jar.dir}/${ant.project.name}.jar" basedir="${build}">
+  		<manifest>
+  		   <attribute name="Main-Class" value="${main}"/>
+  		</manifest>
+  	    <fileset dir="${build}" includes="**/*.class" />
+  	    <!--<zipgroupfileset dir="${bib}" includes="**/*.jar" />-->
+  	</jar> 	
+    </target>
+
+</project>

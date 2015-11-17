@@ -10,13 +10,22 @@ import java.util.HashSet;
  * @author Raimbault Juste <br/> <a href="mailto:juste.raimbault@polytechnique.edu">juste.raimbault@polytechnique.edu</a>
  *
  */
-public class Patent {
+public class Patent implements Comparable<Patent>{
 	
 	
+	/**
+	 * Hashconsing on all patents
+	 */
 	public static final HashMap<Patent,Patent> patents = new HashMap<Patent,Patent>(10000000);
 	
+	/**
+	 * unique id
+	 */
 	public String id;
 	
+	/**
+	 * techno classes for this patent
+	 */
 	public HashSet<String> classes;
 	
 	public Patent(String s){id=s;}
@@ -33,6 +42,27 @@ public class Patent {
 	}
 	
 	
+	
+	/**
+	 * Computes common classes.
+	 * 
+	 * @param p
+	 * @return
+	 */
+	public HashSet<String> commonClasses(Patent p){
+		// 2-3 classes per patent, can do it dirty
+		HashSet<String> res = new HashSet<String>();
+		for(String c:classes){
+			for(String c2:p.classes){
+				if(c.equals(c2)){res.add(c);}
+			}
+		}
+		return res;
+	}
+	
+	
+	
+	
 	@Override
 	public int hashCode(){
 		return id.hashCode();
@@ -43,5 +73,9 @@ public class Patent {
 		return (o instanceof Patent)&&(((Patent)o).id.equals(id));
 	}
 	
+	@Override
+	public int compareTo(Patent p){
+		return id.compareTo(p.id);
+	}
 	
 }
