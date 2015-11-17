@@ -133,6 +133,7 @@ public class Main {
 		for(int i=0;i<n-1;i++){
 			System.out.println(i);
 			for(int j=i+1;j<n;j++){
+				System.out.println(j);
 				Patent[] overlap = overlap(sortedClasses.get(classNames[i]),sortedClasses.get(classNames[j]));
 				for(int p1 = 0;p1<overlap.length - 1;p1++){
 					for(int p2=p1+1;p2<overlap.length;p2++){
