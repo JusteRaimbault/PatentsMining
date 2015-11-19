@@ -160,9 +160,11 @@ public class Main {
 						// check only if k ≠ i and k ≠ j -> will have some repetitions
 						// -> having k > j should do the trick : take k >= j
 						LinkedList<Patent> overlap3 = overlap(overlap2,sortedClasses.get(classNames[k]));
-						int[] nextrow = new int[4]; 
-						nextrow[0]=i;nextrow[1]=j;nextrow[2]=k;nextrow[3]=overlap3.size();
-						overlaps.add(nextrow);
+						if(overlap3.size()>0){
+							int[] nextrow = new int[4]; 
+							nextrow[0]=i;nextrow[1]=j;nextrow[2]=k;nextrow[3]=overlap3.size();
+							overlaps.add(nextrow);
+						}
 					//}
 					//r++;
 				}
