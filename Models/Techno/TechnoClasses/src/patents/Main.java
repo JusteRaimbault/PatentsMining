@@ -192,7 +192,7 @@ public class Main {
 			for(int j=i;j<n-1;j++){
 				LinkedList<Patent> overlap2 = overlap(sortedClasses.get(classNames[i]),sortedClasses.get(classNames[j]));
 				// then computes snd order overlap
-				System.out.println("Sorting overlap : "+overlap2.size());
+				//System.out.println("Sorting overlap : "+overlap2.size());
 				Collections.sort(overlap2);
 				for(int k=j+1;k<n;k++){
 					Patent[] overlap3 = overlap_array(overlap2,sortedClasses.get(classNames[k]));
@@ -260,7 +260,8 @@ public class Main {
 		HashMap<String,LinkedList<Patent>> sortedClasses = constructSortedClasses("../../../Data/raw/classesTechno/class.csv");
 		//computeOverlap(sortedClasses);
 		//computeDistanceOnOverlap(sortedClasses);
-		computeSecondOrderOverlaps(sortedClasses);
+		//computeSecondOrderOverlaps(sortedClasses);
+		computeDistancesOnSecondOrderOverlaps(sortedClasses);
 	}
 
 }
