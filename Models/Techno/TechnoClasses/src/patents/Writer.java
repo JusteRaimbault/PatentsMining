@@ -39,6 +39,23 @@ public class Writer {
 		}catch(Exception e){e.printStackTrace();}
 	}
 	
+	
+	public static void writeCSV(LinkedList<int[]> data,String file){
+		try{
+			BufferedWriter w = new BufferedWriter(new FileWriter(new File(file)));
+			for(int[] r:data){
+				for(int j = 0;j<r.length;j++){
+					w.write(new Integer(r[j]).toString());if(j<r.length-1){w.write(";");}
+				}
+				w.write("\n");
+			}
+
+
+			w.close();
+		}catch(Exception e){e.printStackTrace();}
+	}
+	
+	
 	public static void writeCSV(int[][] data,String file){
 		try{
 			BufferedWriter w = new BufferedWriter(new FileWriter(new File(file)));
