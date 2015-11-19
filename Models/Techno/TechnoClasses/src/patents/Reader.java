@@ -23,6 +23,7 @@ public class Reader {
 		   while(currentLine != null){
 			   String[] t = currentLine.split(",");
 			   Patent p = Patent.construct(t[0]);
+			   p.classes.add(t[2]);
 			   if(res.containsKey(t[2])){
 				   res.get(t[2]).add(p);
 			   }else{
