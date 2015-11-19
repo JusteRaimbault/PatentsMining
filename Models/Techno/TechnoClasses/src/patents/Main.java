@@ -44,7 +44,7 @@ public class Main {
 	 * @param l2
 	 * @return
 	 */
-	private static Patent[] overlap(LinkedList<Patent> l1,LinkedList<Patent> l2){
+	private static LinkedList<Patent> overlap(LinkedList<Patent> l1,LinkedList<Patent> l2){
 		LinkedList<Patent> res = new LinkedList<Patent>();
 		Iterator<Patent> i1 = l1.iterator();Iterator<Patent> i2 = l2.iterator();
 		Patent current1 = i1.next(),current2 = i2.next();
@@ -59,6 +59,11 @@ public class Main {
 				}
 			}
 		}
+		return res;
+	}
+	
+	private static Patent[] overlap_array(LinkedList<Patent> l1,LinkedList<Patent> l2){
+		LinkedList<Patent> res = overlap(l1,l2);
 		Patent[] resarray = new Patent[res.size()];
 		int i=0;for(Patent p:res){resarray[i]=p;i++;}
 		return resarray;
@@ -100,7 +105,7 @@ public class Main {
 			System.out.println(i);
 			overlapMatrix[i][i]=classSizes[i];
 			for(int j=i+1;j<n;j++){
-				overlapMatrix[i][j]=(overlap(sortedClasses.get(classNames[i]),sortedClasses.get(classNames[j]))).length;
+				overlapMatrix[i][j]=(overlap_array(sortedClasses.get(classNames[i]),sortedClasses.get(classNames[j]))).length;
 			}
 		}
 		
@@ -119,7 +124,53 @@ public class Main {
 	
 	
 	/**
+	 * 
+	 * 
+	 * 
+	 * @param sortedClasses
+	 */
+	private static void computeSecondOrderOverlaps(HashMap<String,LinkedList<Patent>> sortedClasses){
+		int n = sortedClasses.keySet().size();
+		//int[][] overlaps = new int[n][4];
+		// use list, more simple (should be n*(n-1)/2 * (n-2) + n (for classes sizes)
+		int[][] overlaps = new int[(n*(n-1)*(n-2)/2) + n][4];
+		String[] classNames = new String[n];
+		int r = 0;for(String s:sortedClasses.keySet()){classNames[r]=s;r++;}
+		
+		r = 0;
+		for(int i=0;i<n-1;i++){
+			System.out.println(i);
+			for(int j=i;j<n;j++){
+				LinkedList<Patent> overlap2 = overlap(sortedClasses.get(classNames[i]),sortedClasses.get(classNames[j]));
+				// then computes snd order overlap
+				for(int k=j;k<n;k++){
+					if(i==j&&j==k){
+						// add class size
+						overlaps[r][0]=i;overlaps[r][1]=i;overlaps[r][2]=i;overlaps[r][3]=sortedClasses.get(classNames[i]).size();
+					}else{
+						// check only if k ≠ i and k ≠ j -> will have some repetitions
+						// -> having k > j should do the trick : take k >= j
+						LinkedList<Patent> overlap3 = overlap(overlap2,sortedClasses.get(classNames[k]));
+						overlaps[r][0]=i;overlaps[r][1]=j;overlaps[r][2]=k;overlaps[r][3]=overlap3.size();
+					}
+					r++;
+				}
+			}
+		}
+		
+		Writer.writeCSV(overlaps, "res/overlap_snd_order.csv");
+	}
+	
+	
+	
+	
+	
+	/**
 	 * Techno distances on overlapping patents
+	 * 
+	 *   -- DOES NOT WORK WITH 32G Memory --
+	 * 
+	 * 
 	 */
 	private static void computeDistanceOnOverlap(HashMap<String,LinkedList<Patent>> sortedClasses){
 		System.out.println("Computing distances on overlaps...");
@@ -135,7 +186,7 @@ public class Main {
 			System.out.println(" dists : "+distances.size());
 			for(int j=i+1;j<n;j++){
 				System.out.println(j);
-				Patent[] overlap = overlap(sortedClasses.get(classNames[i]),sortedClasses.get(classNames[j]));
+				Patent[] overlap = overlap_array(sortedClasses.get(classNames[i]),sortedClasses.get(classNames[j]));
 				System.out.println("  s : "+overlap.length);
 				for(int p1 = 0;p1<overlap.length - 1;p1++){
 					for(int p2=p1+1;p2<overlap.length;p2++){
