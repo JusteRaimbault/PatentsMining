@@ -1,6 +1,7 @@
-setwd(paste0(Sys.getenv('CS_HOME'),'/PatentsMining'))
+setwd(paste0(Sys.getenv('CS_HOME'),'/PatentsMining/Models//Techno//TechnoClasses//res'))
 
-overlap <- read.table('Models//Techno//TechnoClasses//res//overlap.csv',sep=";")
+#overlap <- read.table('Models//Techno//TechnoClasses//res//overlap.csv',sep=";")
+overlap <- read.table('overlap.csv',sep=";")
 
 links = 0
 
@@ -13,3 +14,13 @@ for(i in 1:nrow(overlap)){
   #  }
   #}
 }
+
+
+
+#########
+##
+
+o <- read.csv('overlap_snd_order_different.csv',sep=';')
+
+diag(overlap) <- 0
+max(overlap)

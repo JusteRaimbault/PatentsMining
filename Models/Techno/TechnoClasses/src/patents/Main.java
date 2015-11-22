@@ -72,6 +72,37 @@ public class Main {
 	}
 	
 	
+	
+	/**
+	 * assumes sorted sets -> computes l1 \ l2
+	 * @param l1
+	 * @param l2
+	 * @return
+	 */
+	private static LinkedList<Patent> setDiff(LinkedList<Patent> l1,LinkedList<Patent> l2){
+		if(l2.size()==0){return l1;}
+		LinkedList<Patent> res = new LinkedList<Patent>();
+		if(l1.size()>0){
+			Iterator<Patent> i1 = l1.iterator();Iterator<Patent> i2 = l2.iterator();
+			Patent current1 = i1.next(),current2 = i2.next();
+			while(i1.hasNext()&&i2.hasNext()){
+				if(current1.equals(current2)){
+					current1 = i1.next();current2 = i2.next();
+				}else{
+					if(current1.compareTo(current2)<0){
+						current1 = i1.next();
+						res.add(current1);
+					}else{
+						current2 = i2.next();
+					}
+				}
+			}
+		}
+		return res;
+	}
+	
+	
+	
 	/**
 	 * 
 	 * @param classes
@@ -184,30 +215,59 @@ public class Main {
 		String[] classNames = new String[n];
 		int r = 0;for(String s:sortedClasses.keySet()){classNames[r]=s;r++;}
 		
-		HashSet<TechnoDistance> distances = new HashSet<TechnoDistance>();
+		HashSet<TechnoDistance> distances = new HashSet<TechnoDistance>(10000000);
 		
 		//r = 0;
 		for(int i=0;i<n-2;i++){
-			System.out.println(i);
+			System.out.println("i : "+i);
 			for(int j=i;j<n-1;j++){
+				System.out.println("	j : "+j);
 				LinkedList<Patent> overlap2 = overlap(sortedClasses.get(classNames[i]),sortedClasses.get(classNames[j]));
 				// then computes snd order overlap
 				//System.out.println("Sorting overlap : "+overlap2.size());
 				Collections.sort(overlap2);
-				for(int k=j+1;k<n;k++){
-					Patent[] overlap3 = overlap_array(overlap2,sortedClasses.get(classNames[k]));
-					System.out.println("  s : "+overlap3.length);
-					for(int p1 = 0;p1<overlap3.length - 1;p1++){
-						for(int p2=p1+1;p2<overlap3.length;p2++){
-							distances.add(new TechnoDistance(overlap3[p1],overlap3[p2]));
-						}
+				
+				// then computes for any k != i, != j the 2nd order overlap ;
+				// concatenates, compute distance on it AND between 1st order only and 2nd order
+				// (not totally optimal in time but better in memory, avoids to keep old overlaps in memory
+				HashSet<Patent> fullOverlap3 = new HashSet<Patent>();
+				for(int k=1;k<n;k++){
+					
+					if(k!=i&&k!=j){
+						System.out.println("		k : "+k);
+						LinkedList<Patent> overlap3 = overlap(overlap2,sortedClasses.get(classNames[k]));
+						for(Patent p:overlap3){fullOverlap3.add(p);}
 					}
-
 				}
+				
+				// dirty -> converts the hashset to list
+				LinkedList<Patent> fullOverlap3List = new LinkedList<Patent>();
+				for(Patent p:fullOverlap3){fullOverlap3List.add(p);}
+				
+				LinkedList<Patent> firstOrderOnly = setDiff(overlap2,fullOverlap3List);
+				
+				// converts both to array
+				Patent[] fullOverlap3Array = Patent.listToArray(fullOverlap3List);
+				Patent[] firstOrderOnlyArray = Patent.listToArray(firstOrderOnly);
+				
+				// inside overlap
+				for(int p1 = 0;p1<fullOverlap3Array.length - 1;p1++){
+					for(int p2=p1+1;p2<fullOverlap3Array.length;p2++){
+						distances.add(new TechnoDistance(fullOverlap3Array[p1],fullOverlap3Array[p2]));
+					}
+				}
+				
+				// outside
+				for(int p1 = 0;p1<firstOrderOnlyArray.length - 1;p1++){
+					for(int p2=p1+1;p2<fullOverlap3Array.length;p2++){
+						distances.add(new TechnoDistance(firstOrderOnlyArray[p1],fullOverlap3Array[p2]));
+					}
+				}
+				
 			}
 		}
 		
-		Writer.writeSet(distances, "res/distances_on_second_order_overlaps.csv");
+		Writer.writeSet(distances, "res/distances_2nd_order_extended.csv");
 	}
 	
 	

@@ -5,6 +5,7 @@ package patents;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 
 /**
  * @author Raimbault Juste <br/> <a href="mailto:juste.raimbault@polytechnique.edu">juste.raimbault@polytechnique.edu</a>
@@ -77,5 +78,18 @@ public class Patent implements Comparable<Patent>{
 	public int compareTo(Patent p){
 		return id.compareTo(p.id);
 	}
+	
+	
+	public static Patent[] listToArray(LinkedList<Patent> l){
+		Patent[] res = new Patent[l.size()];
+		int i=0;
+		for(Patent p:l){
+			res[i]=p;
+			i++;
+		}
+		return res;
+	}
+	
+	
 	
 }
