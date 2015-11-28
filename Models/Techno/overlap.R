@@ -22,5 +22,26 @@ for(i in 1:nrow(overlap)){
 
 o <- read.csv('overlap_snd_order_different.csv',sep=';')
 
+hist(diag(as.matrix(overlap)))
 diag(overlap) <- 0
 max(overlap)
+
+
+###########
+##
+# stats on class sizes -> power law ?
+
+classSizes = diag(as.matrix(overlap))
+hist(classSizes[classSizes> 100],breaks=200)
+
+# rank-size law for classes size ?
+plot(log(1:length(classSizes)),log(sort(classSizes,decreasing=TRUE)))
+plot(log(1:length(classSizes[classSizes> 10000])),log(sort(classSizes[classSizes> 10000],decreasing=TRUE)))
+plot(sort(classSizes,decreasing=TRUE))
+
+
+###
+# nw of non trivial techno distances
+
+
+

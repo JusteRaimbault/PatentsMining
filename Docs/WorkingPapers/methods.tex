@@ -73,6 +73,11 @@ Class(i,j) = 2\frac{\left\vert{B_i\cap B_j}\right\vert}{\left\vert{B_i}\right\ve
 Thus, if two patents have no class in common, $Class(i,j)=0$ while if the two patents are exactly identical in terms of their sets of technologial class $Class(i,j)=1$.
 
 
+\paragraph{Computation of the Technological Network}
+
+With a number of patents of magnitude $10^6$, it is not considerable in memory and in time to compute pairwise distances on all patents. Fortunately, distance matrix is relatively sparse and non trivial proximities  (i.e. where patents have more than one class in common) can be computed through an efficient set intersection and difference implementation.
+
+More precisely, let $n = \left|\mathcal{P}\right|$ the number of patents. classes are constructed in $O(n)$ from file giving patents classes, and then sorted in $\Theta (\sum_k{\left|\mathcal{C}_k\right|\cdot \log{\left|\mathcal{C}_k\right|}})$ with $\mathcal{C}_k$ the classes. The number of classes $K$ being fixed, it simplifies into a $O(n\log{n})$.
 
 
 %%%%%%%%%%%%%%%%%%%%
