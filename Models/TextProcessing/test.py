@@ -9,9 +9,9 @@ import nltk,sqlite3,time,locale,datetime,operator,math
 # tests
 
 def test():
-    test_dico()
+    #test_dico()
     #import_kw_dico('../../data/processed/keywords.sqlite3')
-
+    extract_all_keywords()
 
 def test_termhood_extract():
     corpus = get_patent_data(2000,3000)
@@ -24,13 +24,13 @@ def test_termhood_extract():
 def extract_all_keywords() :
     corpus = get_patent_data(-1,-1)
     [p_kw_dico,kw_p_dico] = construct_occurrence_dico(corpus)
-    export_kw_dico('../../data/processed/keywords.sqlite3',p_kw_dico)
+    export_kw_dico('../../Data/processed/keywords.sqlite3',p_kw_dico)
 
 def test_dico():
     # with export
     corpus = get_patent_data(2007,1000)
     [p_kw_dico,kw_p_dico] = construct_occurrence_dico(corpus)
-    export_kw_dico('../../data/processed/keywords_y2007_1000.sqlite3',p_kw_dico)
+    export_kw_dico('../../Data/processed/keywords_y2007_1000.sqlite3',p_kw_dico)
 
 def test_db():
     for patent in get_patent_data(2000,100):
@@ -279,7 +279,8 @@ def get_patent_data(year,limit) :
 
     #cursor.execute('SELECT patdesc.patent,patent.patent FROM patent,patdesc WHERE patent.patent=patdesc.patent LIMIT 10;')
     # retrieve records
-    query='SELECT patent.patent,title,abstract,GYear FROM patdesc,patent WHERE patdesc.patent = patent.patent AND abstract!=\'\' AND GYear = '+str(year)
+    query='SELECT patent.patent,title,abstract,GYear FROM patdesc,patent WHERE patdesc.patent = patent.patent AND abstract!=\'\''
+    if year != -1 : query = query +' AND GYear = '+str(year)
     if limit != -1 :
         query = query+' LIMIT '+str(limit)+";"
     else :
