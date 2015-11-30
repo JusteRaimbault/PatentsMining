@@ -77,7 +77,12 @@ Thus, if two patents have no class in common, $Class(i,j)=0$ while if the two pa
 
 With a number of patents of magnitude $10^6$, it is not considerable in memory and in time to compute pairwise distances on all patents. Fortunately, distance matrix is relatively sparse and non trivial proximities  (i.e. where patents have more than one class in common) can be computed through an efficient set intersection and difference implementation.
 
-More precisely, let $n = \left|\mathcal{P}\right|$ the number of patents. classes are constructed in $O(n)$ from file giving patents classes, and then sorted in $\Theta (\sum_k{\left|\mathcal{C}_k\right|\cdot \log{\left|\mathcal{C}_k\right|}})$ with $\mathcal{C}_k$ the classes. The number of classes $K$ being fixed, it simplifies into a $O(n\log{n})$. This sorting allows to compute overlaps and differences between classes in linear time
+More precisely, let $n = \left|\mathcal{P}\right|$ the number of patents. Classes are constructed in $O(n)$ from file giving patents classes, and then sorted in $\Theta (\sum_k{\left|\mathcal{C}_k\right|\cdot \log{\left|\mathcal{C}_k\right|}})$ with $\mathcal{C}_k$ the classes. The number of classes $K$ being fixed, it simplifies into a $O(n\log{n})$. This sorting allows to compute overlaps and differences between classes in linear time by a direct comparison. To compute higher order overlaps, we have an exponential complexity in the overlap order $o$ (in $O(K^o)$) but order three appears experimentally to have cardinals smaller enough for a reasonable one-to-one technological distance computation. A class partition strategy allows to know any distance : if $o (\mathcal{C}_i,\mathcal{C}_j)$ is first order overlap between classes $i$ and $j$ and $o_2 (\mathcal{C}_i,\mathcal{C}_j,\mathcal{C}_k)$ second order overlap (i.e. $o(\mathcal{C}_k,o(\mathcal{C}_i,\mathcal{C}_j))$, then for any class $i$,
+\begin{itemize}
+\item between any $p\in \mathcal{C}_i \\ \cup_{k}{o(i,k)}$, proximity is necessarily 1 (one class in common for one-class patents)
+\item for any $j \neq i$
+\end{itemize}
+
 
 
 %%%%%%%%%%%%%%%%%%%%

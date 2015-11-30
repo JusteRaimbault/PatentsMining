@@ -15,7 +15,8 @@ for(i in 1:nrow(overlap)){
   #}
 }
 
-
+write.table(x=cbind(0:832,rbind(1:832,overlap)),
+            file='overlap_adjacency.csv',row.names=FALSE,col.names=FALSE,sep=";")
 
 #########
 ##
@@ -42,6 +43,21 @@ plot(sort(classSizes,decreasing=TRUE))
 
 ###
 # nw of non trivial techno distances
+
+d <- read.csv('distances_2nd_order_extended.csv',sep=';',header=FALSE)
+summary(d)
+hist(d[,6],breaks=50)
+
+# try a 'by-hand' hclust to avoid computing dist matrix
+
+# first construct a table to get distances quickly
+distances=list()
+for(i in 1:nrow(d)){
+  distances[paste0(d[i,1],d[i,2])]=d[i,6]
+  distances[paste0(d[i,2],d[i,1])]=d[i,6]
+  if(i %% 10000 == 0 ){show(i)}
+}
+# very slow
 
 
 
