@@ -11,15 +11,17 @@ import nltk,sqlite3,time,locale,datetime,operator,math
 def test():
     #test_dico()
     #import_kw_dico('../../data/processed/keywords.sqlite3')
-    extract_all_keywords()
+    #extract_all_keywords()
+    termhood_extraction()
 
-def test_termhood_extract():
-    corpus = get_patent_data(2000,3000)
-    [relevantkw,relevant_dico] = extract_relevant_keywords(corpus,2000)
+def termhood_extraction():
+    corpus = get_patent_data(2000,10000)
+    dicos = construct_occurrence_dico(corpus)
+    [relevantkw,relevant_dico] = extract_relevant_keywords(corpus,2000,dicos)
     #for k in relevant_dico.keys():
     #    print(k+' : '+str(relevant_dico[k]))
-    export_dico_csv(relevant_dico,'../../data/processed/relevantDico_y2000_size1000_kwLimit200')
-    export_list(relevantkw,'../../data/processed/relevantkw_y2000_size1000_kwLimit200')
+    export_dico_csv(relevant_dico,'../../data/processed/relevantDico_y2000_size10000_kwLimit2000')
+    export_list(relevantkw,'../../data/processed/relevantkw_y2000_size10000_kwLimit2000')
 
 def extract_all_keywords() :
     corpus = get_patent_data(-1,-1)
