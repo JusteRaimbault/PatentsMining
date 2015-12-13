@@ -16,17 +16,17 @@ def test():
 
 def termhood_extraction():
     corpus = get_patent_data(2000,10000)
-    dicos = construct_occurrence_dico(corpus)
-    [relevantkw,relevant_dico] = extract_relevant_keywords(corpus,2000,dicos)
+    dicos = import_kw_dico('../../Data/processed/keywords_y2000_10000.sqlite3')
+    [relevantkw,relevant_dico] = extract_relevant_keywords(corpus,1000,dicos)
     #for k in relevant_dico.keys():
     #    print(k+' : '+str(relevant_dico[k]))
-    export_dico_csv(relevant_dico,'../../data/processed/relevantDico_y2000_size10000_kwLimit2000')
-    export_list(relevantkw,'../../data/processed/relevantkw_y2000_size10000_kwLimit2000')
+    export_dico_csv(relevant_dico,'../../data/processed/relevantDico_y2000_size10000_kwLimit4000')
+    export_list(relevantkw,'../../data/processed/relevantkw_y2000_size10000_kwLimit4000')
 
 def extract_all_keywords() :
-    corpus = get_patent_data(-1,-1)
+    corpus = get_patent_data(2000,10000)
     [p_kw_dico,kw_p_dico] = construct_occurrence_dico(corpus)
-    export_kw_dico('../../Data/processed/keywords.sqlite3',p_kw_dico)
+    export_kw_dico('../../Data/processed/keywords_y2000_10000.sqlite3',p_kw_dico)
 
 def test_dico():
     # with export
@@ -56,8 +56,9 @@ def bootstrap_subcorpuses(corpus,kwLimit,subCorpusSize,bootstrapSize):
     N = len(corpus)
 
     # compute occurence_dicos
-    #  TODO : store results in db or file to not recompute them at each step.
-    occurence_dicos = construct_occurrence_dico(corpus)
+    # Results stored in db or file to not recompute them at each step.
+    #occurence_dicos = construct_occurrence_dico(corpus)
+    occurence_dicos = import_kw_dico('../../Data/processed/keywords.sqlite3')
 
     # generate bSize extractions
     #   -> random subset of 1:N of size subCorpusSize
@@ -150,7 +151,7 @@ def extract_relevant_keywords(corpus,kwLimit,occurence_dicos):
     for p in p_kw_dico.keys() :
         sel = []
         for k in p_kw_dico[p] :
-            if k in tselected : sel.append(k)
+            if k in tselected and k not in sel : sel.append(k)
         p_tsel_dico[p] = sel
 
     # eventually write to file ? -> do that in other proc (! atomicity)
@@ -335,6 +336,31 @@ def extract_keywords(raw_text,id):
                     multiterms.append(multistem)
 
     return multiterms
+
+
+
+# Exports a dictionary to a generalized csv, under the form key;val1;val2;...;valN
+def export_dico_csv(dico,fileprefix):
+    outfile=open(fileprefix+str(datetime.datetime.now())+'.csv','w')
+    for k in dico.keys():
+        outfile.write(k+";")
+        for kw in dico[k]:
+            outfile.write(kw+";")
+        outfile.write('\n')
+
+def export_list(l,fileprefix):
+    outfile=open(fileprefix+str(datetime.datetime.now())+'.csv','w')
+    for k in l :
+        outfile.write(k+'\n')
+
+# read a csv file as list of lists
+def read_csv(file,delimiter):
+    f=open(file,'r')
+    lines = f.readlines()
+    return([s.split(delimiter) for s in lines])
+
+
+
 
 
 def main():
