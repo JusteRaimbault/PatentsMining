@@ -47,12 +47,17 @@ com <- spinglass.community(g, spins=100)
 V(g)$color <- com$membership+1
 g <- set.graph.attribute(g, "layout", layout.kamada.kawai(g))
 
+# centrality
+bcentrality = centralization.betweenness(g)$res
 
 
-plot(g, layout=layout.fruchterman.reingold,
-    # vertex.label=NA, 
-     vertex.size=3, edge.arrow.mode=0,
-     vertex.label.cex=degree(g)/200
+
+plot(g, layout=layout.fruchterman.reingold,   
+     edge.arrow.mode=0,
+     #vertex.label=NA,
+     vertex.size=1+5*bcentrality/max(bcentrality),
+     #vertex.label.cex=0.2+(degree(g)/200),
+     vertex.label.cex = 1.5*bcentrality/max(bcentrality) + 0.1
     )
 
 
