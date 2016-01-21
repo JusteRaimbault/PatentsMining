@@ -1,5 +1,5 @@
 
-import nltk,sqlite3,time,locale,datetime,operator,math
+import nltk,sqlite3,time,locale,datetime,operator,math,numpy
 
 # issue with multithreading
 #from multiprocessing import Pool
@@ -12,7 +12,8 @@ def test():
     #test_dico()
     #import_kw_dico('../../data/processed/keywords.sqlite3')
     #extract_all_keywords()
-    termhood_extraction()
+    #termhood_extraction()
+    test_bootstrap()
 
 def termhood_extraction():
     corpus = get_patent_data(2000,10000)
@@ -47,6 +48,22 @@ def test_kw():
     print(p.map(f, get_patent_data(2000,1000)))
 
 
+def test_bootstrap():
+    year = 2000
+    N = 10000
+    kwLimit=1000
+    subCorpusSize=1000
+    bootstrapSize=10
+    corpus = get_patent_data(year,N,False)
+    [relevantkw,relevant_dico] = bootstrap_subcorpuses(corpus,1000,subCorpusSize,bootstrapSize)
+    export_dico_csv(relevant_dico,'res/bootstrap_relevantDico_y'+year+'_size'+N+'_kwLimit'+kwLimit+'_subCorpusSize'+subCorpusSize+'_bootstrapSize'+bootstrapSize)
+    export_list(relevantkw,'res/relevantkw_y'+year+'_size'+N+'_kwLimit'+kwLimit+'_subCorpusSize'+subCorpusSize+'_bootstrapSize'+bootstrapSize)
+
+
+def run_bootstrap(kwLimit,subCorpusSize,bootstrapSize):
+    corpus = get_patent_data(-1,-1,False)
+    bootstrap_subcorpuses(corpus,kwLimit,subCorpusSize,bootstrapSize)
+
 
 ## Functions
 
@@ -55,15 +72,18 @@ def test_kw():
 def bootstrap_subcorpuses(corpus,kwLimit,subCorpusSize,bootstrapSize):
     N = len(corpus)
 
+    print('Bootstrapping on corpus of size '+N)
+
+
     # compute occurence_dicos
     # Results stored in db or file to not recompute them at each step.
     #occurence_dicos = construct_occurrence_dico(corpus)
-    occurence_dicos = import_kw_dico('../../Data/processed/keywords.sqlite3')
+    #occurence_dicos = import_kw_dico('../../Data/processed/keywords.sqlite3')
+    occurence_dicos = import_kw_dico('data/keywords.sqlite3')
 
     # generate bSize extractions
     #   -> random subset of 1:N of size subCorpusSize
-    # TODO
-    extractions = []
+    extractions = [random_integers(1,N,subCorpusSize) for b in range(bootstrapSize)]
 
     mean_termhoods = dict() # mean termhoods progressively updated
     p_kw_dico = dict() # patent -> kw dico : cumulated on repetitions. if a kw is relevant a few time, counted as 0 in mean.
@@ -80,8 +100,12 @@ def bootstrap_subcorpuses(corpus,kwLimit,subCorpusSize,bootstrapSize):
 
         # update p->kw dico
         for p in p_kw_local_dico.keys() :
-            print('')
-            #TODO
+            if p not in p_kw_dico : p_kw_dico[p] = set()
+            p_kw_dico[p].add(p_kw_local_dico[p])
+
+    # sort on termhoods (no need to normalize) adn returns
+    return(extract_from_termhood(termhoods,p_kw_dico,kwLimit))
+
 
 
 
@@ -140,7 +164,12 @@ def extract_relevant_keywords(corpus,kwLimit,occurence_dicos):
     sorting_termhoods = dict()
     for k in selected_kws.keys():
         sorting_termhoods[k]=termhoods[selected_kws[k]]
-    sorted_termhoods = sorted(sorting_termhoods.items(), key=operator.itemgetter(1),reverse=True)
+
+    return(extract_from_termhood(sorting_termhoods,p_kw_dico,kwLimit))
+
+
+def extract_from_termhood(termhoods,p_kw_dico,kwLimit):
+    sorted_termhoods = sorted(termhoods.items(), key=operator.itemgetter(1),reverse=True)
 
     tselected = dict()
     for i in range(kwLimit):
@@ -156,9 +185,6 @@ def extract_relevant_keywords(corpus,kwLimit,occurence_dicos):
 
     # eventually write to file ? -> do that in other proc (! atomicity)
     return([tselected,p_tsel_dico])
-
-
-
 
 ##
 #  Given large occurence dico, extracts corresponding subdico
@@ -273,17 +299,26 @@ def get_patent_id(cursor_raw):
 
 
 
-def get_patent_data(year,limit) :
+def get_patent_data(year,limit,full) :
     # connect to the database
-    conn = sqlite3.connect('../../Data/raw/patdesc/patdesc.sqlite3')
+    #conn = sqlite3.connect('../../Data/raw/patdesc/patdesc.sqlite3')
+    conn = sqlite3.connect('data/patent.sqlite3')
     cursor = conn.cursor()
     # attach patent data
-    cursor.execute('ATTACH DATABASE \'../../Data/raw/patent/patent.sqlite3\' as \'patent\'')
+    #cursor.execute('ATTACH DATABASE \'../../Data/raw/patent/patent.sqlite3\' as \'patent\'')
+    if full : cursor.execute('ATTACH DATABASE \'data/patdesc.sqlite3\' as \'patdesc\'')
 
     #cursor.execute('SELECT patdesc.patent,patent.patent FROM patent,patdesc WHERE patent.patent=patdesc.patent LIMIT 10;')
     # retrieve records
-    query='SELECT patent.patent,title,abstract,GYear FROM patdesc,patent WHERE patdesc.patent = patent.patent AND abstract!=\'\''
-    if year != -1 : query = query +' AND GYear = '+str(year)
+    if full :
+        query='SELECT patent.patent,title,abstract,GYear FROM patdesc,patent WHERE patdesc.patent = patent.patent AND abstract!=\'\''
+    else :
+        query='SELECT patent,title,GYear FROM patent
+    if year != -1 :
+        if full :
+            query = query +' AND GYear = '+str(year)
+        else:
+            query = query +' WHERE GYear = '+str(year)
     if limit != -1 :
         query = query+' LIMIT '+str(limit)+";"
     else :
