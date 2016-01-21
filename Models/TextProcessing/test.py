@@ -89,7 +89,9 @@ def bootstrap_subcorpuses(corpus,kwLimit,subCorpusSize,bootstrapSize):
     p_kw_dico = dict() # patent -> kw dico : cumulated on repetitions. if a kw is relevant a few time, counted as 0 in mean.
     # for each extraction, extract subcorpus and get relevant kws
     # for each patent, mean termhoods computed cumulatively, ; recompute relevant keywords later
-    for extraction in extractions :
+
+    for eind in range(len(extractions)) :
+        extraction = extractions[eind]
         subcorpus = [corpus[i] for i in extraction]
         [keywords,p_kw_local_dico] = extract_relevant_keywords(subcorpus,kwLimit,occurence_dicos)
 
@@ -313,7 +315,7 @@ def get_patent_data(year,limit,full) :
     if full :
         query='SELECT patent.patent,title,abstract,GYear FROM patdesc,patent WHERE patdesc.patent = patent.patent AND abstract!=\'\''
     else :
-        query='SELECT patent,title,GYear FROM patent
+        query='SELECT patent,title,GYear FROM patent'
     if year != -1 :
         if full :
             query = query +' AND GYear = '+str(year)
