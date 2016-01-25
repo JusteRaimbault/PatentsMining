@@ -56,8 +56,8 @@ def test_bootstrap():
     bootstrapSize=10
     corpus = get_patent_data(year,N,False)
     [relevantkw,relevant_dico] = bootstrap_subcorpuses(corpus,1000,subCorpusSize,bootstrapSize)
-    export_dico_csv(relevant_dico,'res/bootstrap_relevantDico_y'+year+'_size'+N+'_kwLimit'+kwLimit+'_subCorpusSize'+subCorpusSize+'_bootstrapSize'+bootstrapSize)
-    export_list(relevantkw,'res/relevantkw_y'+year+'_size'+N+'_kwLimit'+kwLimit+'_subCorpusSize'+subCorpusSize+'_bootstrapSize'+bootstrapSize)
+    export_dico_csv(relevant_dico,'res/bootstrap_relevantDico_y'+str(year)+'_size'+str(N)+'_kwLimit'+str(kwLimit)+'_subCorpusSize'+str(subCorpusSize)+'_bootstrapSize'+str(bootstrapSize))
+    export_list(relevantkw,'res/relevantkw_y'+str(year)+'_size'+str(N)+'_kwLimit'+str(kwLimit)+'_subCorpusSize'+str(subCorpusSize)+'_bootstrapSize'+str(bootstrapSize))
 
 
 def run_bootstrap(kwLimit,subCorpusSize,bootstrapSize):
@@ -72,7 +72,7 @@ def run_bootstrap(kwLimit,subCorpusSize,bootstrapSize):
 def bootstrap_subcorpuses(corpus,kwLimit,subCorpusSize,bootstrapSize):
     N = len(corpus)
 
-    print('Bootstrapping on corpus of size '+N)
+    print('Bootstrapping on corpus of size '+str(N))
 
 
     # compute occurence_dicos
@@ -83,7 +83,7 @@ def bootstrap_subcorpuses(corpus,kwLimit,subCorpusSize,bootstrapSize):
 
     # generate bSize extractions
     #   -> random subset of 1:N of size subCorpusSize
-    extractions = [random_integers(1,N,subCorpusSize) for b in range(bootstrapSize)]
+    extractions = [numpy.random.random_integers(0,(N-1),subCorpusSize) for b in range(bootstrapSize)]
 
     mean_termhoods = dict() # mean termhoods progressively updated
     p_kw_dico = dict() # patent -> kw dico : cumulated on repetitions. if a kw is relevant a few time, counted as 0 in mean.
@@ -91,7 +91,8 @@ def bootstrap_subcorpuses(corpus,kwLimit,subCorpusSize,bootstrapSize):
     # for each patent, mean termhoods computed cumulatively, ; recompute relevant keywords later
 
     for eind in range(len(extractions)) :
-        extraction = extractions[eind]
+        print("bottstrap : run "+str(eind))
+	extraction = extractions[eind]
         subcorpus = [corpus[i] for i in extraction]
         [keywords,p_kw_local_dico] = extract_relevant_keywords(subcorpus,kwLimit,occurence_dicos)
 
@@ -103,10 +104,11 @@ def bootstrap_subcorpuses(corpus,kwLimit,subCorpusSize,bootstrapSize):
         # update p->kw dico
         for p in p_kw_local_dico.keys() :
             if p not in p_kw_dico : p_kw_dico[p] = set()
-            p_kw_dico[p].add(p_kw_local_dico[p])
+            for kw in p_kw_local_dico[p] :
+		p_kw_dico[p].add(kw)
 
     # sort on termhoods (no need to normalize) adn returns
-    return(extract_from_termhood(termhoods,p_kw_dico,kwLimit))
+    return(extract_from_termhood(mean_termhoods,p_kw_dico,kwLimit))
 
 
 
@@ -203,7 +205,8 @@ def extract_sub_dicos(corpus,occurence_dicos) :
 
     for patent in corpus :
         patent_id = get_patent_id(patent)
-        keywords =  p_kw_dico_all[patent_id]
+        keywords = []
+	if patent_id in p_kw_dico_all : keywords = p_kw_dico_all[patent_id]
         p_kw_dico[patent_id] = keywords
         for k in keywords :
             if k not in kw_p_dico : kw_p_dico[k] = []
@@ -315,7 +318,7 @@ def get_patent_data(year,limit,full) :
     if full :
         query='SELECT patent.patent,title,abstract,GYear FROM patdesc,patent WHERE patdesc.patent = patent.patent AND abstract!=\'\''
     else :
-        query='SELECT patent,title,GYear FROM patent'
+        query='SELECT patent,GYear FROM patent'
     if year != -1 :
         if full :
             query = query +' AND GYear = '+str(year)
