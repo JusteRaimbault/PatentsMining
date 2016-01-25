@@ -51,11 +51,11 @@ def test_kw():
 def test_bootstrap():
     year = -1
     N = -1
-    kwLimit=10000
-    subCorpusSize=50000
+    kwLimit=50000
+    subCorpusSize=100000
     bootstrapSize=100
     corpus = get_patent_data(year,N,False)
-    [relevantkw,relevant_dico] = bootstrap_subcorpuses(corpus,1000,subCorpusSize,bootstrapSize)
+    [relevantkw,relevant_dico] = bootstrap_subcorpuses(corpus,kwLimit,subCorpusSize,bootstrapSize)
     export_dico_csv(relevant_dico,'res/bootstrap_relevantDico_y'+str(year)+'_size'+str(N)+'_kwLimit'+str(kwLimit)+'_subCorpusSize'+str(subCorpusSize)+'_bootstrapSize'+str(bootstrapSize))
     export_list(relevantkw,'res/relevantkw_y'+str(year)+'_size'+str(N)+'_kwLimit'+str(kwLimit)+'_subCorpusSize'+str(subCorpusSize)+'_bootstrapSize'+str(bootstrapSize))
 
