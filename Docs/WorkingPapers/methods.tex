@@ -98,15 +98,13 @@ We first assign to a patent $p \in \mathcal{P}$ a set of significant keywords $K
 \item Relevant multi-stems filtering.
 \end{enumerate}
 
-Text processing operations are implemented in \texttt{python} in order to use the \texttt{nltk} library~\cite{} % cite nltk
-which is highly ergonomic and supports most advanced state-of-the-art natural language processing operations. Source code is openly available on the repository of the project\footnote{at \texttt{url}}.
+Text processing operations are implemented in \texttt{python} in order to use the \texttt{nltk} library~\cite{bird2006nltk} which is highly ergonomic and supports most advanced state-of-the-art natural language processing operations. Source code is openly available on the repository of the project\footnote{at \texttt{url}}.
 % TODO je suis pour ouvrir le repo une fois qu'on aura la majorité du taf faite, je sais pas ce que t'en penses ? c'est une nécessité pour ouverture et reproducibilité ; sans ça aucune valeur à ce qu'on prétend dans le papelard.
 Steps one to three are directly done using built-in functions of the library. Step four needs a particular treatment that we propose as an extension of the original method for large corpuses, which is detailed in the following.
 
-\paragraph{Bootstrap on random subcorpuses for relevance estimation}
+\paragraph{Bootstrap on random sub-corpuses for relevance estimation}
 
-Once multi-stems have been extracted, one scores them by \emph{unithood}, defined for the multi-stem $i$ by $u_i = f_i\cdot \log{(1 + l_i)}$ where $f_i$ is the number of apparitions of the multi-stem over the whole corpus and $l_i$ its length in words. Let $K_w$ the maximal number of relevant keywords per patent. If $N$ is the total number of relevant keywords extracted 
-The heuristic described in~\cite{chavalarias2013phylomemetic} proposes a first filtration of $4\cdot N$ keywords on the whole corpus, and then a filtration on a secondary score called \emph{termhood}, computed as a chi-squared score on the distribution of the stem, compared to an uniform distribution within the whole corpus. More precisely, one computes the co-occurence matrix $(M_{ij})$, defined as the number of patents where stems $i$ and $j$ appear together, what allows to define the termhood score as
+Once multi-stems have been extracted, one scores them by \emph{unithood}, defined for the multi-stem $i$ by $u_i = f_i\cdot \log{(1 + l_i)}$ where $f_i$ is the number of apparitions of the multi-stem over the whole corpus and $l_i$ its length in words. Let $K_w$ the maximal number of relevant keywords per patent. If $N$ is the total number of relevant keywords extracted, that we consider as a parameter, the heuristic described in~\cite{chavalarias2013phylomemetic} proposes a first filtration of $4\cdot N$ keywords on the whole corpus, and then a filtration on a secondary score called \emph{termhood}, computed as a chi-squared score on the distribution of the stem, compared to an uniform distribution within the whole corpus. More precisely, one computes the co-occurence matrix $(M_{ij})$, defined as the number of patents where stems $i$ and $j$ appear together, what allows to define the \emph{termhood} score as
 \[
 t_i = \sum_{j\neq i}\frac{\left( M_{ij} - \sum_{k}M_{ik} \sum_{k} M_{jk}\right)^2}{\sum_{k}M_{ik} \sum_{k} M_{jk}}
 \]
@@ -114,7 +112,26 @@ t_i = \sum_{j\neq i}\frac{\left( M_{ij} - \sum_{k}M_{ik} \sum_{k} M_{jk}\right)^
 
 
 
+
+
+Let $X = \{x_1,\ldots ,x_N\}$ a discrete set and $X_1,\ldots ,X_K \in \mathcal{P}(X)$. We write $X_k = \{x_1^{(k)},\ldots ,x_{N_k}^{(k)}\}$. Exact probability distributions within sets are determined directly in $O(\sum_{k=1}^{K}{N_k})$.
+
+
+
+
+
 \paragraph{Possible Features}
+
+\textit{From proposal : }
+
+\begin{itemize}
+\item Citation relative centrality regarding technological or semantic classes : given a partition of $\mathcal{P}$ represented by a classification function $C$ (constructed for example by clustering or community detection within technological or semantic networks), a vector feature is for patent $i$
+\[
+\left(\frac{\sum_{j\in c}Cit^{out}(i,j)}{\sum_{j\in c}Cit^{in}(i,j)}\right)_{c\in C(\mathcal{P})}
+\]
+\item Dynamic evolution of classification vector : if $C_t$ is stratified over successive time periods indexed by time $t$, either $\Delta \vec{C}_t (i)$ if $\vec{C}_t$ is a vector of probabilities to belong to each class (in case of a Bayesian approach), or $\Delta (C_t(j))_{Cit(i,j,t)\neq 0}$ in case of a deterministic approach, could both be interesting features.
+\item Deviation from the expected classes given position in other layers of the hypernetwork (it would need explorations if these conditional probabilities first can be well estimated, then if they contain relevant information).
+\end{itemize}
 
 
 
