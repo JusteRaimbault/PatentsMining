@@ -1,6 +1,21 @@
 import sqlite3
 
 
+
+def test_dico():
+    # with export
+    corpus = get_patent_data(2007,1000)
+    [p_kw_dico,kw_p_dico] = construct_occurrence_dico(corpus)
+    export_kw_dico('../../Data/processed/keywords_y2007_1000.sqlite3',p_kw_dico)
+
+def test_db():
+    for patent in get_patent_data(2000,100):
+        print(patent)
+
+
+
+
+
 ##
 #  exports a dico to sqlite db
 #  (to avoid reprocessing)

@@ -1,6 +1,4 @@
-
-
-
+import datetime
 
 # Exports a dictionary to a generalized csv, under the form key;val1;val2;...;valN
 def export_dico_csv(dico,fileprefix):

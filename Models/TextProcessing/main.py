@@ -1,22 +1,18 @@
-import time
+import time,bootstrap
 
-# tests
+# import nltk,sqlite3,time,locale,datetime,operator,math,numpy
+
 
 def run():
     #test_dico()
     #import_kw_dico('../../data/processed/keywords.sqlite3')
     #extract_all_keywords()
     #termhood_extraction()
-    test_bootstrap()
-
-
+    bootstrap.test_bootstrap()
 
 
 
 def main():
-
-        # import utils
-        execfile('../Utils/utils.py')
 
         start = time.time()
 
