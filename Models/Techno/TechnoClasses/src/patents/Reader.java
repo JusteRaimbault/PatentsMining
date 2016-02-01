@@ -36,11 +36,13 @@ public class Reader {
 			Patent currentPatent = null;
 			HashMap<String,String> entries = new HashMap<String,String>();
 			// read the whole file
+			int i=0;currentLine = r.readLine();
 			while(currentLine != null){
 				String[] t = currentLine.split(",");
 				currentPatent = Patent.construct(t[0]);entries.clear();
 				for(String f:fieldIndexes.keySet()){entries.put(f, t[fieldIndexes.get(f).intValue()]);}
 				currentPatent.setFields(entries);
+				currentLine = r.readLine();i++;if(i % 100000 == 0){System.out.println(i);}
 			}
 			
 		}catch(Exception e){e.printStackTrace();}
