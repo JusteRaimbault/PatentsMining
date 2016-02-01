@@ -3,6 +3,9 @@
  */
 package patents;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -29,6 +32,13 @@ public class Patent implements Comparable<Patent>{
 	 */
 	public HashSet<String> classes;
 	
+	
+	/**
+	 * dates : AppDate and/or GDate
+	 */
+	public HashMap<String,Long> dates;
+	
+	
 	public Patent(String s){id=s;}
 	
 	public static Patent construct(String s){
@@ -37,8 +47,29 @@ public class Patent implements Comparable<Patent>{
 			return patents.get(newP);
 		}else{
 			newP.classes = new HashSet<String>();
+			newP.dates = new HashMap<String,Long>();
 			patents.put(newP, newP);
 			return(newP);
+		}
+	}
+	
+	
+	/**
+	 * set fields -- only date implemented for now. 
+	 *  
+	 * @param entries
+	 */
+	public void setFields(HashMap<String,String> entries){
+		for(String field:entries.keySet()){
+			if(field.equals("AppDate")||field.equals("GDate")){
+				try{
+					String sdate = entries.get(field);
+					// parse date
+					DateFormat dfm = new SimpleDateFormat("yyyy-MM-dd");
+					Long date = new Long(dfm.parse(sdate).getTime());
+					dates.put(field,date);
+				}catch(Exception e){e.printStackTrace();}
+			}
 		}
 	}
 	
