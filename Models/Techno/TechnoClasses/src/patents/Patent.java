@@ -68,7 +68,9 @@ public class Patent implements Comparable<Patent>{
 					DateFormat dfm = new SimpleDateFormat("yyyy-MM-dd");
 					Long date = new Long(dfm.parse(sdate).getTime());
 					dates.put(field,date);
-				}catch(Exception e){e.printStackTrace();}
+				}catch(Exception e){
+					e.printStackTrace();
+				}
 			}
 		}
 	}

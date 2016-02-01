@@ -39,8 +39,20 @@ public class Classes {
 		LinkedList<String> fields = new LinkedList<String>();fields.add(dateType);
 		Reader.readPatentData(patentFile,fields);
 		
+		ensureConsistentDates(classes,dateType);
+		
 		return(sortClasses(classes,new TimeComparator(dateType)));
 		
+	}
+	
+	private static void ensureConsistentDates(HashMap<String,HashSet<Patent>> classes,String dateType){
+		for(String c:classes.keySet()){
+			HashSet<Patent> toremove = new HashSet<Patent>();
+			for(Patent p:classes.get(c)){
+				if(!p.dates.containsKey(dateType)){toremove.add(p);}
+			}
+			for(Patent r:toremove){classes.get(c).remove(r);}
+		}
 	}
 	
 
