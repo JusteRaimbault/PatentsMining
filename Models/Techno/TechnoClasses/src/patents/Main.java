@@ -27,7 +27,7 @@ public class Main {
 		//computeSecondOrderOverlaps(sortedClasses);
 		//Distances.computeDistancesOnSecondOrderOverlaps(sortedClasses);
 		Classes.exportClassesTimeSeries("../../../Data/raw/classesTechno/class.csv",
-				"../../../Data/raw/patent/patent.csv", "GDate", 1000, "res/sizes_gdate");
+				"../../../Data/raw/patent/patent.csv", "AppDate", 1000, "res/sizes_appdate");
 		
 		
 	}
