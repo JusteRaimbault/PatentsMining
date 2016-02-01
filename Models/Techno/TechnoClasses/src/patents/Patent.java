@@ -29,6 +29,18 @@ public class Patent implements Comparable<Patent>{
 	 */
 	public HashSet<String> classes;
 	
+	/**
+	 * application date (as posix time)
+	 */
+	public long appdate;
+	
+	/**
+	 * granted date (idem)
+	 */
+	public long gdate;
+	
+	
+	
 	public Patent(String s){id=s;}
 	
 	public static Patent construct(String s){
