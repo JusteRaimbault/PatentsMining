@@ -17,18 +17,19 @@ import java.util.LinkedList;
 public class Main {
 	
 	
-	
-	
-	
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		HashMap<String,LinkedList<Patent>> sortedClasses = Classes.constructSortedClasses("../../../Data/raw/classesTechno/class.csv");
+		//HashMap<String,LinkedList<Patent>> sortedClasses = Classes.constructSortedClasses("../../../Data/raw/classesTechno/class.csv");
 		//computeOverlap(sortedClasses);
 		//computeDistanceOnOverlap(sortedClasses);
 		//computeSecondOrderOverlaps(sortedClasses);
-		Distances.computeDistancesOnSecondOrderOverlaps(sortedClasses);
+		//Distances.computeDistancesOnSecondOrderOverlaps(sortedClasses);
+		Classes.exportClassesTimeSeries("../../../Data/raw/classesTechno/class.csv",
+				"../../../Data/raw/patent/patent.csv", "GDate", 1000, "res/sizes_gdate");
+		
+		
 	}
 
 }

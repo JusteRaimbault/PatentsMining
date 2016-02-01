@@ -95,7 +95,7 @@ public class Overlap {
 			}
 		}
 		
-		Writer.writeCSV(overlaps, "res/overlap_snd_order_different.csv");
+		Writer.writeIntCSV(overlaps, "res/overlap_snd_order_different.csv");
 	}
 	
 	

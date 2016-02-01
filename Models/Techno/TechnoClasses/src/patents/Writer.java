@@ -40,7 +40,23 @@ public class Writer {
 	}
 	
 	
-	public static void writeCSV(LinkedList<int[]> data,String file){
+	public static <T extends Object> void writeCSV(LinkedList<T[]> data,String file){
+		try{
+			BufferedWriter w = new BufferedWriter(new FileWriter(new File(file)));
+			for(T[] t:data){
+				for(int j = 0;j<t.length;j++){
+					w.write(t[j].toString());;if(j<t.length-1){w.write(";");}
+				}
+				
+				w.write("\n");
+			}
+			w.close();
+		}catch(Exception e){e.printStackTrace();}
+	}
+	
+	
+	
+	public static void writeIntCSV(LinkedList<int[]> data,String file){
 		try{
 			BufferedWriter w = new BufferedWriter(new FileWriter(new File(file)));
 			for(int[] r:data){
