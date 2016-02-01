@@ -51,7 +51,7 @@ def test_kw():
 def test_bootstrap():
     year = -1
     N = -1
-    kwLimit=50000
+    kwLimit=10000
     subCorpusSize=100000
     bootstrapSize=100
     corpus = get_patent_data(year,N,False)
