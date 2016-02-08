@@ -78,4 +78,19 @@ public class Reader {
 		return res;
 	}
 	
+	
+	public static LinkedList<String[]> readCSV(String file,String delimiter){
+		LinkedList<String[]> res = new LinkedList<String[]>();
+		try{
+		   BufferedReader r = new BufferedReader(new FileReader(new File(file)));
+		   String currentLine = r.readLine();
+		   while(currentLine != null){
+			   res.add(currentLine.split(delimiter));
+			   currentLine=r.readLine();
+		   }
+		}catch(Exception e){e.printStackTrace();}
+		return(res);
+	}
+	
+	
 }

@@ -16,11 +16,11 @@
   <path id="classpath">
     <fileset dir="lib" includes="*.jar"/>
   </path>
-	
-	<target name="compile" description="compile the source " >
-	    <javac srcdir="src" destdir="${build}" classpathref="classpath"/>
-	  </target>
 	-->
+<!--	<target name="compile" description="compile the source " >
+	    <javac srcdir="src" destdir="${build}"/> classpathref="classpath"/>
+	  </target>-->
+	
 	
   <target name="jar"><!-- depends="compile">-->
   	

@@ -26,8 +26,11 @@ public class Main {
 		//computeDistanceOnOverlap(sortedClasses);
 		//computeSecondOrderOverlaps(sortedClasses);
 		//Distances.computeDistancesOnSecondOrderOverlaps(sortedClasses);
-		Classes.exportClassesTimeSeries("../../../Data/raw/classesTechno/class.csv",
-				"../../../Data/raw/patent/patent.csv", "AppDate", 1000, "res/sizes_appdate");
+		//Classes.exportClassesTimeSeries("../../../Data/raw/classesTechno/class.csv",
+		//		"../../../Data/raw/patent/patent.csv", "AppDate", 1000, "res/sizes_appdate");
+		String[] citFiles = {"../../../Data/raw/citation/citation75_99.csv","../../../Data/raw/citation/citation00_10.csv"};
+		CitationNetwork.computeOriginalities("../../../Data/raw/classesTechno/class.csv", 
+				"../../../Data/raw/patent/patent.csv", "AppDate", citFiles, "res/originalities_appdate", 1000);
 		
 		
 	}
