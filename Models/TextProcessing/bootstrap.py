@@ -40,44 +40,62 @@ def run_bootstrap(res_folder,kwLimit,subCorpusSize,bootstrapSize) :
     occurence_dicos = data.import_kw_dico('data/keywords.sqlite3')
     database = res_folder+'/bootstrap.sqlite3'
     #while True :
-    for i in range(10):
+    for i in range(2):
         [relevantkw,relevant_dico,allkw] = bootstrap_subcorpuses(corpus,occurence_dicos,kwLimit,subCorpusSize,bootstrapSize)
         # update bases iteratively (ok for concurrency ?)
         for kw in relevantkw.keys():
             update_kw_tm(kw,relevantkw[kw],database)
         for i in relevant_dico.keys():
             update_kw_dico(i,relevant_dico[i],database)
-
+        update_count(bootstrapSize,database)
 
 def update_kw_tm(kw,incr,database):
     prev = utils.fetchone_sqlite('SELECT cumtermhood,ids FROM relevant WHERE keyword=\''+kw+'\';',database)
     t = 0
     ids=''
-    if len(prev > 0):
-        t = prev[0][0]
-        ids = prev[0][1]
-    t = t + incr
-    # insert
-    utils.insert_sqlite('INSERT INTO cumtermhood VALUES (\''+kw+'\','+str(t)+',\''+ids+'\');',database)
+    #print(prev)
+    if prev is not None:
+        t = prev[0]+incr
+        ids = prev[1]
+        utils.insert_sqlite('UPDATE relevant SET keyword=\''+kw+'\',cumtermhood='+str(t)+',ids=\''+ids+'\' WHERE keyword=\''+kw+'\';',database)
+    else :
+        # insert
+        utils.insert_sqlite('INSERT INTO relevant VALUES (\''+kw+'\','+str(incr)+',\'\');',database)
+
+
 
 
 def update_kw_dico(i,kwlist,database):
     # update id -> kws dico
-    prev = utils.fetchone_sqlite('SELECT keywords FROM relevant WHERE id=\''+i+'\';',database)
+    prev = utils.fetchone_sqlite('SELECT keywords FROM dico WHERE id=\''+i+'\';',database)
     kws = set()
-    if len(prev > 0):
-        kws = set(prev[0][0].split(";"))
+    if prev is not None: kws = set(prev[0].split(";"))
     for kw in kwlist :
         kws.add(kw)
-    utils.insert_sqlite('INSERT INTO dico VALUES (\''+i+'\',\''+utils.implode(kws,";")+'\')',database)
+    if prev is not None:
+        utils.insert_sqlite('UPDATE dico SET id=\''+i+'\',keywords=\''+utils.implode(kws,";")+'\' WHERE id=\''+i+'\';',database)
+    else :
+        utils.insert_sqlite('INSERT INTO dico VALUES (\''+i+'\',\''+utils.implode(kws,";")+'\')',database)
     # update kw -> id
-    prev = utils.fetchone_sqlite('SELECT * FROM relevant WHERE id=\''+i+'\';',database)
-    kws = set()
-    if len(prev > 0):
-        ids = set(prev[0][2].split(";"))
-        ids.add(i)
-        utils.insert_sqlite('INSERT INTO relevant VALUES (\''+prev[0][0]+'\','+str(prev[0,1])+',\''+utils.implode(ids,";")+'\')',database)
+    for kw in kwlist :
+        prev = utils.fetchone_sqlite('SELECT * FROM relevant WHERE keyword=\''+kw+'\';',database)
+        ids = set()
+        if prev is not None :
+            ids = set(prev[2].split(";"))
+            ids.add(i)
+            utils.insert_sqlite('UPDATE relevant SET keyword=\''+kw+'\',cumtermhood='+str(prev[1])+',ids=\''+utils.implode(ids,";")+'\' WHERE keyword=\''+kw+'\';',database)
+        else :
+            utils.insert_sqlite('INSERT INTO relevant VALUES (\''+kw+'\',0,\''+i+'\');',database)
 
+
+
+def update_count(bootstrapSize,database):
+    prev = utils.fetchone_sqlite('SELECT value FROM params WHERE key=\'count\'',database)
+    if prev is not None:
+        t=prev[0]+bootstrapSize
+	utils.insert_sqlite('UPDATE params SET value='+str(t)+' WHERE key=\'count\';',database)
+    else :
+	utils.insert_sqlite('INSERT INTO params VALUES (\'count\','+str(bootstrapSize)+')',database)
 
 
 
