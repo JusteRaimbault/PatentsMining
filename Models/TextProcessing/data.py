@@ -49,7 +49,7 @@ def import_kw_dico(database) :
 
     for row in res :
         patent_id = row[0].encode('ascii','ignore')
-        print(patent_id)
+        #print(patent_id)
         keywords = row[1].encode('ascii','ignore').split(';')
         p_kw_dico[patent_id] = keywords
         for kw in keywords :

@@ -9,7 +9,7 @@ def run():
     #extract_all_keywords()
     #termhood_extraction()
     #bootstrap.test_bootstrap()
-    #bootstrap.init_bootstrap('bootstrap/test')
+    bootstrap.init_bootstrap('bootstrap/test')
     bootstrap.run_bootstrap('bootstrap/test',100,100,100)
 
 

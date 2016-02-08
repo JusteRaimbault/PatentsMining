@@ -90,7 +90,7 @@ def update_kw_dico(i,kwlist,database):
 
 
 # tests for a bootstrap technique to avoid subcorpus relevance bias
-def bootstrap_subcorpuses(corpus,kwLimit,subCorpusSize,bootstrapSize):
+def bootstrap_subcorpuses(corpus,occurence_dicos,kwLimit,subCorpusSize,bootstrapSize):
     N = len(corpus)
 
     print('Bootstrapping on corpus of size '+str(N))
