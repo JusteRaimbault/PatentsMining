@@ -13,7 +13,6 @@ def run():
     bootstrap.run_bootstrap('bootstrap/test',10,10,2)
     #bootstrap.run_bootstrap('bootstrap/run_kw1000_csize2000_b20',1000,2000,20)
 
-
 def main():
 
         start = time.time()

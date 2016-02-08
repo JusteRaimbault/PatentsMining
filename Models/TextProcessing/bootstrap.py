@@ -93,9 +93,9 @@ def update_count(bootstrapSize,database):
     prev = utils.fetchone_sqlite('SELECT value FROM params WHERE key=\'count\'',database)
     if prev is not None:
         t=prev[0]+bootstrapSize
-	utils.insert_sqlite('UPDATE params SET value='+str(t)+' WHERE key=\'count\';',database)
+	    utils.insert_sqlite('UPDATE params SET value='+str(t)+' WHERE key=\'count\';',database)
     else :
-	utils.insert_sqlite('INSERT INTO params VALUES (\'count\','+str(bootstrapSize)+')',database)
+	    utils.insert_sqlite('INSERT INTO params VALUES (\'count\','+str(bootstrapSize)+')',database)
 
 
 
@@ -126,12 +126,12 @@ def bootstrap_subcorpuses(corpus,occurence_dicos,kwLimit,subCorpusSize,bootstrap
         print("bootstrap : run "+str(eind))
 	extraction = extractions[eind]
         subcorpus = [corpus[i] for i in extraction]
-        [keywords,p_kw_local_dico] = keywords.extract_relevant_keywords(subcorpus,kwLimit,occurence_dicos)
+        [kws,p_kw_local_dico] = keywords.extract_relevant_keywords(subcorpus,kwLimit,occurence_dicos)
 
         # add termhoods
-        for kw in keywords.keys() :
+        for kw in kws.keys() :
             if kw not in mean_termhoods : mean_termhoods[kw] = 0
-            mean_termhoods[kw] = mean_termhoods[kw] + keywords[kw]
+            mean_termhoods[kw] = mean_termhoods[kw] + kws[kw]
 
         # update p->kw dico
         for p in p_kw_local_dico.keys() :
