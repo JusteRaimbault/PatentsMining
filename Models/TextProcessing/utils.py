@@ -19,3 +19,26 @@ def read_csv(file,delimiter):
     f=open(file,'r')
     lines = f.readlines()
     return([s.split(delimiter) for s in lines])
+
+
+# returns sqlite connection
+def configure_sqlite(database):
+    return(sqlite3.connect(database))
+
+
+def fetchone_sqlite(query,database):
+    conn = configure_sqlite(database)
+    cursor = conn.cursor()
+    cursor.execute(query)
+    res = cursor.fetchone()
+    conn.commit()
+    conn.close()
+    return(res)
+
+
+def insert_sqlite(query,database):
+    conn = configure_sqlite(database)
+    cursor = conn.cursor()
+    cursor.execute(query)
+    conn.commit()
+    conn.close()
