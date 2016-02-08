@@ -1,4 +1,4 @@
-import nltk,operator
+import nltk,operator,math
 import data,keywords,utils
 
 
@@ -123,7 +123,7 @@ def extract_sub_dicos(corpus,occurence_dicos) :
     kw_p_dico = dict()
 
     for patent in corpus :
-        patent_id = io.get_patent_id(patent)
+        patent_id = data.get_patent_id(patent)
         keywords = []
 	if patent_id in p_kw_dico_all : keywords = p_kw_dico_all[patent_id]
         p_kw_dico[patent_id] = keywords
@@ -147,7 +147,7 @@ def construct_occurrence_dico(data) :
     p_kw_dico = dict()
     kw_p_dico = dict()
     for patent in data :
-        patent_id = io.get_patent_id(patent)
+        patent_id = data.get_patent_id(patent)
         keywords = extract_keywords(patent[1]+". "+patent[2],patent_id)
         #print(keywords)
 
