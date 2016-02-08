@@ -1,5 +1,5 @@
 import nltk,operator
-import io,keywords,utils
+import data,keywords,utils
 
 
 
@@ -80,7 +80,7 @@ def extract_relevant_keywords(corpus,kwLimit,occurence_dicos):
     for i in range(len(coocs)):
         s = 0;
         for j in range(len(coocs)):
-            if j != i : s = s + ()(coocs[i][j]-colSums[i]*colSums[j])*(coocs[i][j]-colSums[i]*colSums[j]))/(colSums[i]*colSums[j])
+            if j != i : s = s + ((coocs[i][j]-colSums[i]*colSums[j])*(coocs[i][j]-colSums[i]*colSums[j]))/(colSums[i]*colSums[j])
         termhoods[i]=s
 
     # sort and filter on termhoods

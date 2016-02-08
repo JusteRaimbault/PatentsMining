@@ -1,4 +1,4 @@
-import datetime
+import datetime,sqlite3
 
 # Exports a dictionary to a generalized csv, under the form key;val1;val2;...;valN
 def export_dico_csv(dico,fileprefix):

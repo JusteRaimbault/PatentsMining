@@ -1,5 +1,5 @@
 import numpy
-import utils,io,keywords
+import utils,data,keywords
 
 
 
@@ -36,8 +36,8 @@ def init_bootstrap(res_folder):
 #   assumed to be run in //
 #     - run by packet for intermediate filtering -
 def run_bootstrap(res_folder,kwLimit,subCorpusSize,bootstrapSize) :
-    corpus = io.get_patent_data(-1,-1,False)
-    occurence_dicos = io.import_kw_dico('data/keywords.sqlite3')
+    corpus = data.get_patent_data(-1,-1,False)
+    occurence_dicos = data.import_kw_dico('data/keywords.sqlite3')
     database = res_folder+'/bootstrap.sqlite3'
     #while True :
     for i in range(10):
@@ -106,7 +106,7 @@ def bootstrap_subcorpuses(corpus,kwLimit,subCorpusSize,bootstrapSize):
 
     for eind in range(len(extractions)) :
         print("bootstrap : run "+str(eind))
-	    extraction = extractions[eind]
+	extraction = extractions[eind]
         subcorpus = [corpus[i] for i in extraction]
         [keywords,p_kw_local_dico] = keywords.extract_relevant_keywords(subcorpus,kwLimit,occurence_dicos)
 
