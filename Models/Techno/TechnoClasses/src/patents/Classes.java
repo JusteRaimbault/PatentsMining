@@ -31,6 +31,9 @@ public class Classes {
 	
 	
 	
+	
+	
+	
 	public static HashMap<String,LinkedList<Patent>> constructTimelySortedClasses(String classFile,String patentFile,String dateType){
 		// import raw classes
 		HashMap<String,HashSet<Patent>> classes = Reader.importFromFile(classFile);

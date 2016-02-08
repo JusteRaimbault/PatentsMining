@@ -39,6 +39,18 @@ public class Patent implements Comparable<Patent>{
 	public HashMap<String,Long> dates;
 	
 	
+	/**
+	 * Citing patents.
+	 */
+	public HashSet<Citation> citing;
+	
+	/**
+	 * Cited patents.
+	 */
+	public HashSet<Citation> cited;
+	
+	
+	
 	public Patent(String s){id=s;}
 	
 	public static Patent construct(String s){
@@ -48,6 +60,7 @@ public class Patent implements Comparable<Patent>{
 		}else{
 			newP.classes = new HashSet<String>();
 			newP.dates = new HashMap<String,Long>();
+			newP.citing = new HashSet<Citation>();newP.cited = new HashSet<Citation>();
 			patents.put(newP, newP);
 			return(newP);
 		}
@@ -94,7 +107,26 @@ public class Patent implements Comparable<Patent>{
 		return res;
 	}
 	
-	
+	/**
+	 * computes originality assuming 
+	 * @return
+	 */
+	public double originality(){
+		int totalCited = 0;
+		HashMap<String,Integer> citationClasses = new HashMap<String,Integer>();
+		for(Citation cit:cited){
+			for(String c:cit.cited.classes){
+				if(!citationClasses.containsKey(c)){citationClasses.put(c, new Integer(0));}
+				citationClasses.put(c,new Integer(citationClasses.get(c).intValue()+1));
+				totalCited++;
+			}
+		}
+		double res = 1;
+		for(String c:classes){
+			if(citationClasses.containsKey(c)){res = res - ((citationClasses.get(c)*1.0/totalCited)* (citationClasses.get(c)*1.0/totalCited));}
+		}
+		return(res);
+	}
 	
 	
 	@Override
