@@ -93,9 +93,9 @@ def update_count(bootstrapSize,database):
     prev = utils.fetchone_sqlite('SELECT value FROM params WHERE key=\'count\'',database)
     if prev is not None:
         t=prev[0]+bootstrapSize
-	    utils.insert_sqlite('UPDATE params SET value='+str(t)+' WHERE key=\'count\';',database)
+	utils.insert_sqlite('UPDATE params SET value='+str(t)+' WHERE key=\'count\';',database)
     else :
-	    utils.insert_sqlite('INSERT INTO params VALUES (\'count\','+str(bootstrapSize)+')',database)
+	utils.insert_sqlite('INSERT INTO params VALUES (\'count\','+str(bootstrapSize)+')',database)
 
 
 
@@ -140,4 +140,4 @@ def bootstrap_subcorpuses(corpus,occurence_dicos,kwLimit,subCorpusSize,bootstrap
 		p_kw_dico[p].add(kw)
 
     # sort on termhoods (no need to normalize) adn returns
-    return(extract_from_termhood(mean_termhoods,p_kw_dico,kwLimit))
+    return(keywords.extract_from_termhood(mean_termhoods,p_kw_dico,kwLimit))
