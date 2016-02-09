@@ -122,11 +122,15 @@ def bootstrap_subcorpuses(corpus,occurence_dicos,kwLimit,subCorpusSize,bootstrap
     # for each extraction, extract subcorpus and get relevant kws
     # for each patent, mean termhoods computed cumulatively, ; recompute relevant keywords later
 
+    allkw = []
+
     for eind in range(len(extractions)) :
         print("bootstrap : run "+str(eind))
-	extraction = extractions[eind]
+	    extraction = extractions[eind]
         subcorpus = [corpus[i] for i in extraction]
         [kws,p_kw_local_dico] = keywords.extract_relevant_keywords(subcorpus,kwLimit,occurence_dicos)
+
+        allkw.append(kws)
 
         # add termhoods
         for kw in kws.keys() :
@@ -137,7 +141,8 @@ def bootstrap_subcorpuses(corpus,occurence_dicos,kwLimit,subCorpusSize,bootstrap
         for p in p_kw_local_dico.keys() :
             if p not in p_kw_dico : p_kw_dico[p] = set()
             for kw in p_kw_local_dico[p] :
-		p_kw_dico[p].add(kw)
+		        p_kw_dico[p].add(kw)
 
-    # sort on termhoods (no need to normalize) adn returns
-    return(extract_from_termhood(mean_termhoods,p_kw_dico,kwLimit))
+    res = kwFunctions.extract_from_termhood(mean_termhoods,p_kw_dico,kwLimit)
+    res.append(allkw)
+    return(res)
