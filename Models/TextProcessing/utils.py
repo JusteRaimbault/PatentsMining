@@ -23,7 +23,7 @@ def read_csv(file,delimiter):
 
 # returns sqlite connection
 def configure_sqlite(database):
-    return(sqlite3.connect(database))
+    return(sqlite3.connect(database,600))
 
 
 def fetchone_sqlite(query,database):
@@ -42,3 +42,18 @@ def insert_sqlite(query,database):
     cursor.execute(query)
     conn.commit()
     conn.close()
+
+
+
+
+def implode(l,delimiter):
+    res=''
+    i=0
+    for k in l:
+        res = res+str(k)
+	if i<len(l)-1 : res=res+delimiter
+    return(res)
+
+
+
+

@@ -11,7 +11,7 @@ def run():
     #bootstrap.test_bootstrap()
     #bootstrap.init_bootstrap('bootstrap/run_kw1000_csize20000_b20')
     #bootstrap.run_bootstrap('bootstrap/test',10,10,2)
-    bootstrap.run_bootstrap('bootstrap/run_kw1000_csize20000_b20',1000,20000,20)
+    bootstrap.run_bootstrap('bootstrap/run_kw1000_csize20000_b20',1000,20000,20,1)
 
 def main():
 

@@ -35,12 +35,13 @@ def init_bootstrap(res_folder):
 ##
 #   assumed to be run in //
 #     - run by packet for intermediate filtering -
-def run_bootstrap(res_folder,kwLimit,subCorpusSize,bootstrapSize) :
+def run_bootstrap(res_folder,kwLimit,subCorpusSize,bootstrapSize,nruns) :
     corpus = data.get_patent_data(-1,-1,False)
     occurence_dicos = data.import_kw_dico('data/keywords.sqlite3')
     database = res_folder+'/bootstrap.sqlite3'
     #while True :
-    for i in range(2):
+    for i in range(nruns):
+	print("run "+str(i))
         [relevantkw,relevant_dico,allkw] = bootstrap_subcorpuses(corpus,occurence_dicos,kwLimit,subCorpusSize,bootstrapSize)
         # update bases iteratively (ok for concurrency ?)
         for kw in relevantkw.keys():
@@ -143,7 +144,7 @@ def bootstrap_subcorpuses(corpus,occurence_dicos,kwLimit,subCorpusSize,bootstrap
             for kw in p_kw_local_dico[p] :
 		        p_kw_dico[p].add(kw)
 
-    res = kwFunctions.extract_from_termhood(mean_termhoods,p_kw_dico,kwLimit)
+    res = keywords.extract_from_termhood(mean_termhoods,p_kw_dico,kwLimit)
     res.append(allkw)
     return(res)
 
