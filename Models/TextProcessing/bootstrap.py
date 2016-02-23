@@ -22,7 +22,8 @@ def test_bootstrap():
 
 
 # creates databases for bootstrap run
-def init_bootstrap(res_folder):
+def init_bootstrap(year,limit,kwLimit,subCorpusSize,bootstrapSize,nruns):
+    res_folder = 'bootstrap/run_year'+str(year)+'_limit'+str(limit)+'_kw'+str(kwLimit)+'_csize'+str(subCorpusSize)+'_b'+str(bootstrapSize)+'_runs'+str(nruns)
     conn = utils.configure_sqlite(res_folder+'/bootstrap.sqlite3')
     c = conn.cursor()
     c.execute('CREATE TABLE relevant (keyword text, cumtermhood real, ids text);')
@@ -35,13 +36,14 @@ def init_bootstrap(res_folder):
 ##
 #   assumed to be run in //
 #     - run by packet for intermediate filtering -
-def run_bootstrap(res_folder,kwLimit,subCorpusSize,bootstrapSize,nruns) :
-    corpus = data.get_patent_data(-1,-1,False)
+def run_bootstrap(year,limit,kwLimit,subCorpusSize,bootstrapSize,nruns) :
+    res_folder = 'bootstrap/run_year'+str(year)+'_limit'+str(limit)+'_kw'+str(kwLimit)+'_csize'+str(subCorpusSize)+'_b'+str(bootstrapSize)+'_runs'+str(nruns)
+    corpus = data.get_patent_data(year,limit,False)
     occurence_dicos = data.import_kw_dico('data/keywords.sqlite3')
     database = res_folder+'/bootstrap.sqlite3'
     #while True :
     for i in range(nruns):
-	print("run "+str(i))
+	    print("run "+str(i))
         [relevantkw,relevant_dico,allkw] = bootstrap_subcorpuses(corpus,occurence_dicos,kwLimit,subCorpusSize,bootstrapSize)
         # update bases iteratively (ok for concurrency ?)
         for kw in relevantkw.keys():
@@ -147,5 +149,3 @@ def bootstrap_subcorpuses(corpus,occurence_dicos,kwLimit,subCorpusSize,bootstrap
     res = keywords.extract_from_termhood(mean_termhoods,p_kw_dico,kwLimit)
     res.append(allkw)
     return(res)
-
-

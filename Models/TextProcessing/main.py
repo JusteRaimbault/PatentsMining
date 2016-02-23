@@ -1,6 +1,5 @@
 import time,bootstrap
 
-# import nltk,sqlite3,time,locale,datetime,operator,math,numpy
 
 
 def run():
@@ -9,9 +8,14 @@ def run():
     #extract_all_keywords()
     #termhood_extraction()
     #bootstrap.test_bootstrap()
-    #bootstrap.init_bootstrap('bootstrap/run_kw1000_csize20000_b20')
-    #bootstrap.run_bootstrap('bootstrap/test',10,10,2)
-    bootstrap.run_bootstrap('bootstrap/run_kw1000_csize20000_b20',1000,20000,20,1)
+    #year=2005;limit=-1;kwLimit=3000;subCorpusSize=20000;bootstrapSize=10;nruns=2
+    year=2005;limit=10000;kwLimit=300;subCorpusSize=2000;bootstrapSize=10;nruns=10 #test set
+    bootstrap.init_bootstrap(year,limit,kwLimit,subCorpusSize,bootstrapSize,nruns)
+    bootstrap.run_bootstrap(year,limit,kwLimit,subCorpusSize,bootstrapSize,nruns)
+
+
+
+
 
 def main():
 
