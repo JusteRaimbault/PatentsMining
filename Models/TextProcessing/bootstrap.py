@@ -1,4 +1,4 @@
-import numpy
+import numpy,os
 import utils,data,keywords
 
 
@@ -24,6 +24,7 @@ def test_bootstrap():
 # creates databases for bootstrap run
 def init_bootstrap(year,limit,kwLimit,subCorpusSize,bootstrapSize,nruns):
     res_folder = 'bootstrap/run_year'+str(year)+'_limit'+str(limit)+'_kw'+str(kwLimit)+'_csize'+str(subCorpusSize)+'_b'+str(bootstrapSize)+'_runs'+str(nruns)
+    os.makedirs(res_folder)
     conn = utils.configure_sqlite(res_folder+'/bootstrap.sqlite3')
     c = conn.cursor()
     c.execute('CREATE TABLE relevant (keyword text, cumtermhood real, ids text);')
@@ -43,7 +44,7 @@ def run_bootstrap(year,limit,kwLimit,subCorpusSize,bootstrapSize,nruns) :
     database = res_folder+'/bootstrap.sqlite3'
     #while True :
     for i in range(nruns):
-	    print("run "+str(i))
+	print("run "+str(i))
         [relevantkw,relevant_dico,allkw] = bootstrap_subcorpuses(corpus,occurence_dicos,kwLimit,subCorpusSize,bootstrapSize)
         # update bases iteratively (ok for concurrency ?)
         for kw in relevantkw.keys():
