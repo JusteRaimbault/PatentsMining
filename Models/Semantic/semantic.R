@@ -10,7 +10,8 @@ library(RSQLite)
 source('networkConstruction.R')
 
 ## sqlite data
-bpath='../TextProcessing/bootstrap/run_kw1000_csize20000_b20/bootstrap.sqlite3'
+brun = 'run_year2005_limit-1_kw2000_csize20000_b10_runs10'
+bpath=paste0('../TextProcessing/bootstrap/',brun,'/bootstrap.sqlite3')
 db = dbConnect(SQLite(),bpath)
 relevant = dbReadTable(db,'relevant')
 dico = dbReadTable(db,'dico')
@@ -20,33 +21,24 @@ dico = dbReadTable(db,'dico')
 ## Construct nw
 
 nw=exportNetwork(list(relevant=relevant,dico=dico),
-                kwthreshold=1500,linkthreshold=5,
-                connex=FALSE,export=FALSE,exportPrefix="graphs/all/all",
-                filterFile="graphs/all/filter.csv"
+                kwthreshold=2500,linkthreshold=0,
+                connex=FALSE,export=TRUE,exportPrefix="graphs/run_year2005_limit-1_kw2000_csize20000_b10_runs10/",
+                filterFile="data/filter.csv"
                 )
+
 g=nw$g;keyword_dico=nw$keyword_dico
-g = filterGraph(g,'graphs/all/filter.csv')
+g = filterGraph(g,'data/filter.csv')
 
 
 clust = clusters(g);cmax = which(clust$csize==max(clust$csize))
 ggiant = induced.subgraph(g,which(clust$membership==cmax))
 
 
-# do some filtering : kw and link
-linkthreshold=200;exportPrefix="graphs/all/all"
-kwthreshold=500
-gg=induced_subgraph(g,1:kwthreshold)
-gg=subgraph.edges(gg,which(E(gg)$weight>linkthreshold))
-clust = clusters(gg);cmax = which(clust$csize==max(clust$csize))
-gg = induced.subgraph(gg,which(clust$membership==cmax))
-#write.graph(gg,paste0(exportPrefix,"_kwth",kwthreshold,"_th",linkthreshold,"_connex",TRUE,".gml"),"gml")
+## graph filtering : node degree and edge weight
 
-
-## graph filtering : node degree (redundant in edges)
-
-kmin = 0
-kmax = 1000  
-edge_th = 200 
+kmin = 50
+kmax = 1200  
+edge_th = 10 
 
 # filter on degree (work already on giant component ?)
 #max(degree(ggiant))
@@ -55,7 +47,7 @@ d=degree(ggiant)
 gg=induced_subgraph(ggiant,which(d>kmin&d<kmax))
 gg=subgraph.edges(gg,which(E(gg)$weight>edge_th))
 
-#write.graph(gg,file = paste0('graphs/filt_kmin',kmin,'_kmax',kmax,'_edge',edge_th,'_handFilt','.gml'),format = "gml")
+write.graph(gg,file = paste0('graphs/',brun,'/all_connex_filt_kmin',kmin,'_kmax',kmax,'_edge',edge_th,'.gml'),format = "gml")
 # filter on edge weight
 
 # communities
