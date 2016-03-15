@@ -38,10 +38,11 @@ def export_kw_dico(database,p_kw_dico) :
 
 ##
 #  import dictionnaries from sqlite db ; table assumed as keywords = (patent_id ; keywords separated by ';')
-def import_kw_dico(database) :
+def import_kw_dico(database,rawdb,year) :
     conn = sqlite3.connect(database)
     c = conn.cursor()
-    c.execute('SELECT * FROM keywords;')
+    c.execute('ATTACH DATABASE \''+rawdb+'\' as \'patent\'')
+    c.execute('SELECT keywords.id,keywords.keywords FROM keywords WHERE patent.patent=keywords.id AND patent.GYear='+str(year)+';')
     res = c.fetchall()
 
     p_kw_dico = dict()

@@ -53,7 +53,3 @@ def implode(l,delimiter):
         res = res+str(k)
 	if i<len(l)-1 : res=res+delimiter
     return(res)
-
-
-
-
