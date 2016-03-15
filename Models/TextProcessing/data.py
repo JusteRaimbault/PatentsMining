@@ -77,14 +77,11 @@ def get_patent_data(year,limit,full) :
     #cursor.execute('SELECT patdesc.patent,patent.patent FROM patent,patdesc WHERE patent.patent=patdesc.patent LIMIT 10;')
     # retrieve records
     if full :
-        query='SELECT patent.patent,title,abstract,GYear FROM patdesc,patent WHERE patdesc.patent = patent.patent AND abstract!=\'\''
+        query='SELECT patent.patent,title,abstract,GYear FROM patdesc,patent WHERE patdesc.patent = patent.patent AND (NOT (Patent glob \'*[A-z]*\')) AND abstract!=\'\''
     else :
-        query='SELECT patent,GYear FROM patent'
+        query='SELECT patent,GYear FROM patent WHERE (NOT (Patent glob \'*[A-z]*\')) AND abstract!=\'\''
     if year != -1 :
-        if full :
-            query = query +' AND GYear = '+str(year)
-        else:
-            query = query +' WHERE GYear = '+str(year)
+        query = query +' AND GYear = '+str(year)
     if limit != -1 :
         query = query+' LIMIT '+str(limit)+";"
     else :
