@@ -94,9 +94,9 @@ def update_kw_dico(i,kwlist,database):
         for kw in kwlist :
             kwset.add(kw)
         prev['keywords']=list(kwset)
-        database.relevant.replace_one({'id':i},prev)
+        database.dico.replace_one({'id':i},prev)
     else :
-        database.relevant.insert_one({'id':i,'keywords':kwlist})
+        database.dico.insert_one({'id':i,'keywords':kwlist})
 
     # kw -> ids
     for kw in kwlist :
