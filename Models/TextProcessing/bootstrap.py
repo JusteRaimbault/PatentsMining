@@ -47,7 +47,7 @@ def run_bootstrap(year,limit,kwLimit,subCorpusSize,bootstrapSize,nruns) :
     database = mongo[dbname]
     #while True :
     for i in range(nruns):
-	    print("run "+str(i))
+	print("run "+str(i))
         [relevantkw,relevant_dico,allkw] = bootstrap_subcorpuses(corpus,occurence_dicos,kwLimit,subCorpusSize,bootstrapSize)
         # update bases iteratively (ok for concurrency ?)
         for kw in relevantkw.keys():
