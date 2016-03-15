@@ -40,7 +40,7 @@ def run_bootstrap(year,limit,kwLimit,subCorpusSize,bootstrapSize,nruns) :
     occurence_dicos = data.import_kw_dico('data/keywords.sqlite3','data/patent.sqlite3',year)
 
     for i in range(nruns):
-	    print("run "+str(i)+" for year "+str(year))
+        print("run "+str(i)+" for year "+str(year))
         [relevantkw,relevant_dico,allkw] = bootstrap_subcorpuses(corpus,occurence_dicos,kwLimit,subCorpusSize,bootstrapSize)
         # update bases iteratively (ok for concurrency ?)
         for kw in relevantkw.keys():

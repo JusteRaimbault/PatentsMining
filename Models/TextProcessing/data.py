@@ -42,7 +42,7 @@ def import_kw_dico(database,rawdb,year) :
     conn = sqlite3.connect(database)
     c = conn.cursor()
     c.execute('ATTACH DATABASE \''+rawdb+'\' as \'patent\'')
-    c.execute('SELECT keywords.id,keywords.keywords FROM keywords WHERE patent.patent=keywords.id AND patent.GYear='+str(year)+';')
+    c.execute('SELECT keywords.id,keywords.keywords FROM keywords,patent WHERE patent.patent=keywords.id AND patent.GYear='+str(year)+';')
     res = c.fetchall()
 
     p_kw_dico = dict()
@@ -73,20 +73,22 @@ def get_patent_data(year,limit,full) :
     cursor = conn.cursor()
     # attach patent data
     #cursor.execute('ATTACH DATABASE \'../../Data/raw/patent/patent.sqlite3\' as \'patent\'')
-    if full : cursor.execute('ATTACH DATABASE \'data/patdesc.sqlite3\' as \'patdesc\'')
+    #if full : cursor.execute('ATTACH DATABASE \'data/patdesc.sqlite3\' as \'patdesc\'')
+    cursor.execute('ATTACH DATABASE \'data/patdesc.sqlite3\' as \'patdesc\'')
 
     #cursor.execute('SELECT patdesc.patent,patent.patent FROM patent,patdesc WHERE patent.patent=patdesc.patent LIMIT 10;')
     # retrieve records
     if full :
         query='SELECT patent.patent,title,abstract,GYear FROM patdesc,patent WHERE patdesc.patent = patent.patent AND (NOT (Patent glob \'*[A-z]*\')) AND abstract!=\'\''
     else :
-        query='SELECT patent,GYear FROM patent WHERE (NOT (Patent glob \'*[A-z]*\')) AND abstract!=\'\''
+        query='SELECT patent.patent,GYear FROM patent,patdesc WHERE patdesc.patent = patent.patent AND (NOT (patent.patent glob \'*[A-z]*\')) AND abstract!=\'\''
     if year != -1 :
         query = query +' AND GYear = '+str(year)
     if limit != -1 :
         query = query+' LIMIT '+str(limit)+";"
     else :
         query = query+";"
+    print(query)
     cursor.execute(query)
     res=cursor.fetchall()
     #first=res[0]
