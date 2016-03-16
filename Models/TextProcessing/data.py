@@ -94,3 +94,12 @@ def get_patent_data(year,limit,full) :
     #first=res[0]
     #raw_text = first[0]+". "+first[1]
     return res
+
+# get from query
+def get_patent_data_query(query,dbraw,dbdesc,dbdescname):
+    conn = sqlite3.connect(dbraw)
+    cursor = conn.cursor()
+    cursor.execute('ATTACH DATABASE \''+dbdesc+'\' as \'\'')
+    cursor.execute(query)
+    res=cursor.fetchall()
+    return res
