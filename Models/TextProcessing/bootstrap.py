@@ -106,7 +106,7 @@ def update_count(bootstrapSize,database,year):
     prev=database.params.find_one({'key':'count_'+str(year)})
     if prev is not None:
         prev['value']=prev['value']+bootstrapSize
-        database.params.find_one_and_update({'key':'count_'+str(year)},prev)
+        database.params.replace_one({'key':'count_'+str(year)},prev)
     else :
         database.params.insert_one({'key':'count_'+str(year),'value':bootstrapSize})
 
