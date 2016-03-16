@@ -12,7 +12,7 @@ def run():
     #year=2005;
     limit=-1;kwLimit=2000;subCorpusSize=10000;bootstrapSize=10;nruns=10 #test set
     #bootstrap.init_bootstrap(year,limit,kwLimit,subCorpusSize,bootstrapSize,nruns)
-    for year in range(1975,2011) :
+    for year in range(1998,2011) :
         bootstrap.run_bootstrap(year,limit,kwLimit,subCorpusSize,bootstrapSize,nruns)
 
 

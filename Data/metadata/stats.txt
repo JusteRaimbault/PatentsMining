@@ -1,0 +1,31 @@
+
+sqlite3 Models/TextProcessing/data/keywords.sqlite3
+
+> attach database 'Data/raw/patent/patent.sqlite3' as patent;
+
+> select count(*) from keywords;
+1490533
+
+> select count(*) from keywords where not id glob '*[A-z]*';
+1478028
+
+> select count(*) from patent where not patent glob '*[A-z]*';
+3984771
+
+> attach database 'Data/raw/patdesc/patdesc.sqlite3' as patdesc;
+
+> select count(*) from patdesc where patdesc.abstract!='';
+1490533
+
+> select count(*) from patent,patdesc where not patent.patent glob '*[A-z]*' and patent.patent=patdesc.patent and patdesc.abstract!='';
+1478028
+
+> select distinct GYear from patent,patdesc where not patent.patent glob '*[A-z]*' and patent.patent=patdesc.patent and patdesc.abstract!='' order by GYear;
+1998 -> 2010
+
+> select distinct GYear from patent,patdesc where abstract!='' and patent.patent=patdesc.patent order by GYear; 
+1998 -> 2010
+
+> 
+
+

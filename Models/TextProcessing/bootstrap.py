@@ -30,24 +30,25 @@ def test_bootstrap():
 #   assumed to be run in //
 #     - run by packet for intermediate filtering -
 def run_bootstrap(year,limit,kwLimit,subCorpusSize,bootstrapSize,nruns) :
-    dbname = 'patent_limit'+str(limit)+'_kw'+str(kwLimit)+'_csize'+str(subCorpusSize)+'_b'+str(bootstrapSize)+'_runs'+str(nruns)
-    relevant = 'relevant_'+str(year)
-    mongo = pymongo.MongoClient()
-    database = mongo[dbname]
-    database[relevant].create_index('keyword')
-
     corpus = data.get_patent_data(year,limit,False)
     occurence_dicos = data.import_kw_dico('data/keywords.sqlite3','data/patent.sqlite3',year)
+    if len(corpus) > 0 and len(occurence_dicos) > 0 :
+        dbname = 'patent_limit'+str(limit)+'_kw'+str(kwLimit)+'_csize'+str(subCorpusSize)+'_b'+str(bootstrapSize)+'_runs'+str(nruns)
+        relevant = 'relevant_'+str(year)
+        mongo = pymongo.MongoClient()
+        database = mongo[dbname]
+        database[relevant].create_index('keyword')
 
-    for i in range(nruns):
-        print("run "+str(i)+" for year "+str(year))
-        [relevantkw,relevant_dico,allkw] = bootstrap_subcorpuses(corpus,occurence_dicos,kwLimit,subCorpusSize,bootstrapSize)
-        # update bases iteratively (ok for concurrency ?)
-        for kw in relevantkw.keys():
-            update_kw_tm(kw,relevantkw[kw],database,relevant)
-        #for i in relevant_dico.keys():
-        #    update_kw_dico(i,relevant_dico[i],database)
-        update_count(bootstrapSize,database,year)
+        for i in range(nruns):
+            print("run "+str(i)+" for year "+str(year))
+            [relevantkw,relevant_dico,allkw] = bootstrap_subcorpuses(corpus,occurence_dicos,kwLimit,subCorpusSize,bootstrapSize)
+            # update bases iteratively (ok for concurrency ?)
+            for kw in relevantkw.keys():
+                update_kw_tm(kw,relevantkw[kw],database,relevant)
+            #for i in relevant_dico.keys():
+            #    update_kw_dico(i,relevant_dico[i],database)
+            update_count(bootstrapSize,database,year)
+
 
 
 def update_kw_tm(kw,incr,database,table):

@@ -1,0 +1,475 @@
+% Template for PLoS
+% Version 3.1 February 2015
+%
+% To compile to pdf, run:
+% latex plos.template
+% bibtex plos.template
+% latex plos.template
+% latex plos.template
+% dvipdf plos.template
+%
+% % % % % % % % % % % % % % % % % % % % % %
+%
+% -- IMPORTANT NOTE
+%
+% This template contains comments intended 
+% to minimize problems and delays during our production 
+% process. Please follow the template instructions
+% whenever possible.
+%
+% % % % % % % % % % % % % % % % % % % % % % % 
+%
+% Once your paper is accepted for publication, 
+% PLEASE REMOVE ALL TRACKED CHANGES in this file and leave only
+% the final text of your manuscript.
+%
+% There are no restrictions on package use within the LaTeX files except that 
+% no packages listed in the template may be deleted.
+%
+% Please do not include colors or graphics in the text.
+%
+% Please do not create a heading level below \subsection. For 3rd level headings, use \paragraph{}.
+%
+% % % % % % % % % % % % % % % % % % % % % % %
+%
+% -- FIGURES AND TABLES
+%
+% Please include tables/figure captions directly after the paragraph where they are first cited in the text.
+%
+% DO NOT INCLUDE GRAPHICS IN YOUR MANUSCRIPT
+% - Figures should be uploaded separately from your manuscript file. 
+% - Figures generated using LaTeX should be extracted and removed from the PDF before submission. 
+% - Figures containing multiple panels/subfigures must be combined into one image file before submission.
+% For figure citations, please use "Fig." instead of "Figure".
+% See http://www.plosone.org/static/figureGuidelines for PLOS figure guidelines.
+%
+% Tables should be cell-based and may not contain:
+% - tabs/spacing/line breaks within cells to alter layout or alignment
+% - vertically-merged cells (no tabular environments within tabular environments, do not use \multirow)
+% - colors, shading, or graphic objects
+% See http://www.plosone.org/static/figureGuidelines#tables for table guidelines.
+%
+% For tables that exceed the width of the text column, use the adjustwidth environment as illustrated in the example table in text below.
+%
+% % % % % % % % % % % % % % % % % % % % % % % %
+%
+% -- EQUATIONS, MATH SYMBOLS, SUBSCRIPTS, AND SUPERSCRIPTS
+%
+% IMPORTANT
+% Below are a few tips to help format your equations and other special characters according to our specifications. For more tips to help reduce the possibility of formatting errors during conversion, please see our LaTeX guidelines at http://www.plosone.org/static/latexGuidelines
+%
+% Please be sure to include all portions of an equation in the math environment.
+%
+% Do not include text that is not math in the math environment. For example, CO2 will be CO\textsubscript{2}.
+%
+% Please add line breaks to long display equations when possible in order to fit size of the column. 
+%
+% For inline equations, please do not include punctuation (commas, etc) within the math environment unless this is part of the equation.
+%
+% % % % % % % % % % % % % % % % % % % % % % % % 
+%
+% Please contact latex@plos.org with any questions.
+%
+% % % % % % % % % % % % % % % % % % % % % % % %
+
+\documentclass[10pt,letterpaper]{article}
+\usepackage[top=0.85in,left=2.75in,footskip=0.75in]{geometry}
+
+% Use adjustwidth environment to exceed column width (see example table in text)
+\usepackage{changepage}
+
+% Use Unicode characters when possible
+\usepackage[utf8]{inputenc}
+
+% textcomp package and marvosym package for additional characters
+\usepackage{textcomp,marvosym}
+
+% fixltx2e package for \textsubscript
+\usepackage{fixltx2e}
+
+% amsmath and amssymb packages, useful for mathematical formulas and symbols
+\usepackage{amsmath,amssymb}
+
+% cite package, to clean up citations in the main text. Do not remove.
+\usepackage{cite}
+
+% Use nameref to cite supporting information files (see Supporting Information section for more info)
+\usepackage{nameref,hyperref}
+
+% line numbers
+\usepackage[right]{lineno}
+
+% ligatures disabled
+\usepackage{microtype}
+\DisableLigatures[f]{encoding = *, family = * }
+
+% rotating package for sideways tables
+\usepackage{rotating}
+
+% Remove comment for double spacing
+%\usepackage{setspace} 
+%\doublespacing
+
+% Text layout
+\raggedright
+\setlength{\parindent}{0.5cm}
+\textwidth 5.25in 
+\textheight 8.75in
+
+% Bold the 'Figure #' in the caption and separate it from the title/caption with a period
+% Captions will be left justified
+\usepackage[aboveskip=1pt,labelfont=bf,labelsep=period,justification=raggedright,singlelinecheck=off]{caption}
+
+% Use the PLoS provided BiBTeX style
+\bibliographystyle{plos2015}
+
+% Remove brackets from numbering in List of References
+\makeatletter
+\renewcommand{\@biblabel}[1]{\quad#1.}
+\makeatother
+
+% Leave date blank
+\date{}
+
+% Header and Footer with logo
+\usepackage{lastpage,fancyhdr,graphicx}
+\usepackage{epstopdf}
+\pagestyle{myheadings}
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\includegraphics[width=2.0in]{PLOS-submission.eps}}
+\rfoot{\thepage/\pageref{LastPage}}
+\renewcommand{\footrule}{\hrule height 2pt \vspace{2mm}}
+\fancyheadoffset[L]{2.25in}
+\fancyfootoffset[L]{2.25in}
+\lfoot{\sf PLOS}
+
+%% Include all macros below
+
+\newcommand{\lorem}{{\bf LOREM}}
+\newcommand{\ipsum}{{\bf IPSUM}}
+
+%% END MACROS SECTION
+
+
+\begin{document}
+\vspace*{0.35in}
+
+% Title must be 250 characters or less.
+% Please capitalize all terms in the title except conjunctions, prepositions, and articles.
+\begin{flushleft}
+{\Large
+\textbf\newline{An Hypernetwork Approach to Measure Technological Innovation - Submission to PLOS Journals}
+}
+\newline
+% Insert author names, affiliations and corresponding author email (do not include titles, positions, or degrees).
+\\
+Antonin Bergeaud\textsuperscript{1,\Yinyang},
+Yoann Potiron\textsuperscript{2,\Yinyang},
+Juste Raimbault\textsuperscript{3,\Yinyang}
+\\
+\bigskip
+\bf{1} Department of Economics, London School of Economics, London, UK
+\\
+\bf{2} Department of Statistics, University of Chicago, Chicago, US
+\\
+\bf{3} UMR 8504 G{\'e}ographie-cit{\'e}s, Universit{\'e} Paris VII, Paris, France
+\\
+\bigskip
+
+% Insert additional author notes using the symbols described below. Insert symbol callouts after author names as necessary.
+% 
+% Remove or comment out the author notes below if they aren't used.
+%
+% Primary Equal Contribution Note
+\Yinyang These authors contributed equally to this work.
+
+% Additional Equal Contribution Note
+% Also use this double-dagger symbol for special authorship notes, such as senior authorship.
+%\ddag These authors also contributed equally to this work.
+
+% Current address notes
+%\textcurrency a Insert current address of first author with an address update
+% \textcurrency b Insert current address of second author with an address update
+% \textcurrency c Insert current address of third author with an address update
+
+% Deceased author note
+%\dag Deceased
+
+% Group/Consortium Author Note
+%\textpilcrow Membership list can be found in the Acknowledgments section.
+
+% Use the asterisk to denote corresponding authorship and provide email address in note below.
+* le.corresponding@polytechnique.edu
+
+\end{flushleft}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+% Please keep the abstract below 300 words
+\section*{Abstract}
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Please keep the Author Summary between 150 and 200 words
+% Use first person. PLOS ONE authors please skip this step. 
+% Author Summary not valid for PLOS ONE submissions.   
+%\section*{Author Summary}
+
+
+
+\linenumbers
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+\section*{Introduction}
+
+
+The study of innovation through the lens of technological patents is not a novel idea~\cite{basberg1987patents} but the recent rise of new methods and computational abilities, including data-mining and network analysis~\cite{newman2010networks} has shed a new light on the approach. With methods relatively close to applied epistemology studies such as citation dynamics modeling~\cite{2013arXiv1310.8220N} or co-autorships networks analysis~\cite{2014arXiv1402.7268S}, recent works have studied patents citation network to understand the processes of technological innovation. As in science, where reflexivity is crucial and is becoming a mandatory step to build future research agendas, as e.g. in the recent analysis on 20th century physics~\cite{Sinatra:2015yu}, the structure of technology and particularly of technological innovation should show special patterns which understanding must have positive feedback on the economy.
+
+
+
+A consequent amount of research already proposed to use semantic networks to study technological domains. One of the first works to enhance the approach was~\cite{yoon2004text}, where the idea of visualizing keywords network was introduced and illustrated on a small technological domain. Semantic analysis has already proved its efficiency in various fields, such as~\cite{choi2014patent,fattori2003text} for technology studies, or~\cite{2015arXiv151003797G} in political science for example. We will also be interested in measures based on technological classification, as in~\cite{Youn:2015fk} where the study of the distribution of classes within patents leads to confirm the combinatory nature of the innovation process. Advanced citation-based measures have been proposed in order to gain an order of information extracted from the citation network~\cite{2015arXiv150907285A}, but we will stay to rather simple indicators concerning this network as we will cross it with other type of data. Concerning dynamic analysis, models of citation processes have been proposed and fit to data such as in~\cite{valverde2007topology}, and depending on temporal patterns we observe on features, we may propose to use dynamic models for network evolution.
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%
+% You may title this section "Methods" or "Models". 
+% "Models" is not a valid title for PLoS ONE authors. However, PLoS ONE
+% authors may use "Analysis" 
+\section*{Materials and Methods}
+
+\subsection*{Raw Data}
+
+% cite and describe datasets
+
+
+\subsection*{Semantic Network Construction}
+
+
+
+We first assign to a patent $p\in \mathcal{P}$ a set of significant keywords $K(p)\in \bigcup_{n\in \mathbb{N}} {\mathcal{A}^{\ast}}^n$, that are precisely extracted following a similar procedure to the one detailed in~\cite{chavalarias2013phylomemetic} :
+\begin{itemize}
+\item Text parsing and tokenizing.
+\item Part-of-speech tagging, normalization.
+\item Stem extraction and multi-stems constructions.
+\item Relevant multi-stems filtering.
+\end{itemize}
+
+The semantic network is then constructed by co-occurrences analysis : nodes are keywords, i.e. $V=\bigcup_{p\in\mathcal{P}}K(p)$, and edges represent co-occurrences : $E = \{(k,k') | \exists p \textrm{ s.t. } k, k' \in K(p)\}$. This specification aims to capture semantic communities that do necessarily have a thematic meaning and that should correspond to a specific domain, field, technology or technique.
+
+Text processing operations will be implemented in \texttt{python} in order to use the \texttt{nltk} library~\cite{nltk} which is highly ergonomic and supports most advanced state-of-the-art natural language processing operations. Source code is openly available on the repository of the project\footnote{at \texttt{url}}. Steps one to three are directly done using built-in functions of the library. Step four needs a particular treatment that we propose as an extension of the original method for large corpuses, which is detailed in the following.
+
+\paragraph{Bootstrap on random sub-corpuses for relevance estimation}
+
+Once multi-stems have been extracted, one scores them by \emph{unithood}, defined for the multi-stem $i$ by $u_i = f_i\cdot \log{(1 + l_i)}$ where $f_i$ is the number of apparitions of the multi-stem over the whole corpus and $l_i$ its length in words. Let $K_w$ the maximal number of relevant keywords per patent. If $N$ is the total number of relevant keywords extracted, that we consider as a parameter, the heuristic described in~\cite{chavalarias2013phylomemetic} proposes a first filtration of $k\cdot N$ keywords on the whole corpus (and take a fixed value $k=4)$, and then a filtration on a secondary score called \emph{termhood}, computed as a chi-squared score on the distribution of cooccurrences of the stem, compared to an uniform distribution within the whole corpus. More precisely, one computes the co-occurence matrix $(M_{ij})$, defined as the number of patents where stems $i$ and $j$ appear together, what allows to define the \emph{termhood} score as
+
+\[
+t_i = \sum_{j\neq i}\frac{\left( M_{ij} - \sum_{k}M_{ik} \sum_{k} M_{jk}\right)^2}{\sum_{k}M_{ik} \sum_{k} M_{jk}}
+\]
+
+One issue arising when working with large corpuses is the square complexity for determining cooccurrences, that can be simplified at best to the sum of squared sizes of pre-relevant keywords for each patent.
+
+
+
+%% Convergence of bootstrap estimator / parameter values for estimation -> sensitivity analysis in supplementary information.
+
+
+
+
+%% construction of semantic nw from cooccurrences
+%  -> sensitivity analysis in supplementary info also
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%
+\section*{Results}
+
+
+%%%%%%%%%%%%%%%%%%%%%%
+\subsection*{Semantic Communities Dynamics}
+
+% this section describes semantic communities reconstruction and their temporal dynamics
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%
+\subsection*{Layer Structure Comparison}
+
+% comparison of techno classes / semantic communities / citation communities
+
+\cite{iacovacci2015mesoscopic}
+
+
+
+
+\subsection*{Unsupervised Data Mining}
+
+
+
+\paragraph{Features}
+
+
+\begin{itemize}
+\item Citation relative centrality regarding technological or semantic classes : given a partition of $\mathcal{P}$ represented by a classification function $C$ (constructed for example by clustering or community detection within technological or semantic networks), a vector feature is for patent $i$
+\[
+\left(\frac{\sum_{j\in c}Cit^{out}(i,j)}{\sum_{j\in c}Cit^{in}(i,j)}\right)_{c\in C(\mathcal{P})}
+\]
+\item Dynamic evolution of classification vector : if $C_t$ is stratified over successive time periods indexed by time $t$, either $\Delta \vec{C}_t (i)$ if $\vec{C}_t$ is a vector of probabilities to belong to each class (in case of a Bayesian approach), or $\Delta (C_t(j))_{Cit(i,j,t)\neq 0}$ in case of a deterministic approach, could both be interesting features.
+\item Deviation from the expected classes given position in other layers of the hypernetwork (it would need explorations if these conditional probabilities first can be well estimated, then if they contain relevant information).
+\end{itemize}
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%
+\section*{Discussion}
+
+
+
+
+
+
+
+
+
+
+%\section*{Supporting Information}
+% Include only the SI item label in the subsection heading. Use the \nameref{label} command to cite SI items in the text.
+
+
+
+%\section*{Acknowledgments}
+
+
+
+
+
+\nolinenumbers
+
+%\section*{References}
+% Either type in your references using
+% \begin{thebibliography}{}
+% \bibitem{}
+% Text
+% \end{thebibliography}
+%
+% OR
+%
+% Compile your BiBTeX database using our plos2015.bst
+% style file and paste the contents of your .bbl file
+% here.
+% 
+
+
+\bibliographystyle{plos2015}
+\bibliography{../../../Biblio/patents}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%
+%%  Templates
+%%%%%%%%%%%%%%%%%%%%
+
+
+% For figure citations, please use "Fig." instead of "Figure".
+%\begin{figure}[h]
+%\caption{{\bf Figure Title first bold sentence}
+%Figure Caption}
+%\label{fig1}
+%\end{figure}
+
+
+
+%
+%
+%
+%\begin{table}[!ht]
+%\begin{adjustwidth}{-2.25in}{0in} % Comment out/remove adjustwidth environment if table fits in text column.
+%\caption{
+%{\bf Table caption Nulla mi mi, venenatis sed ipsum varius, volutpat euismod diam.}}
+%\begin{tabular}{|l|l|l|l|l|l|l|l|}
+%\hline
+%\multicolumn{4}{|l|}{\bf Heading1} & \multicolumn{4}{|l|}{\bf Heading2}\\ \hline
+%$cell1 row1$ & cell2 row 1 & cell3 row 1 & cell4 row 1 & cell5 row 1 & cell6 row 1 & cell7 row 1 & cell8 row 1\\ \hline
+%$cell1 row2$ & cell2 row 2 & cell3 row 2 & cell4 row 2 & cell5 row 2 & cell6 row 2 & cell7 row 2 & cell8 row 2\\ \hline
+%$cell1 row3$ & cell2 row 3 & cell3 row 3 & cell4 row 3 & cell5 row 3 & cell6 row 3 & cell7 row 3 & cell8 row 3\\ \hline
+%\end{tabular}
+%\begin{flushleft} Table notes Phasellus venenatis, tortor nec vestibulum mattis, massa tortor interdum felis, nec pellentesque metus tortor nec nisl. Ut ornare mauris tellus, vel dapibus arcu suscipit sed.
+%\end{flushleft}
+%\label{table1}
+%\end{adjustwidth}
+%\end{table}
+%
+%
+
+
+
+
+%
+%\subsection*{S1 Video}
+%\label{S1_Video}
+%{\bf Bold the first sentence.}  Maecenas convallis mauris sit amet sem ultrices gravida. Etiam eget sapien nibh. Sed ac ipsum eget enim egestas ullamcorper nec euismod ligula. Curabitur fringilla pulvinar lectus consectetur pellentesque.
+%
+%\subsection*{S1 Text}
+%\label{S1_Text}
+%{\bf Lorem Ipsum.} Maecenas convallis mauris sit amet sem ultrices gravida. Etiam eget sapien nibh. Sed ac ipsum eget enim egestas ullamcorper nec euismod ligula. Curabitur fringilla pulvinar lectus consectetur pellentesque.
+%
+%\subsection*{S1 Fig}
+%\label{S1_Fig}
+%{\bf Lorem Ipsum.} Maecenas convallis mauris sit amet sem ultrices gravida. Etiam eget sapien nibh. Sed ac ipsum eget enim egestas ullamcorper nec euismod ligula. Curabitur fringilla pulvinar lectus consectetur pellentesque.
+%
+%\subsection*{S2 Fig}
+%\label{S2_Fig}
+%{\bf Lorem Ipsum.} Maecenas convallis mauris sit amet sem ultrices gravida. Etiam eget sapien nibh. Sed ac ipsum eget enim egestas ullamcorper nec euismod ligula. Curabitur fringilla pulvinar lectus consectetur pellentesque.
+%
+%\subsection*{S1 Table}
+%\label{S1_Table}
+%{\bf Lorem Ipsum.} Maecenas convallis mauris sit amet sem ultrices gravida. Etiam eget sapien nibh. Sed ac ipsum eget enim egestas ullamcorper nec euismod ligula. Curabitur fringilla pulvinar lectus consectetur pellentesque.
+%
+
+
+
+
+
+%\begin{thebibliography}{10}
+%\bibitem{bib1}
+%Devaraju P, Gulati R, Antony PT, Mithun CB, Negi VS. Susceptibility to SLE in South Indian Tamils may be influenced by genetic selection pressure on TLR2 and TLR9 genes. Mol Immunol. 2014 Nov 22. pii: S0161-5890(14)00313-7. doi: 10.1016/j.molimm.2014.11.005
+
+%\bibitem{bib2}
+%Huynen MMTE, Martens P, Hilderlink HBM. The health impacts of globalisation: a conceptual framework. Global Health. 2005;1: 14. Available: http://www.globalizationandhealth.com/content/1/1/14.
+
+%\end{thebibliography}
+
+
+
+
+
+
+
+\end{document}
+
