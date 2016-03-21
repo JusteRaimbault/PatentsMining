@@ -26,6 +26,51 @@ sqlite3 Models/TextProcessing/data/keywords.sqlite3
 > select distinct GYear from patent,patdesc where abstract!='' and patent.patent=patdesc.patent order by GYear; 
 1998 -> 2010
 
-> 
+> select count(*) from patent,patdesc where title!='' and patent.patent=patdesc.patent and not patent.patent glob '*[A-z]*';
+2140385
+
+> select distinct GYear from patent,patdesc where title!='' and patent.patent=patdesc.patent and not patent.patent glob '*[A-z]*';
+1998 -> 2010
+
+> select distinct GYear from patent,patdesc where title!='' and patent.patent=patdesc.patent;
+1998 -> 2010
+
+> select distinct GYear from patent,patdesc where patent.patent=patdesc.patent;
+1998 -> 2010
+
+> select count(*) from patdesc;
+2399248
+
+> select count(*) from patent,patdesc where patent.patent = patdesc.patent;
+2399248
+
+> select count(*) from patdesc where title='';
+217
+
+> select count(*) from patdesc where title='' and abstract='';
+128
+
+
+===================
+
+sqlite3 Data/raw/patdesc_fung/patdesc.sqlite3 
+
+> attach database 'Data/raw/patent_fung/patent.sqlite3' as patent;
+
+> select count(*) from patdesc;
+2978683
+
+> select distinct GYear from patent,patdesc where patent.patent=patdesc.patent;
+1998 -> 2013 
+
+> select count(*) from patent,patdesc where patent.patent=patdesc.patent and GYear>2010;
+577636
+
+
+
+
+
+
+
 
 
