@@ -66,6 +66,8 @@ sqlite3 Data/raw/patdesc_fung/patdesc.sqlite3
 > select count(*) from patent,patdesc where patent.patent=patdesc.patent and GYear>2010;
 577636
 
+> select distinct GYear from patent,patdesc where patent.patent=patdesc.patent and length(abstract)>0;
+
 
 
 
