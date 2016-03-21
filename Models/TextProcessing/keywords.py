@@ -1,4 +1,4 @@
-import nltk,operator,math
+import nltk,operator,math,pymongo
 import data,keywords,utils
 
 
@@ -29,6 +29,10 @@ def extract_all_keywords() :
     corpus = get_patent_data(2000,10000)
     [p_kw_dico,kw_p_dico] = construct_occurrence_dico(corpus)
     export_kw_dico('../../Data/processed/keywords_y2000_10000.sqlite3',p_kw_dico)
+
+def extract_remaining_keywords() :
+    mongo = pymongo.MongoClient()
+    existing = mongo['patents_keywords'].keywords.find({},{'id'})
 
 
 

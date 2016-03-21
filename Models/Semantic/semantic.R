@@ -17,6 +17,10 @@ db = dbConnect(SQLite(),bpath)
 relevant = dbReadTable(db,'relevant')
 dico = dbReadTable(db,'dico')
 
+## Mongo data
+brun='patent_limit-1_kw2000_csize10000_b10_runs10'
+mongo <- mongoDbConnect(brun, "localhost", 27017)  
+data <- RMongo::dbGetQuery(mongo,'relevant_1998','{}')
 
 
 ## Construct nw
