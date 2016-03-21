@@ -1,0 +1,10 @@
+
+URL=$1
+
+wget $URL > data.zip
+
+unzip data.zip
+
+cat 
+
+
