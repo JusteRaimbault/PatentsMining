@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
 
-# parsing data files as collected
-# and put into db
+# Collect and store data
+#   - retrieving and unzipping done in shell ; here file name as arg -
+
+import pymongo
+import parser

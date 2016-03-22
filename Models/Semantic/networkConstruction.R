@@ -5,6 +5,7 @@
 
 # filter nodes : grep -v -f file for nodes names
 filterGraph<-function(graph,file){
+  show(paste0('Filtering graph nodes from ',file))
   words<-unlist(read.csv(file,stringsAsFactors=FALSE,header=FALSE))
   g=graph
   for(w in 1:length(words)){
@@ -20,17 +21,28 @@ filterGraph<-function(graph,file){
 ##
 #  generic function to create and export nw
 #  also compute kws dictionary (used later in originality computation)
-exportNetwork<-function(data,kwthreshold = 2000,linkthreshold =15,connex=TRUE,export=FALSE,exportPrefix="",filterFile="",kwFile="2000"){
+exportNetwork<-function(data,
+                        kwthreshold = 2000,
+                        linkthreshold =15,
+                        connex=TRUE,
+                        export=FALSE,
+                        exportPrefix="",
+                        filterFile="",
+                        kwFile="2000"#,
+                        #dicoSplitFunction = function(s){strsplit(enc2utf8(s),";")[[1]]}
+                        ){
   
   relevant = data$relevant
   dico = data$dico
   # dico can be of two types : output of a scanned pseudo-csv or structured output of sqlite table
   # must take that into account
-  kwCol=2
-  if(is.null(dim(dico))){dico=data.frame(keywords=dico);kwCol=1}
+  #kwCol=2
+  #if(is.null(dim(dico))){dico=data.frame(keywords=dico);kwCol=1}
   # dirty as keep id in kws, but needed for perf to not split strings twice
   
-  srel = as.tbl(relevant) %>% arrange(desc(cumtermhood))
+  srel = as.tbl(relevant)
+  srel$keyword = as.character(srel$keyword)
+  srel = srel %>% arrange(desc(cumtermhood))
   if(filterFile!=""){
     forbidden = read.csv(filterFile)
     srel = srel %>% filter(!(keyword %in% forbidden))
@@ -44,16 +56,28 @@ exportNetwork<-function(data,kwthreshold = 2000,linkthreshold =15,connex=TRUE,ex
   for(i in 1:length(srel$keyword)){rel[[srel$keyword[i]]]=i}
   
   res=list()
-  
+
   keyword_dico = list()
+  
+  # fill keyword dico before coocs, avoid N^2 in all words
+  for(i in 1:length(dico)){
+    if(i%%100==0){show(i)}
+    kws = unique(dico[[i]]$keywords)
+    kws = kws[sapply(kws,function(w){w %in% srel$keyword})]
+    keyword_dico[[dico[[i]]$id]]=kws
+  }
+  
+  keyword_dico_keys = names(keyword_dico)
   
   cooccs = matrix(0,nrow(srel),nrow(srel))
   
-  for(i in 1:nrow(dico)){
+  for(i in 1:length(keyword_dico)){
     if(i%%100==0){show(i)}
-    kws=strsplit(enc2utf8(dico[i,kwCol]),";")[[1]]
-    id=""
-    if(kwCol==1){id=kws[1];kws=kws[-1];}else{id=dico[i,1]}
+    #kws=strsplit(enc2utf8(dico[i,kwCol]),";")[[1]]
+    #kws = dicoSplitFunction(dico[i,kwCol])
+    kws = keyword_dico[[i]]
+    #id=keyword_dico_keys[i]
+    #if(kwCol==1){id=kws[1];kws=kws[-1];}else{id=dico[i,1]}
     if(length(kws)>1){
       for(k in 1:(length(kws)-1)){
         for(l in (k+1):(length(kws))){
@@ -63,7 +87,7 @@ exportNetwork<-function(data,kwthreshold = 2000,linkthreshold =15,connex=TRUE,ex
         }
       }
     }
-    keyword_dico[[id]]=kws
+    #keyword_dico[[id]]=kws
   }
   
   colnames(cooccs) = names(unlist(rel))
