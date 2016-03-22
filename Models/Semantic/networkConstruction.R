@@ -1,7 +1,8 @@
 
 #  functions for netowrk export
 
-
+library(dplyr)
+library(igraph)
 
 # filter nodes : grep -v -f file for nodes names
 filterGraph<-function(graph,file){
