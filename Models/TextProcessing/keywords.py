@@ -67,7 +67,10 @@ def extract_relevant_keywords(corpus,kwLimit,occurence_dicos):
     # for each patent : kws are coocurring if selected.
     # Beware to filter BEFORE launching O(n^2) procedure
 
+    n=len(p_kw_dico)/100;pr=0
     for p in p_kw_dico.keys() :
+        pr = pr + 1
+        if pr % n == 0 : print('cooccs : '+str(pr/n)+'%')
         sel = []
         for k in p_kw_dico[p] :
             if k in selected_kws : sel.append(k)

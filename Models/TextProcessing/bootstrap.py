@@ -26,6 +26,20 @@ def test_bootstrap():
 #    database.dico.create_index('id')
 
 
+def relevant_full_corpus(year,kwLimit):
+    corpus = data.get_patent_data(year,-1,False)
+    occurence_dicos = data.import_kw_dico('data/keywords.sqlite3','data/patent.sqlite3',year)
+    if len(corpus) > 0 and len(occurence_dicos) > 0 :
+        relevant = 'relevant_'+str(year)
+        mongo = pymongo.MongoClient('localhost', 27019)
+        database = mongo['relevant_full_'+str(kwLimit)]
+        database[relevant].create_index('keyword')
+        [rel_kws,dico] = keywords.extract_relevant_keywords(corpus,kwLimit,occurence_dicos)
+        for kw in rel_kws.keys():
+            update_kw_tm(kw,rel_kws[kw],database,relevant)
+
+
+
 ##
 #   assumed to be run in //
 #     - run by packet for intermediate filtering -
