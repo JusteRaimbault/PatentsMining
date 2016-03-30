@@ -62,7 +62,8 @@ yearlyCom <- function(year){#},kmin,kmax,edge_th){
 
 setwd(paste0(Sys.getenv('CS_HOME'),'/PatentsMining/Models/Semantic'))
 
-years = c(1998,1999,2005:2010)
+#years = c(1998,1999,2005:2010)
+years = 2007:2010
 for(year in years){
   yearlyCom(year)
 }
