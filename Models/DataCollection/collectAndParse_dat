@@ -1,0 +1,15 @@
+
+URL=$1
+
+FILE=`echo $URL | awk -F"/" '{print $NF}' | awk -F"." '{print $1}'`
+
+echo $FILE
+cd data
+wget $URL
+unzip $FILE
+cd ..
+
+echo "data/$FILE.dat"
+
+python dataCollection.py "data/$FILE.dat"
+

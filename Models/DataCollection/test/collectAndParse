@@ -1,7 +1,9 @@
 
 URL=$1
 
-wget $URL > data.zip
+echo $URL | awk -F
+
+wget $URL > data/.zip
 
 unzip data.zip
 
