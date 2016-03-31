@@ -34,7 +34,7 @@ def parse_dat_file(f,year):
     currentPatent['year']=year;res.append(currentPatent)
     return(res)
 
-t = parse_dat_file('test/data/2001.dat',2001)
+t = parse_dat_file('test/data/1983.dat',1983)
 for r in t :
     print(' id : '+r['id']+" ; abstract : "+r['abstract'])
 print(len(t))
