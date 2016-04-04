@@ -1,0 +1,18 @@
+
+URL=$1
+
+FILE=`echo $URL | awk -F"/" '{print $NF}' | awk -F"." '{print $1}'`
+
+echo $FILE
+cd data
+wget $URL
+unzip $FILE
+iconv -f Windows-1252 -t UTF-8 $FILE.dat > $FILE.tmp
+rm $FILE.dat
+mv $FILE.tmp $FILE.dat
+cd ..
+
+echo "File : data/$FILE.dat"
+
+python dataCollection.py "data/$FILE.dat"
+
