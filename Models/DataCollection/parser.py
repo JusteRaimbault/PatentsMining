@@ -5,10 +5,44 @@
 #import re
 import dataSchema
 #import codecs
+from lxml import etree
+from io import StringIO
 
 def parse_file(f) :
-    if f.endswith('.dat') : parse_dat_file(f)
-    if f.endswith('.xml') : parse_xml_file(f)
+    if f.endswith('.dat') : return parse_dat_file(f)
+    if f.endswith('.xml') : return parse_xml_file(f)
+
+
+def parse_xml_file(f,year):
+    proj_data = [dataSchema.xml_projection(r) for r in parse_xml_file_raw(f)]
+    for r in proj_data :
+        r['year']=year
+    return(proj_data)
+
+
+
+def parse_xml_file_raw(f) :
+    # read the file
+    print 'reading file'+str(f)
+    r=open(f,'r')
+    docs = []
+    currentLine=r.readline().replace('&','&amp;');currentDoc=''#currentLine
+    while currentLine != '':
+        currentLine=r.readline().replace('&','&amp;');
+        if currentLine.startswith('<?xml version="1.0" encoding="UTF-8"?>') :
+            docs.append(currentDoc)
+            currentLine=r.readline().replace('&','&amp;');
+            currentDoc = ''
+        currentDoc=currentDoc+currentLine
+    docs.append(currentDoc)
+    print len(docs)
+    parsed_docs = []
+    for doc in docs :
+        parser = etree.XMLParser(resolve_entities=True,attribute_defaults=True)
+        tree = etree.parse(StringIO(doc.decode('utf8')))
+        parsed_docs.append(tree.getroot())
+        #print etree.tostring(tree)
+    return parsed_docs
 
 
 
@@ -120,8 +154,3 @@ def append_dico(dico,key,value):
     else :
         dico[key] = value
     return(dico)
-
-def parse_xml_file() :
-    schema = ''
-
-#parse_dat_file('test/data/1977.dat',1977)
