@@ -10,6 +10,30 @@ def xml_projection(patent):
 
 
 
+
+
+def xml_41_projection(patent):
+    res = {}
+    res['id'] =  text_leaves(xpath(patent ,['us-bibliographic-data-grant','publication-reference','document-id','doc-number'])).lstrip('0')
+    res['grant_date'] = text_leaves(xpath(patent ,['us-bibliographic-data-grant','publication-reference','document-id','date']))
+    res['app_date'] = text_leaves(xpath(patent ,['us-bibliographic-data-grant','application-reference','document-id','date']))
+    res['abstract'] = text_leaves(xpath(patent ,['abstract']))
+    res['title'] = text_leaves(xpath(patent ,['us-bibliographic-data-grant','invention-title']))
+    #res['classes'] = [text_leaves(e) for e in multiple_xpath(patent,['SDOBI','B500','B520','B522','STEXT','PDAT'])]
+    return res
+
+
+def xml_40_projection(patent):
+    res = {}
+    res['id'] =  text_leaves(xpath(patent ,['us-bibliographic-data-grant','publication-reference','document-id','doc-number'])).lstrip('0')
+    res['grant_date'] = text_leaves(xpath(patent ,['us-bibliographic-data-grant','publication-reference','document-id','date']))
+    res['app_date'] = text_leaves(xpath(patent ,['us-bibliographic-data-grant','application-reference','document-id','date']))
+    res['abstract'] = text_leaves(xpath(patent ,['abstract']))
+    res['title'] = text_leaves(xpath(patent ,['us-bibliographic-data-grant','invention-title']))
+    #res['classes'] = [text_leaves(e) for e in multiple_xpath(patent,['SDOBI','B500','B520','B522','STEXT','PDAT'])]
+    return res
+
+
 ##
 # lxml object to data dico for one record
 def xml_25_projection(patent):
