@@ -5,12 +5,13 @@
 #import re
 import dataSchema
 #import codecs
-from lxml import etree
+#from lxml import etree
 from io import StringIO
+import xml.etree.ElementTree as ElementTree
 
-def parse_file(f) :
-    if f.endswith('.dat') : return parse_dat_file(f)
-    if f.endswith('.xml') : return parse_xml_file(f)
+def parse_file(f,year) :
+    if f.endswith('.dat') : return parse_dat_file(f,year)
+    if f.endswith('.xml') : return parse_xml_file(f,year)
 
 
 def parse_xml_file(f,year):
@@ -38,10 +39,13 @@ def parse_xml_file_raw(f) :
     print len(docs)
     parsed_docs = []
     for doc in docs :
-        parser = etree.XMLParser(resolve_entities=True,attribute_defaults=True)
-        tree = etree.parse(StringIO(doc.decode('utf8')))
-        parsed_docs.append(tree.getroot())
-        #print etree.tostring(tree)
+        print(len(doc))
+	#parser = etree.XMLParser(resolve_entities=True,attribute_defaults=True)
+        #tree = etree.parse(StringIO(doc.decode('utf8')),parser)
+        tree = ElementTree.fromstring(doc)
+	parsed_docs.append(tree)
+        print('parsed_docs : '+str(len(parsed_docs)))
+	#print etree.tostring(tree)
     return parsed_docs
 
 
