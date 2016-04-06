@@ -1,0 +1,20 @@
+
+URL=$1
+
+FILE=`echo $URL | awk -F"/" '{print $NF}' 
+# | awk -F"_" '{print $1}'`
+
+echo "Processing file : "$FILE
+cd data
+wget $URL
+unzip $FILE
+#unzip $FILE"_xml.zip"
+#iconv -f Windows-1252 -t UTF-8 $FILE.dat > $FILE.tmp
+#rm $FILE.dat
+mv $FILE"cat_xml.xml" $FILE".xml"
+cd ..
+
+echo "File : data/$FILE.xml"
+
+#python dataCollection.py "data/$FILE.xml"
+
