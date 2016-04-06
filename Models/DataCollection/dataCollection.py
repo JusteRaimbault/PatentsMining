@@ -17,7 +17,7 @@ def import_file(f):
     database = mongo['redbook']
     database.raw.create_index('id')
 
-    year = f.split('/')[1].split('.')[0]
+    year = f.split('/')[1].split('.')[0].split('_')[0]
 
     data = parser.parse_file(f,year)
 

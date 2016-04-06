@@ -42,9 +42,13 @@ def parse_xml_file_raw(f) :
         print(len(doc))
 	#parser = etree.XMLParser(resolve_entities=True,attribute_defaults=True)
         #tree = etree.parse(StringIO(doc.decode('utf8')),parser)
-        tree = ElementTree.fromstring(doc)
-	parsed_docs.append(tree)
-        print('parsed_docs : '+str(len(parsed_docs)))
+        try :
+	    tree = ElementTree.fromstring(doc)
+	    parsed_docs.append(tree)
+        except :
+	    log = open('errors/'+str(f).replace('/','.')+'.log','a')
+	    log.write(doc)
+	print('parsed_docs : '+str(len(parsed_docs)))
 	#print etree.tostring(tree)
     return parsed_docs
 
