@@ -1,21 +1,17 @@
-import time,bootstrap
+import time,bootstrap,keywords
 
 
 
 def run():
-    #test_dico()
-    #import_kw_dico('../../data/processed/keywords.sqlite3')
-    #extract_all_keywords()
-    #termhood_extraction()
-    #bootstrap.test_bootstrap()
+    keywords.extract_keywords_year("1980")
     #year=2005;limit=-1;kwLimit=3000;subCorpusSize=20000;bootstrapSize=10;nruns=2
     #year=2005;
-    kwLimit=20000
+    #kwLimit=20000
     #limit=-1;subCorpusSize=10000;bootstrapSize=10;nruns=10 #test set
     #bootstrap.init_bootstrap(year,limit,kwLimit,subCorpusSize,bootstrapSize,nruns)
-    for year in range(1998,2011) :
+    #for year in range(1998,2011) :
         #bootstrap.run_bootstrap(year,limit,kwLimit,subCorpusSize,bootstrapSize,nruns)
-        bootstrap.relevant_full_corpus(year,kwLimit)
+    #    bootstrap.relevant_full_corpus(year,kwLimit)
 
 
 

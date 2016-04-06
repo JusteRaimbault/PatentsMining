@@ -35,6 +35,12 @@ def extract_remaining_keywords() :
     existing = mongo['patents_keywords'].keywords.find({},{'id'})
 
 
+def extract_keywords_year(year):
+    corpus = data.get_patent_data(year,10)
+    [p_kw_dico,kw_p_dico] = construct_occurrence_dico(corpus)
+    print p_kw_dico
+    #data.export_kw_dico('patent','keywords',p_kw_dico,year)
+
 
 # extract relevant keywords, using unithood and termhood
 #  @returns [tselected,p_tsel_dico] : dico kw -> termhood ; dico patent -> kws
@@ -154,7 +160,7 @@ def construct_occurrence_dico(data) :
     p_kw_dico = dict()
     kw_p_dico = dict()
     for patent in data :
-        patent_id = data.get_patent_id(patent)
+        patent_id = patent[0]#data.get_patent_id(patent)
         keywords = extract_keywords(patent[1]+". "+patent[2],patent_id)
         #print(keywords)
 
@@ -214,8 +220,8 @@ def extract_keywords(raw_text,id):
     # multi-term
     multiterms = []
     for i in range(len(tagged_text)) :
-        # max length 4 for multi-terms
-        for l in range(1,5) :
+        # max length 4 for multi-terms ==> 3
+        for l in range(1,4) :
             if i+l < len(tagged_text) :
                 tags = [tagged_text[k] for k in range(i,i+l)]
                 if potential_multi_term(tags) :

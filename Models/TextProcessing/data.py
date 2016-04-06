@@ -15,11 +15,44 @@ def test_db():
 
 
 
+##
+#  export to mongo
+def export_kw_dico(database,collection,p_kw_dico,year):
+    mongo = pymongo.MongoClient('localhost', 29019)
+    database = mongo[database]
+    col = database[collection]
+    col.create_index("id")
+
+    data = []
+
+    for p in p_kw_dico.keys() :
+        data.append({"id":p,"keywords":p_kw_dico[p],"year":str(year)})
+
+    col.update_many(data)
+
+
+def import_kw_dico(database,collection,year):
+    mongo = pymongo.MongoClient('localhost', 29019)
+    database = mongo[database]
+    col = database[collection]
+
+    data = col.find({"year":year})
+    p_kw_dico={}
+    kw_p_dico={}
+
+    for row in data:
+        keywords = row['keywords'];patent_id=row['id']
+        p_kw_dico[patent_id] = keywords
+        for kw in keywords :
+            if kw not in kw_p_dico : kw_p_dico[kw] = []
+            kw_p_dico[kw].append(kw)
+
+    return([p_kw_dico,kw_p_dico])
 
 ##
 #  exports a dico to sqlite db
 #  (to avoid reprocessing)
-def export_kw_dico(database,p_kw_dico) :
+def export_kw_dico_sqlite(database,p_kw_dico) :
     conn = sqlite3.connect(database)
     c = conn.cursor()
 
@@ -38,7 +71,7 @@ def export_kw_dico(database,p_kw_dico) :
 
 ##
 #  import dictionnaries from sqlite db ; table assumed as keywords = (patent_id ; keywords separated by ';')
-def import_kw_dico(database,rawdb,year) :
+def import_kw_dico_sqlite(database,rawdb,year) :
     conn = sqlite3.connect(database)
     c = conn.cursor()
     c.execute('ATTACH DATABASE \''+rawdb+'\' as \'patent\'')
@@ -66,7 +99,18 @@ def get_patent_id(cursor_raw):
 
 
 
-def get_patent_data(year,limit,full) :
+def get_patent_data(year,limit):
+    mongo = pymongo.MongoClient('localhost', 29019)
+    database = mongo['redbook']
+    col = database['raw']
+    data = raw.find({"year":year},{"id":1,"title":1,"abstract":1}).limit(limit)
+    res=[]
+    for row in data :
+        res.append([row['id'],row['title'],row['abstract']])
+    return(res)
+
+
+def get_patent_data_sqlite(year,limit,full) :
     # connect to the database
     #conn = sqlite3.connect('../../Data/raw/patdesc/patdesc.sqlite3')
     conn = sqlite3.connect('data/patent.sqlite3')
