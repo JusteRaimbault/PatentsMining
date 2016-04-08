@@ -25,12 +25,40 @@ def export_redbook_as_csv(fields,file) :
 
     for row in data :
         print row
-	for i in range(len(fields)) :
+	    for i in range(len(fields)) :
             if fields[i] in row : writer.write(row[fields[i]])
             if i < len(fields)-1:
                 writer.write(";")
             else :
                 writer.write("\n")
 
+def export_classes_as_csv(file,max_year):
+    mongo = pymongo.MongoClient('localhost', 29019)
+    database = mongo['redbook']
+    data = database.raw.find({"id":{"$regex":"[0-9]*"},"year":{"$lt":max_year}},{"id":1,"classes":1})
 
-export_redbook_as_csv(['id','grant_date','app_date'],'export/redbook.csv')
+    writer = open(file,'w')
+
+    writer.write('id;class;primary\n')
+
+    for row in data :
+        print row
+        if 'id' in row :
+            patent_id = row['id']
+            if 'classes' in row :
+                classes = row['classes']
+                # primary classif : OCL
+                if 'OCL' in classes : writer.write(patent_id+';'+classes['OCL']+';1\n')
+                if 'XCL' in classes :
+                    xcl_classes = classes['XCL']
+                    if type(xcl_classes)==type([]):
+                        for xcl in xcl_classes :
+                             writer.write(patent_id+';'+xcl+';0\n')
+                    else :
+                        writer.write(patent_id+';'+xcl_classes+';0\n')
+
+
+
+#export_redbook_as_csv(['id','grant_date','app_date'],'export/redbook.csv')
+
+export_classes_as_csv('export/classes_76-01.csv',2002)
