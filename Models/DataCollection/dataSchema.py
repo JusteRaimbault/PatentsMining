@@ -130,6 +130,7 @@ def dat_projection(patent):
             res['app_date']=patent[k]
         elif k=='ABST' :
             abstract = patent[k]
+	    print patent
             text = ""
             additional = {}
             for kk in abstract.keys():

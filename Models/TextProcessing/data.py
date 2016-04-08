@@ -1,4 +1,4 @@
-import sqlite3
+import sqlite3,pymongo
 
 
 
@@ -28,7 +28,7 @@ def export_kw_dico(database,collection,p_kw_dico,year):
     for p in p_kw_dico.keys() :
         data.append({"id":p,"keywords":p_kw_dico[p],"year":str(year)})
 
-    col.update_many(data)
+    col.insert_many(data)
 
 
 def import_kw_dico(database,collection,year):
@@ -103,10 +103,11 @@ def get_patent_data(year,limit):
     mongo = pymongo.MongoClient('localhost', 29019)
     database = mongo['redbook']
     col = database['raw']
-    data = raw.find({"year":year},{"id":1,"title":1,"abstract":1}).limit(limit)
+    data = col.find({"year":year,"id":{"$regex":r'^[0-9]'},"abstract":{"$regex":r'.'}},{"id":1,"title":1,"abstract":1})#.limit(limit)
     res=[]
     for row in data :
-        res.append([row['id'],row['title'],row['abstract']])
+        #print row
+	res.append([row['id'],row['title'],row['abstract']])
     return(res)
 
 

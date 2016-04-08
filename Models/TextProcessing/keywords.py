@@ -36,10 +36,10 @@ def extract_remaining_keywords() :
 
 
 def extract_keywords_year(year):
-    corpus = data.get_patent_data(year,10)
+    corpus = data.get_patent_data(year,0)
+    print 'corpus size : '+str(len(corpus))
     [p_kw_dico,kw_p_dico] = construct_occurrence_dico(corpus)
-    print p_kw_dico
-    #data.export_kw_dico('patent','keywords',p_kw_dico,year)
+    data.export_kw_dico('patent','keywords',p_kw_dico,year)
 
 
 # extract relevant keywords, using unithood and termhood
@@ -164,8 +164,8 @@ def construct_occurrence_dico(data) :
         keywords = extract_keywords(patent[1]+". "+patent[2],patent_id)
         #print(keywords)
 
-        for w in keywords :
-            k = reduce(lambda s1,s2 : s1+' '+s2,w)
+        for k in keywords :
+            #k = reduce(lambda s1,s2 : s1+' '+s2,w)
             # add to p_kw dico
             if k in kw_p_dico :
                 kw_p_dico[k].append(patent_id)
@@ -218,7 +218,7 @@ def extract_keywords(raw_text,id):
     #print(nouns)
 
     # multi-term
-    multiterms = []
+    multiterms = set()
     for i in range(len(tagged_text)) :
         # max length 4 for multi-terms ==> 3
         for l in range(1,4) :
@@ -226,7 +226,7 @@ def extract_keywords(raw_text,id):
                 tags = [tagged_text[k] for k in range(i,i+l)]
                 if potential_multi_term(tags) :
                     multistem = [str.lower(stemmer.stem(tagged_text[k][0]).encode('ascii','ignore')) for k in range(i,i+l)]
-                    multistem.sort(key=str.lower)
-                    multiterms.append(multistem)
+                    #multistem.sort(key=str.lower)
+                    multiterms.add(reduce(lambda s1,s2 : s1+' '+s2,multistem))
 
-    return multiterms
+    return list(multiterms)
