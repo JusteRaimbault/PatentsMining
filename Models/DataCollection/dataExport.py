@@ -25,7 +25,7 @@ def export_redbook_as_csv(fields,file) :
 
     for row in data :
         print row
-	    for i in range(len(fields)) :
+	for i in range(len(fields)) :
             if fields[i] in row : writer.write(row[fields[i]])
             if i < len(fields)-1:
                 writer.write(";")
@@ -35,7 +35,7 @@ def export_redbook_as_csv(fields,file) :
 def export_classes_as_csv(file,max_year):
     mongo = pymongo.MongoClient('localhost', 29019)
     database = mongo['redbook']
-    data = database.raw.find({"id":{"$regex":"[0-9]*"},"year":{"$lt":max_year}},{"id":1,"classes":1})
+    data = database.raw.find({"id":{"$regex":r'^[0-9]'},"year":{"$lt":max_year}},{"id":1,"classes":1})
 
     writer = open(file,'w')
 
@@ -61,4 +61,4 @@ def export_classes_as_csv(file,max_year):
 
 #export_redbook_as_csv(['id','grant_date','app_date'],'export/redbook.csv')
 
-export_classes_as_csv('export/classes_76-01.csv',2002)
+export_classes_as_csv('export/classes_76-01.csv',"2002")

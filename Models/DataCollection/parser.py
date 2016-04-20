@@ -83,7 +83,7 @@ def read_dat_as_raw(f) :
     currentLine = r.readline()
     currentPatent = []
     while currentLine != '':
-	currentLine = currentLine.replace('\n','').rstrip(' ')
+	currentLine = currentLine.replace('\n','').replace('\r','').rstrip(' ')
         if currentLine.startswith('PATN'):
             res.append(currentPatent)
             currentPatent = []
@@ -151,7 +151,7 @@ def split_field(row) :
     if len(s)>1 :
         return([s[0],s[1].lstrip()])
     else :
-        return(s[0],'') # returning empty string here causes exception when ABST is empty : should return {} ?
+        return(s[0],{}) # returning empty string here causes exception when ABST is empty : should return {} ?
 
 
 def append_dico(dico,key,value):

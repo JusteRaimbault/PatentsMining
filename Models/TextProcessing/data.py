@@ -107,7 +107,13 @@ def get_patent_data(year,limit):
     res=[]
     for row in data :
         #print row
-	res.append([row['id'],row['title'],row['abstract']])
+	i=""
+	if 'id' in row : i = row['id']
+	title = ""
+	if 'title' in row : title = row['title']
+	abstract = ""
+	if 'abstract' in row : abstract = row['abstract']
+	res.append([i,title,abstract])
     return(res)
 
 
