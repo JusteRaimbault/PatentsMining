@@ -27,16 +27,17 @@ def test_bootstrap():
 
 
 def relevant_full_corpus(year,kwLimit):
-    corpus = data.get_patent_data(year,-1,False)
+    corpus = data.get_patent_data(year,-1)
     occurence_dicos = data.import_kw_dico('patent','keywords',year)
+    print('corpus : '+str(len(corpus))+' ; dico : '+str(len(occurence_dicos[0]))+' , '+str(len(occurence_dicos[1])))
     if len(corpus) > 0 and len(occurence_dicos) > 0 :
         relevant = 'relevant_'+str(year)+'_full_'+str(kwLimit)
         mongo = pymongo.MongoClient('mongodb://root:root@127.0.0.1:29019')
         database = mongo['relevant']
         database[relevant].create_index('keyword')
-        #[rel_kws,dico] = keywords.extract_relevant_keywords(corpus,kwLimit,occurence_dicos)
-        #for kw in rel_kws.keys():
-        #    update_kw_tm(kw,rel_kws[kw],database,relevant)
+        [rel_kws,dico] = keywords.extract_relevant_keywords(corpus,kwLimit,occurence_dicos)
+        for kw in rel_kws.keys():
+            update_kw_tm(kw,rel_kws[kw],database,relevant)
 
 
 
