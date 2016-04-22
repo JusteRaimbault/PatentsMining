@@ -66,9 +66,10 @@ def extract_relevant_keywords(corpus,kwLimit,occurence_dicos):
     # computing cooccurrences
     print('Computing cooccurrences...')
     # compute termhoods :: coocurrence matrix -> in \Theta(16 N^2) - N must thus stay 'small'
-    coocs = []
-    for i in range(len(selected_kws.keys())):
-        coocs.append(([0]*len(selected_kws.keys())))
+    coocs = {}
+
+    #for i in range(len(selected_kws.keys())):
+    #    coocs.append(([0]*len(selected_kws.keys())))
     # fill the cooc matrix
     # for each patent : kws are coocurring if selected.
     # Beware to filter BEFORE launching O(n^2) procedure
@@ -81,18 +82,33 @@ def extract_relevant_keywords(corpus,kwLimit,occurence_dicos):
         for k in p_kw_dico[p] :
             if k in selected_kws : sel.append(k)
         for i in range(len(sel)-1):
+            ii = selected_kws[sel[i]]
+            if ii not in coocs : coocs[ii] = {}
             for j in range(i+1,len(sel)):
-                ii = selected_kws[sel[i]] ; jj= selected_kws[sel[j]] ;
-                coocs[ii][jj] = coocs[ii][jj] + 1
-                coocs[jj][ii] = coocs[jj][ii] + 1
+                jj= selected_kws[sel[j]]
+                if jj not in coocs : coocs[jj] = {}
+                if jj not in coocs[ii] :
+                    coocs[ii][jj] = 1
+                else :
+                    coocs[ii][jj] = coocs[ii][jj] + 1
+                if ii not in coocs[jj] :
+                    coocs[jj][ii] = 1
+                else :
+                    coocs[jj][ii] = coocs[jj][ii] + 1
+                #coocs[ii][jj] = coocs[ii][jj] + 1
+                #coocs[jj][ii] = coocs[jj][ii] + 1
 
     # compute termhoods
-    colSums = [sum(row) for row in coocs]
+    #colSums = [sum(row) for row in coocs]
+    colSums = {}
+    for i in coocs.keys():
+        colSums[i] = sum(coocs[i].values())
 
-    termhoods = [0]*len(coocs)
-    for i in range(len(coocs)):
+    #termhoods = [0]*len(coocs.keys())
+    termhoods = {}
+    for i in coocs.keys():
         s = 0;
-        for j in range(len(coocs)):
+        for j in coocs[i].keys():
             if j != i : s = s + ((coocs[i][j]-colSums[i]*colSums[j])*(coocs[i][j]-colSums[i]*colSums[j]))/(colSums[i]*colSums[j])
         termhoods[i]=s
 
