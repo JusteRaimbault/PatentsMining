@@ -34,10 +34,12 @@ def relevant_full_corpus(year,kwLimit):
         relevant = 'relevant_'+str(year)+'_full_'+str(kwLimit)
         mongo = pymongo.MongoClient('mongodb://root:root@127.0.0.1:29019')
         database = mongo['relevant']
+        # clean the collection first
+        database[relevant].delete_many({"cumtermhood":{"$gt":0}})
         database[relevant].create_index('keyword')
-        [rel_kws,dico] = keywords.extract_relevant_keywords(corpus,kwLimit,occurence_dicos)
+        [rel_kws,dico,frequencies] = keywords.extract_relevant_keywords(corpus,kwLimit,occurence_dicos)
         for kw in rel_kws.keys():
-            update_kw_tm(kw,rel_kws[kw],database,relevant)
+            update_kw_tm(kw,rel_kws[kw],frequencies[kw],rel_kws[kw]/frequencies[kw],database,relevant)
 
 
 
@@ -66,13 +68,14 @@ def run_bootstrap(year,limit,kwLimit,subCorpusSize,bootstrapSize,nruns) :
 
 
 
-def update_kw_tm(kw,incr,database,table):
+def update_kw_tm(kw,incr,frequency,tidf,database,table):
     prev = database[table].find_one({'keyword':kw})
     if prev is not None:
         prev['cumtermhood']=prev['cumtermhood']+incr
+        prev['frequency'] = frequency;prev['tidf']=tidf
         database[table].replace_one({'keyword':kw},prev)
     else :
-        database[table].insert_one({'keyword':kw,'cumtermhood':incr,'ids':[]})
+        database[table].insert_one({'keyword':kw,'cumtermhood':incr,'docfrequency':frequency,'tidf':tidf})
 
 
 

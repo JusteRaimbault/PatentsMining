@@ -50,6 +50,12 @@ def extract_relevant_keywords(corpus,kwLimit,occurence_dicos):
 
     [p_kw_dico,kw_p_dico] = extract_sub_dicos(corpus,occurence_dicos)
 
+    # compute frequencies
+    print('Compute frequencies...')
+    frequencies = {}
+    for k in kw_p_dico.keys():
+        frequencies[k] = len(kw_p_dico[k])
+
     # compute unithoods
     print('Compute unithoods...')
     unithoods = dict()
@@ -117,15 +123,19 @@ def extract_relevant_keywords(corpus,kwLimit,occurence_dicos):
     for k in selected_kws.keys():
         sorting_termhoods[k]=termhoods[selected_kws[k]]
 
-    return(extract_from_termhood(sorting_termhoods,p_kw_dico,kwLimit))
+    [rel_kws,dico,freqselected] = extract_from_termhood(sorting_termhoods,p_kw_dico,kwLimit)
+
+    return([rel_kws,dico,freqselected])
 
 
-def extract_from_termhood(termhoods,p_kw_dico,kwLimit):
+def extract_from_termhood(termhoods,p_kw_dico,frequencies,kwLimit):
     sorted_termhoods = sorted(termhoods.items(), key=operator.itemgetter(1),reverse=True)
 
-    tselected = dict()
+    tselected = {}
+    freqselected = {}
     for i in range(kwLimit):
         tselected[sorted_termhoods[i][0]] = sorted_termhoods[i][1]
+        freqselected[sorted_termhoods[i][0]] = frequencies[sorted_termhoods[i][0]]
 
     # reconstruct the patent -> tselected dico, finally necessary to build kw nw
     p_tsel_dico = dict()
@@ -136,7 +146,7 @@ def extract_from_termhood(termhoods,p_kw_dico,kwLimit):
         p_tsel_dico[p] = sel
 
     # eventually write to file ? -> do that in other proc (! atomicity)
-    return([tselected,p_tsel_dico])
+    return([tselected,p_tsel_dico,freqselected])
 
 ##
 #  Given large occurence dico, extracts corresponding subdico
