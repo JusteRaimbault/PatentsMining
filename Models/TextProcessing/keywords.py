@@ -123,7 +123,7 @@ def extract_relevant_keywords(corpus,kwLimit,occurence_dicos):
     for k in selected_kws.keys():
         sorting_termhoods[k]=termhoods[selected_kws[k]]
 
-    [rel_kws,dico,freqselected] = extract_from_termhood(sorting_termhoods,p_kw_dico,kwLimit)
+    [rel_kws,dico,freqselected] = extract_from_termhood(sorting_termhoods,p_kw_dico,frequencies,kwLimit)
 
     return([rel_kws,dico,freqselected])
 
