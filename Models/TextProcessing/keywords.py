@@ -52,9 +52,9 @@ def extract_relevant_keywords(corpus,kwLimit,occurence_dicos):
 
     # compute frequencies
     print('Compute frequencies...')
-    frequencies = {}
+    docfrequencies = {}
     for k in kw_p_dico.keys():
-        frequencies[k] = len(kw_p_dico[k])
+        docfrequencies[k] = len(kw_p_dico[k])
 
     # compute unithoods
     print('Compute unithoods...')
@@ -125,7 +125,7 @@ def extract_relevant_keywords(corpus,kwLimit,occurence_dicos):
     #for k in selected_kws.keys():
     #    sorting_termhoods[k]=termhoods[selected_kws[k]]
 
-    [tselected,dico,freqselected] = extract_from_termhood(termhoods,p_kw_dico,frequencies,kwLimit)
+    [tselected,dico,freqselected] = extract_from_termhood(termhoods,p_kw_dico,docfrequencies,kwLimit)
 
     # construct graph edge list (! undirected)
     edge_list = []
