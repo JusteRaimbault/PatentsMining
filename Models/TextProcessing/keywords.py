@@ -64,7 +64,9 @@ def extract_relevant_keywords(corpus,kwLimit,occurence_dicos):
         unithoods[k]=math.log(l+1)*len(kw_p_dico[k])
 
     # sort and keep K*N keywords ; K = 4 for now ?
-    selected_kws = dict() # dictionary : kw -> index in matrix
+    selected_kws = {} # dictionary : kw -> index in matrix
+    #selected_kws_indexes = {} # dico index -> kw.  Q : use kw as keys in cooc matrix ?
+    #  seems to be even more performant
     sorted_unithoods = sorted(unithoods.items(), key=operator.itemgetter(1),reverse=True)
     for i in range(4*kwLimit):
         selected_kws[sorted_unithoods[i][0]] = i
@@ -123,9 +125,15 @@ def extract_relevant_keywords(corpus,kwLimit,occurence_dicos):
     for k in selected_kws.keys():
         sorting_termhoods[k]=termhoods[selected_kws[k]]
 
-    [rel_kws,dico,freqselected] = extract_from_termhood(sorting_termhoods,p_kw_dico,kwLimit)
+    [tselected,dico,freqselected] = extract_from_termhood(sorting_termhoods,p_kw_dico,frequencies,kwLimit)
 
-    return([rel_kws,dico,freqselected])
+    # construct graph edge list
+    edge_list = []
+    for kw in tselected.keys():
+        ii = selected_kws[kw]
+        edge_list.append()
+
+    return([tselected,dico,freqselected])
 
 
 def extract_from_termhood(termhoods,p_kw_dico,frequencies,kwLimit):
