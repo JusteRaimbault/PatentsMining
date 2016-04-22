@@ -32,6 +32,7 @@ def relevant_full_corpus(year,kwLimit):
     print('corpus : '+str(len(corpus))+' ; dico : '+str(len(occurence_dicos[0]))+' , '+str(len(occurence_dicos[1])))
     if len(corpus) > 0 and len(occurence_dicos) > 0 :
         relevant = 'relevant_'+str(year)+'_full_'+str(kwLimit)
+        network = 'network_'+str(year)+'_full_'+str(kwLimit)+'_eth10'
         mongo = pymongo.MongoClient('mongodb://root:root@127.0.0.1:29019')
         database = mongo['relevant']
         # clean the collection first
@@ -39,10 +40,11 @@ def relevant_full_corpus(year,kwLimit):
         database[relevant].create_index('keyword')
         [rel_kws,dico,frequencies,edge_list] = keywords.extract_relevant_keywords(corpus,kwLimit,occurence_dicos)
         print('insert relevant...')
-	for kw in rel_kws.keys():
+	    for kw in rel_kws.keys():
             update_kw_tm(kw,rel_kws[kw],frequencies[kw],math.log(rel_kws[kw])*math.log(len(corpus)/frequencies[kw]),database,relevant)
         print('insert edges...')
-	database['network_'+str(year)+'_full_'+str(kwLimit)].insert_many(edge_list)
+        database[network].delete_many({"weight":{"$gt":0}})
+	    database[network].insert_many(edge_list)
 
 
 

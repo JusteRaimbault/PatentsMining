@@ -132,7 +132,8 @@ def extract_relevant_keywords(corpus,kwLimit,occurence_dicos):
     for kw in tselected.keys():
         for ki in coocs[kw].keys():
             if ki in tselected :
-                edge_list.append({'edge' : kw+";"+ki, 'weight' : coocs[kw][ki]})
+                if coocs[kw][ki] >= 10 :
+                    edge_list.append({'edge' : kw+";"+ki, 'weight' : coocs[kw][ki]})
 
 
     return([tselected,dico,freqselected,edge_list])
