@@ -1,4 +1,4 @@
-import numpy,pymongo
+import numpy,pymongo,math
 import utils,data,keywords
 
 
@@ -37,9 +37,10 @@ def relevant_full_corpus(year,kwLimit):
         # clean the collection first
         database[relevant].delete_many({"cumtermhood":{"$gt":0}})
         database[relevant].create_index('keyword')
-        [rel_kws,dico,frequencies] = keywords.extract_relevant_keywords(corpus,kwLimit,occurence_dicos)
+        [rel_kws,dico,frequencies,edge_list] = keywords.extract_relevant_keywords(corpus,kwLimit,occurence_dicos)
         for kw in rel_kws.keys():
-            update_kw_tm(kw,rel_kws[kw],frequencies[kw],rel_kws[kw]/frequencies[kw],database,relevant)
+            update_kw_tm(kw,rel_kws[kw],frequencies[kw],math.log(rel_kws[kw])*math.log(len(corpus)/frequencies[kw]),database,relevant)
+        database['network_'+str(year)+'_full_'+str(kwLimit)].insert_many(edge_list)
 
 
 

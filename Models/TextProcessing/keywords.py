@@ -70,6 +70,7 @@ def extract_relevant_keywords(corpus,kwLimit,occurence_dicos):
     sorted_unithoods = sorted(unithoods.items(), key=operator.itemgetter(1),reverse=True)
     for i in range(4*kwLimit):
         selected_kws[sorted_unithoods[i][0]] = i
+        #selected_kws.append(sorted_unithoods[i][0])
 
     # computing cooccurrences
     print('Computing cooccurrences...')
@@ -90,50 +91,51 @@ def extract_relevant_keywords(corpus,kwLimit,occurence_dicos):
         for k in p_kw_dico[p] :
             if k in selected_kws : sel.append(k)
         for i in range(len(sel)-1):
-            ii = selected_kws[sel[i]]
-            if ii not in coocs : coocs[ii] = {}
+            #ii = selected_kws[sel[i]]
+            ki = sel[i]
+            if ki not in coocs : coocs[ki] = {}
             for j in range(i+1,len(sel)):
-                jj= selected_kws[sel[j]]
-                if jj not in coocs : coocs[jj] = {}
-                if jj not in coocs[ii] :
-                    coocs[ii][jj] = 1
+                kj= sel[j]
+                if kj not in coocs : coocs[kj] = {}
+                if kj not in coocs[ki] :
+                    coocs[ki][kj] = 1
                 else :
-                    coocs[ii][jj] = coocs[ii][jj] + 1
-                if ii not in coocs[jj] :
-                    coocs[jj][ii] = 1
+                    coocs[ki][kj] = coocs[ki][kj] + 1
+                if ki not in coocs[kj] :
+                    coocs[kj][ki] = 1
                 else :
-                    coocs[jj][ii] = coocs[jj][ii] + 1
-                #coocs[ii][jj] = coocs[ii][jj] + 1
-                #coocs[jj][ii] = coocs[jj][ii] + 1
+                    coocs[kj][ki] = coocs[kj][ki] + 1
 
     # compute termhoods
     #colSums = [sum(row) for row in coocs]
     colSums = {}
-    for i in coocs.keys():
-        colSums[i] = sum(coocs[i].values())
+    for ki in coocs.keys():
+        colSums[ki] = sum(coocs[ki].values())
 
     #termhoods = [0]*len(coocs.keys())
     termhoods = {}
-    for i in coocs.keys():
+    for ki in coocs.keys():
         s = 0;
-        for j in coocs[i].keys():
-            if j != i : s = s + ((coocs[i][j]-colSums[i]*colSums[j])*(coocs[i][j]-colSums[i]*colSums[j]))/(colSums[i]*colSums[j])
-        termhoods[i]=s
+        for kj in coocs[ki].keys():
+            if kj != ki : s = s + ((coocs[ki][kj]-colSums[ki]*colSums[kj])*(coocs[ki][kj]-colSums[ki]*colSums[kj]))/(colSums[ki]*colSums[kj])
+        termhoods[ki]=s
 
     # sort and filter on termhoods
-    sorting_termhoods = dict()
-    for k in selected_kws.keys():
-        sorting_termhoods[k]=termhoods[selected_kws[k]]
+    #sorting_termhoods = {}
+    #for k in selected_kws.keys():
+    #    sorting_termhoods[k]=termhoods[selected_kws[k]]
 
-    [tselected,dico,freqselected] = extract_from_termhood(sorting_termhoods,p_kw_dico,frequencies,kwLimit)
+    [tselected,dico,freqselected] = extract_from_termhood(termhoods,p_kw_dico,frequencies,kwLimit)
 
-    # construct graph edge list
+    # construct graph edge list (! undirected)
     edge_list = []
     for kw in tselected.keys():
-        ii = selected_kws[kw]
-        edge_list.append()
+        for ki in coocs[kw].keys():
+            if ki in tselected :
+                edge_list.append({'edge' : kw+";"+ki, 'weight' : coocs[kw][ki]})
 
-    return([tselected,dico,freqselected])
+
+    return([tselected,dico,freqselected,edge_list])
 
 
 def extract_from_termhood(termhoods,p_kw_dico,frequencies,kwLimit):
