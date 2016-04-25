@@ -23,7 +23,7 @@ def data_to_mongo(sqlitedir,mongodb):
     d = data.get_patent_data_sqlite(sqlitedir,-1,-1,True)
     col=db['patent']
     for row in d:
-        col.insert_one({'id':row[0],'title':row[1],'abstract':row[2],'year':row[3],'date':row[4]})
+        col.insert_one({'id':row[0],'title':row[1],'abstract':row[2],'year':str(row[3]),'date':row[4]})
     col.create_index('id')
 
 # add some data to keywords ; avoiding $lookup
@@ -33,8 +33,7 @@ def data_to_kwtable(sqlitedb,mongodb):
     data = utils.fetch_sqlite('SELECT patent,GYear FROM patent;',sqlitedb)
     col=db['keywords']
     for row in data :
-        col.update({'id':row[0]},{'$set' : {'year':row[1]}})
-
+        col.update({'id':row[0]},{'$set' : {'year':str(row[1])}})
 
 
 data_to_mongo('/mnt/volume1/juste/ComplexSystems/PatentsMining/data','patents_fung')
