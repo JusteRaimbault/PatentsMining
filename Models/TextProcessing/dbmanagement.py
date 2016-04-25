@@ -19,10 +19,11 @@ def keywords_to_mongo(sqlitedb,mongodb):
 def data_to_mongo(sqlitedb,mongodb):
     client=pymongo.MongoClient()
     db=client[mongodb]
-    data = utils.fetch_sqlite('SELECT patent,GYear,GDate FROM patent;',sqlitedb)
+    #data = utils.fetch_sqlite('SELECT patent,GYear,GDate FROM patent;',sqlitedb)
+    get_patent_data_sqlite(-1,-1,True)
     col=db['patent']
     for row in data:
-        col.insert_one({'id':row[0],'year':row[1],'date':row[2]})
+        col.insert_one({'id':row[0],'title':row[1],'abstract':row[2],'year':row[3],'date':row[4]})
     col.create_index('id')
 
 # add some data to keywords ; avoiding $lookup
@@ -35,6 +36,7 @@ def data_to_kwtable(sqlitedb,mongodb):
         col.update({'id':row[0]},{'$set' : {'year':row[1]}})
 
 
-#keywords_to_mongo('data/keywords.sqlite3','patents_keywords')
-#data_to_mongo('data/patent.sqlite3','patents_keywords')
+
+data_to_mongo('data/patent.sqlite3','patents_fung')
+keywords_to_mongo('data/keywords.sqlite3','patents_fung')
 data_to_kwtable('data/patent.sqlite3','patents_keywords')

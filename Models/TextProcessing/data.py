@@ -137,7 +137,7 @@ def get_patent_data_sqlite(year,limit,full) :
     #cursor.execute('SELECT patdesc.patent,patent.patent FROM patent,patdesc WHERE patent.patent=patdesc.patent LIMIT 10;')
     # retrieve records
     if full :
-        query='SELECT patent.patent,title,abstract,GYear FROM patdesc,patent WHERE patdesc.patent = patent.patent AND (NOT (Patent glob \'*[A-z]*\')) AND abstract!=\'\''
+        query='SELECT patent.patent,title,abstract,GYear,GDate FROM patdesc,patent WHERE patdesc.patent = patent.patent AND (NOT (Patent glob \'*[A-z]*\')) AND abstract!=\'\''
     else :
         query='SELECT patent.patent,GYear FROM patent,patdesc WHERE patdesc.patent = patent.patent AND (NOT (patent.patent glob \'*[A-z]*\')) AND abstract!=\'\''
     if year != -1 :
