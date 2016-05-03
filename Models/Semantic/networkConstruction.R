@@ -8,7 +8,8 @@ library(rmongodb)
 ##
 # construct network from mongo
 importNetwork<-function(relevantcollection,kwcollection,kwyear,nwcollection,edge_th,target){
-  mongo <- mongo.create(host="127.0.0.1:29019")
+  show(paste0('Constructing network for year ',kwyear,' with eth ',edge_th))
+  mongo <- mongo.create(host="mongodb://root:root@127.0.0.1:29019")
   # 
   relevant <- mongo.find.all(mongo,relevantcollection)
   dico <- mongo.find.all(mongo,kwcollection,query=list(year=kwyear))
