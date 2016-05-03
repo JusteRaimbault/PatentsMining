@@ -18,8 +18,8 @@ def test_db():
 ##
 #  export to mongo
 def export_kw_dico(database,collection,p_kw_dico,year):
-    mongo = pymongo.MongoClient('localhost', 29019)
-    #mongo = pymongo.MongoClient('mongodb://root:root@127.0.0.1:29019')
+    #mongo = pymongo.MongoClient('localhost', 29019)
+    mongo = pymongo.MongoClient('mongodb://root:root@127.0.0.1:29019')
     database = mongo[database]
     col = database[collection]
     col.create_index("id")
@@ -33,8 +33,8 @@ def export_kw_dico(database,collection,p_kw_dico,year):
 
 
 def import_kw_dico(database,collection,year):
-    mongo = pymongo.MongoClient('localhost', 29019)
-    #mongo = pymongo.MongoClient('mongodb://root:root@127.0.0.1:29019')
+    #mongo = pymongo.MongoClient('localhost', 29019)
+    mongo = pymongo.MongoClient('mongodb://root:root@127.0.0.1:29019')
     database = mongo[database]
     col = database[collection]
 
@@ -101,14 +101,17 @@ def get_patent_id(cursor_raw):
 
 
 
-def get_patent_data(db,collection,year,limit):
-    mongo = pymongo.MongoClient('localhost', 29019)
-    #mongo = pymongo.MongoClient('mongodb://root:root@127.0.0.1:29019')
+def get_patent_data(db,collection,year,limit,full=True):
+    #mongo = pymongo.MongoClient('localhost', 29019)
+    mongo = pymongo.MongoClient('mongodb://root:root@127.0.0.1:29019')
     #database = mongo['redbook']
     database = mongo[db]
     #col = database['raw']
     col = database[collection]
-    data = col.find({"year":year,"id":{"$regex":r'^[0-9]'},"abstract":{"$regex":r'.'}},{"id":1,"title":1,"abstract":1})#.limit(limit)
+    if full :
+	data = col.find({"year":year,"id":{"$regex":r'^[0-9]'},"abstract":{"$regex":r'.'}},{"id":1,"title":1,"abstract":1})#.limit(limit)
+    else :
+	data = col.find({"year":year,"id":{"$regex":r'^[0-9]'}},{"id":1})
     #print(len(data))
     #print(col.count())
     #data = col.find()
