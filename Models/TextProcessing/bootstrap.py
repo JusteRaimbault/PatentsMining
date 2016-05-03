@@ -43,11 +43,11 @@ def relevant_full_corpus(year,kwLimit):
         database[relevant].create_index('keyword')
         [rel_kws,dico,frequencies,edge_list] = keywords.extract_relevant_keywords(corpus,kwLimit,occurence_dicos)
         print('insert relevant...')
-	    for kw in rel_kws.keys():
+	for kw in rel_kws.keys():
             update_kw_tm(kw,rel_kws[kw],frequencies[kw],math.log(rel_kws[kw])*math.log(len(corpus)/frequencies[kw]),database,relevant)
         print('insert edges...')
         database[network].delete_many({"weight":{"$gt":0}})
-	    database[network].insert_many(edge_list)
+	database[network].insert_many(edge_list)
 
 
 
