@@ -27,16 +27,20 @@ def test_bootstrap():
 
 
 def relevant_full_corpus(year,kwLimit):
-    dbdata = 'patents_fung'
-    dbrelevant = 'relevant_fung'
-    corpus = data.get_patent_data(dbdata,'patent',year,-1)
-    occurence_dicos = data.import_kw_dico(dbdata,'keywords',year)
+    #dbdata = 'patents_fung'
+    #dbrelevant = 'relevant_fung'
+    dbdata = 'patent'
+    coldata = 'keywords'
+    coldico = 'keywords'
+    dbrelevant = 'relevant'
+    corpus = data.get_patent_data(dbdata,coldata,year,-1,full=False)
+    occurence_dicos = data.import_kw_dico(dbdata,coldico,year)
     print('corpus : '+str(len(corpus))+' ; dico : '+str(len(occurence_dicos[0]))+' , '+str(len(occurence_dicos[1])))
     if len(corpus) > 0 and len(occurence_dicos) > 0 :
         relevant = 'relevant_'+str(year)+'_full_'+str(kwLimit)
         network = 'network_'+str(year)+'_full_'+str(kwLimit)+'_eth10'
-        #mongo = pymongo.MongoClient('mongodb://root:root@127.0.0.1:29019')
-        mongo = pymongo.MongoClient('localhost',29019)
+        mongo = pymongo.MongoClient('mongodb://root:root@127.0.0.1:29019')
+        #mongo = pymongo.MongoClient('localhost',29019)
         database = mongo[dbrelevant]
         # clean the collection first
         database[relevant].delete_many({"cumtermhood":{"$gt":0}})
