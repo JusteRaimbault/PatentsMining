@@ -21,6 +21,9 @@ for(year in years){
   
   clust = clusters(g);cmax = which(clust$csize==max(clust$csize))
   ggiant = induced.subgraph(g,which(clust$membership==cmax))
+
+  dd = V(ggiant)$docfreq
+  d = degree(ggiant)
   
   kmin = 0
   
@@ -40,8 +43,6 @@ for(year in years){
       for(kmax in seq(from=0.05,to=0.6,by=0.05)*max(d)){
         for(edge_th in seq(from=50,to=250,by=20)){
           show(paste0('kmax : ',kmax,' e_th : ',edge_th,' ; freqmin : ',freqmin,' ; freqmax : ',freqmax))
-          dd = V(ggiant)$docfreq
-          d = degree(ggiant)
           gg=induced_subgraph(ggiant,which(d>kmin&d<kmax&dd>freqmin&dd<freqmax))
           gg=subgraph.edges(gg,which(E(gg)$weight>edge_th))
           clust = clusters(gg);cmax = which(clust$csize==max(clust$csize))
