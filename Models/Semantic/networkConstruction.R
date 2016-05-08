@@ -9,11 +9,15 @@ library(rmongodb)
 # construct network from mongo
 importNetwork<-function(relevantcollection,kwcollection,kwyear,nwcollection,edge_th,target){
   show(paste0('Constructing network for year ',kwyear,' with eth ',edge_th))
-  mongo <- mongo.create(host="mongodb://root:root@127.0.0.1:29019")
+  mongo <- mongo.create(host="127.0.0.1:29019")
+  #mongo.authenticate(mongo,"root","root")
   # 
   relevant <- mongo.find.all(mongo,relevantcollection)
-  dico <- mongo.find.all(mongo,kwcollection,query=list(year=kwyear))
-  
+  dico <- mongo.find.all(mongo,kwcollection,query=list(year=as.character(kwyear)))
+ 
+  show(paste0('dico size : ',length(dico)))
+  show(paste0('relevant : ',length(relevant)))
+ 
   relevant = data.frame(keyword=sapply(relevant,function(d){d$keyword}),
                         cumtermhood=sapply(relevant,function(d){d$cumtermhood}),
                         docfreq=sapply(relevant,function(d){d$docfrequency}),
