@@ -90,8 +90,10 @@ importNetwork<-function(relevantcollection,kwcollection,kwyear,nwcollection,edge
     w=edges[[i]]$weight
     if(w>=edge_th){
       e = strsplit(edges[[i]]$edge,";")[[1]]
+      if(length(e)==2){
       if(e[1]!=e[2]){# avoid self loops, weight info is already contained in doc frequency of nodes
         e1=append(e1,e[1]);e2=append(e2,e[2]);weights=append(weights,w)
+      }
       }
     }
   }
