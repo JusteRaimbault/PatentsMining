@@ -10,30 +10,15 @@ library(ggplot2)
 
 source('networkConstruction.R')
 
-## sqlite data
-brun = 'run_year2005_limit-1_kw2000_csize20000_b10_runs10'
-bpath=paste0('../TextProcessing/bootstrap/',brun,'/bootstrap.sqlite3')
-db = dbConnect(SQLite(),bpath)
-relevant = dbReadTable(db,'relevant')
-dico = dbReadTable(db,'dico')
 
-## Mongo data
-brun='patent_limit-1_kw2000_csize10000_b10_runs10'
-mongo <- mongoDbConnect(brun, "localhost", 27017)  
-data <- RMongo::dbGetQuery(mongo,'relevant_1998','{}')
+## Load nw
 
-
-## Construct nw
-
-nw=exportNetwork(list(relevant=relevant,dico=dico),
-                kwthreshold=2500,linkthreshold=0,
-                connex=FALSE,export=TRUE,exportPrefix="graphs/run_year2005_limit-1_kw2000_csize20000_b10_runs10/",
-                filterFile="data/filter.csv"
-                )
-
-g=nw$g;keyword_dico=nw$keyword_dico
+year = 2010
+graph=paste0('relevant_',year,'_full_100000')
+load(paste0('processed/',graph,'.RData'))
+g=res$g;
+rm(res);gc()
 g = filterGraph(g,'data/filter.csv')
-
 
 clust = clusters(g);cmax = which(clust$csize==max(clust$csize))
 ggiant = induced.subgraph(g,which(clust$membership==cmax))
@@ -41,18 +26,19 @@ ggiant = induced.subgraph(g,which(clust$membership==cmax))
 
 ## graph filtering : node degree and edge weight
 
-kmin = 50
-kmax = 800
-edge_th = 5
+kmin = 0
+kmax = 500
+edge_th = 50
+freqmin=50
+freqmax=10000
 
-# filter on degree (work already on giant component ?)
-#max(degree(ggiant))
-#max(E(ggiant)$weight) 
-d=degree(ggiant)
-gg=induced_subgraph(ggiant,which(d>kmin&d<kmax))
-gg=subgraph.edges(gg,which(E(gg)$weight>edge_th))
+sub=extractSubGraphCommunities(ggiant,kmin,kmax,freqmin,freqmax,edge_th)
+sub$gg;sub$com
 
-write.graph(gg,file = paste0('graphs/',brun,'/all_connex_filt_kmin',kmin,'_kmax',kmax,'_edge',edge_th,'.gml'),format = "gml")
+#write.graph(gg,file = paste0('graphs/',brun,'/all_connex_filt_kmin',kmin,'_kmax',kmax,'_edge',edge_th,'.gml'),format = "gml")
+write.graph(sub$gg,file = 'graphs/fung/test.gml',format = "gml")
+
+
 # filter on edge weight
 
 # communities

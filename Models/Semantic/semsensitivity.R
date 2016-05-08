@@ -6,9 +6,9 @@ library(dplyr)
 library(igraph)
 source('networkConstruction.R')
 
+#years = c("1998","1999","2000","2005","2006","2007","2008","2009","2010")
+years = read.csv(file=commandArgs(trailingOnly = TRUE)[1])
 
-
-years = c("1998","1999","2000","2005","2006","2007","2008","2009","2010")
 
 for(year in years){
   
@@ -21,6 +21,9 @@ for(year in years){
   
   clust = clusters(g);cmax = which(clust$csize==max(clust$csize))
   ggiant = induced.subgraph(g,which(clust$membership==cmax))
+
+  dd = V(ggiant)$docfreq
+  d = degree(ggiant)
   
   kmin = 0
   
@@ -40,8 +43,6 @@ for(year in years){
       for(kmax in seq(from=0.05,to=0.6,by=0.05)*max(d)){
         for(edge_th in seq(from=50,to=250,by=20)){
           show(paste0('kmax : ',kmax,' e_th : ',edge_th,' ; freqmin : ',freqmin,' ; freqmax : ',freqmax))
-          dd = V(ggiant)$docfreq
-          d = degree(ggiant)
           gg=induced_subgraph(ggiant,which(d>kmin&d<kmax&dd>freqmin&dd<freqmax))
           gg=subgraph.edges(gg,which(E(gg)$weight>edge_th))
           clust = clusters(gg);cmax = which(clust$csize==max(clust$csize))
@@ -72,15 +73,26 @@ for(year in years){
 
 #############################
 # 
-# load('sensitivity/relevant_full_100000.RData')
-# names(d)[ncol(d)-2]="balance"
-# g = ggplot(d) + scale_fill_gradient(low="yellow",high="red")#+ geom_raster(hjust = 0, vjust = 0) 
-# plots=list()
-# for(indic in c("modularity","communities","components","vertices","density","balance")){
-#   plots[[indic]] = g+geom_raster(aes_string("degree_max","edge_th",fill=indic))+facet_grid(freqmax~freqmin)
-# }
-# multiplot(plotlist = plots,cols=3)
 # 
+# library(ggplot2)
+load('sensitivity/relevant_2010_full_100000.RData')
+names(d)[ncol(d)-2]="balance"
+objdec=c(7,45,90,162,253,372,598,1023,2209)/length(res$keyword_dico)
+# load from classes file
+
+msesizes=c()
+for(i in 1:length(comsizes)){
+  msesizes=append(msesizes,sum((log(quantile(comsizes[[i]],(1:9)/10)/d$vertices[i])-log(objdec))^2))
+}
+d=cbind(msesizes,d)
+
+g = ggplot(d) + scale_fill_gradient(low="yellow",high="red")#+ geom_raster(hjust = 0, vjust = 0)
+plots=list()
+for(indic in c("modularity","communities","components","vertices","msesizes","balance")){
+  plots[[indic]] = g+geom_raster(aes_string("degree_max","edge_th",fill=indic))+facet_grid(freqmax~freqmin)
+}
+multiplot(plotlist = plots,cols=3)
+
 
 
 
