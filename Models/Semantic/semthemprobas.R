@@ -1,11 +1,12 @@
 
-setwd(paste0(Sys.getenv('CS_HOME'),'/Cybergeo/cybergeo20/HyperNetwork/Models/Analysis'))
+setwd(paste0(Sys.getenv('CS_HOME'),'/PatentsMining/Models/Semantic'))
 library(dplyr)
 library(igraph)
 source('networkConstruction.R')
 
-years = read.csv(file=commandArgs(trailingOnly = TRUE)[1])
+years = read.csv(file=commandArgs(trailingOnly = TRUE)[1],header=FALSE)
 for(year in years){
+  show(paste0('computing probas for year ',year))
   graph=paste0('relevant_',year,'_full_100000')
   load(paste0('processed/',graph,'.RData'))
   g=res$g;
