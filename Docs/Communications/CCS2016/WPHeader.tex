@@ -1,0 +1,65 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Standard header for working papers
+%
+% WPHeader.tex
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[11pt]{article}
+
+%%%%%%%%%%%%%%%%%%%%
+%% Include general header where common packages are defined
+%%%%%%%%%%%%%%%%%%%%
+
+\input{GeneralHeader.tex}
+
+%%%%%%%%%%%%%%%%%%%%
+%% Idem general commands
+%%%%%%%%%%%%%%%%%%%%
+\input{GeneralCommands.tex}
+
+
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+
+
+
+
+% geometry
+\usepackage[margin=1.5cm]{geometry}
+
+\usepackage{multicol}
+\usepackage{setspace}
+
+\usepackage{natbib}
+\setlength{\bibsep}{0.0pt}
+
+
+% layout : use fancyhdr package
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+
+\makeatletter
+
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+\fancyhead[RO,RE]{\textit{Working Paper}}
+\fancyhead[LO,LE]{G{\'e}ographie-Cit{\'e}s/LVMT}
+\fancyfoot[RO,RE] {\thepage}
+\fancyfoot[LO,LE] {\noun{J. Raimbault}}
+\fancyfoot[CO,CE] {}
+
+\makeatother
+
+
+%%%%%%%%%%%%%%%%%%%%%
+%% Begin doc
+%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+
+
+
