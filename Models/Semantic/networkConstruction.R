@@ -18,16 +18,26 @@ computeThemProbas<-function(gg,com,keyword_dico){
   }
   
   them_probas = matrix(0,length(names(keyword_dico)),length(unique(com$membership)))
+  kwproportion=c();kwnum=c()
   for(i in 1:length(names(keyword_dico))){
     if(i%%100==0){show(i)}
     kwcount=0
-    for(kw in keyword_dico[[names(keyword_dico)[i]]]){if(kw %in% names(thematics)){
-      j=thematics[[kw]]
-      them_probas[i,j]=them_probas[i,j]+1;kwcount=kwcount+1
-    }}
-    if(kwcount>0){them_probas[i,]=them_probas[i,]/kwcount}
+    for(kw in keyword_dico[[names(keyword_dico)[i]]]){
+      if(kw %in% names(thematics)){
+        j=thematics[[kw]]
+        them_probas[i,j]=them_probas[i,j]+1;kwcount=kwcount+1
+      }
+    }
+    if(kwcount>0){
+      them_probas[i,]=them_probas[i,]/kwcount
+    }
+    kn=length(keyword_dico[[names(keyword_dico)[i]]])
+    kwnum = append(kwnum,kn)
+    if(kn>0){kwproportion=append(kwproportion,kwcount/kn)}else{kwproportion=append(kwproportion,0)}
   }
-  return(them_probas)
+  res=cbind(kwproportion,kwnum,data.frame(them_probas))
+  rownames(res)=names(keyword_dico);colnames(res)[1:2]=c("kwproportion","kwnum")
+  return(res)
 }
 
 
@@ -45,6 +55,12 @@ extractSubGraphCommunities<-function(ggiant,kmin,kmax,freqmin,freqmax,edge_th){
   gg = induced.subgraph(gg,which(clust$membership==cmax))
   com = cluster_louvain(gg)
   return(list(gg=gg,com=com))
+}
+
+
+# repeated louvain
+repeatedLouvain<-function(gg,Nrep){
+  
 }
 
 
