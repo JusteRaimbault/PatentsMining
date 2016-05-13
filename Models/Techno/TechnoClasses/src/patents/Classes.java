@@ -37,7 +37,13 @@ public class Classes {
 			for(Patent p:uniquePatents){
 				String[] row = new String[yearlyclasses.keySet().size()+1];
 				row[0]=p.id;
-				for(String pcl:p.classes){row[clinds.get(pcl).intValue()+1]=(new Double(1.0/p.classes.size())).toString();}
+				if(p.classes.size()>0){
+					for(String pcl:p.classes){
+						if(clinds.containsKey(pcl)){
+							row[clinds.get(pcl).intValue()+1]=(new Double(1.0/p.classes.size())).toString();
+						}
+					}
+				}
 				c.add(row);
 			}
 			Writer.writeCSV(c, outdir+"/technoProbas_"+year+"_sizeTh"+sizeThreshold);
