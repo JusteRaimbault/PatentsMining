@@ -37,6 +37,7 @@ public class Classes {
 			for(Patent p:uniquePatents){
 				String[] row = new String[yearlyclasses.keySet().size()+1];
 				row[0]=p.id;
+				for(int i=1;i<row.length;i++){row[i]=(new Double(0.0)).toString();}
 				if(p.classes.size()>0){
 					for(String pcl:p.classes){
 						if(clinds.containsKey(pcl)){
