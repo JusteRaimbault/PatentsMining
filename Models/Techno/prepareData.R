@@ -5,6 +5,10 @@ setwd(paste0(Sys.getenv('CS_HOME'),'/PatentsMining/Models/Techno/TechnoClasses/r
 
 years = 1976:2012
 
+sizeTh = 10
+
 for(year in years){
-  d = read.table('',sep=";",row.names = TRUE,header=TRUE)
+  show(year)
+  d = read.table(file=paste0('technoProbas_',year,'_sizeTh',sizeTh),sep=";",row.names = TRUE,header=TRUE)
+  save(d,file=paste0(Sys.getenv('CS_HOME'),'/PatentsMining/Data/processed/classes/technoPerYear/technoProbas_',year,'_sizeTh',sizeTh,'.RData'))
 }
