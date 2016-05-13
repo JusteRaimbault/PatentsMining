@@ -20,21 +20,22 @@ public class Classes {
 	
 	public static void exportYearlyClasses(String classFile,String patentFile,String dateType,int[] years,int sizeThreshold,String outdir){
 		(new File(outdir)).mkdir();
+		HashMap<String,HashSet<Patent>> allclasses = classesWithDates(classFile,patentFile,dateType);
 		for(int year:years){
 			System.out.println("Exporting year "+year);
-			HashMap<String,HashSet<Patent>> classes = getYearlyClasses(classFile,patentFile,dateType,year,sizeThreshold);
+			HashMap<String,HashSet<Patent>> yearlyclasses = getYearlyClasses(allclasses,dateType,year,sizeThreshold);
 			int clind = 0;HashMap<String,Integer> clinds = new HashMap<String,Integer>();
 			HashSet<Patent> uniquePatents = new HashSet<Patent>();
-			for(String cl:classes.keySet()){
+			for(String cl:yearlyclasses.keySet()){
 				clinds.put(cl, new Integer(clind));clind++;
-				for(Patent p:classes.get(cl)){uniquePatents.add(p);}
+				for(Patent p:yearlyclasses.get(cl)){uniquePatents.add(p);}
 			}
 			LinkedList<String[]> c = new LinkedList<String[]>();
-			String[] header = new String[classes.keySet().size()+1];
-			for(String cl:classes.keySet()){header[clinds.get(cl).intValue()+1]=cl;};header[0]="ID";
+			String[] header = new String[yearlyclasses.keySet().size()+1];
+			for(String cl:yearlyclasses.keySet()){header[clinds.get(cl).intValue()+1]=cl;};header[0]="ID";
 			c.add(header);
 			for(Patent p:uniquePatents){
-				String[] row = new String[classes.keySet().size()+1];
+				String[] row = new String[yearlyclasses.keySet().size()+1];
 				row[0]=p.id;
 				for(String pcl:p.classes){row[clinds.get(pcl).intValue()+1]=(new Double(1.0/p.classes.size())).toString();}
 				c.add(row);
@@ -60,8 +61,8 @@ public class Classes {
 	
 	
 	
-	public static HashMap<String,HashSet<Patent>> getYearlyClasses(String classFile,String patentFile,String dateType,int year,int sizeThreshold){
-		HashMap<String,HashSet<Patent>> classes = classesWithDates(classFile,patentFile,dateType);
+	public static HashMap<String,HashSet<Patent>> getYearlyClasses(HashMap<String,HashSet<Patent>> classes,String dateType,int year,int sizeThreshold){
+		
 		HashMap<String,HashSet<Patent>> res = new HashMap<String,HashSet<Patent>>();
 		for(String cl:classes.keySet()){
 			HashSet<Patent> pcl = new HashSet<Patent>();
