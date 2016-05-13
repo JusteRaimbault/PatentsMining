@@ -38,6 +38,9 @@ public class Patent implements Comparable<Patent>{
 	 */
 	public HashMap<String,Long> dates;
 	
+	// corresponding years
+	public HashMap<String,Integer> years;
+	
 	
 	/**
 	 * Citing patents.
@@ -60,6 +63,7 @@ public class Patent implements Comparable<Patent>{
 		}else{
 			newP.classes = new HashSet<String>();
 			newP.dates = new HashMap<String,Long>();
+			newP.years = new HashMap<String,Integer>();
 			newP.citing = new HashSet<Citation>();newP.cited = new HashSet<Citation>();
 			patents.put(newP, newP);
 			return(newP);
@@ -80,7 +84,9 @@ public class Patent implements Comparable<Patent>{
 					// parse date
 					DateFormat dfm = new SimpleDateFormat("yyyy-MM-dd");
 					Long date = new Long(dfm.parse(sdate).getTime());
+					Integer year = new Integer(dfm.parse(sdate).getYear()+1900);
 					dates.put(field,date);
+					years.put(field, year);
 				}catch(Exception e){
 					e.printStackTrace();
 				}
