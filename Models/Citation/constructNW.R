@@ -6,7 +6,7 @@ setwd(paste0(Sys.getenv('CS_HOME'),'/PatentsMining/Data/processed/citation'))
 library(igraph)
 library(Matrix)
 
-edf1 = read.csv(file=paste0(Sys.getenv('CS_HOME'),'/PatentsMining/Data/raw/citation/citation75_99/citation75_99.csv'),stringsAsFactors = FALSE)
+edf1 = read.csv(file=paste0(Sys.getenv('CS_HOME'),'/PatentsMining/Data/raw/citation/citation75_99.csv'),stringsAsFactors = FALSE)
 edf2 = read.csv(file=paste0(Sys.getenv('CS_HOME'),'/PatentsMining/Data/raw/citation/citation00_10.csv'),stringsAsFactors = FALSE)
 
 edf = rbind(edf1[,c(1,6)],edf2[,c(1,6)])
