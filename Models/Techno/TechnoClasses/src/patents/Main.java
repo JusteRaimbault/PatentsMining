@@ -32,7 +32,7 @@ public class Main {
 		//CitationNetwork.computeOriginalities("../../../Data/raw/classesTechno/class.csv", 
 		//		"../../../Data/raw/patent/patent.csv", "AppDate", citFiles, "res/originalities_appdate", 1000);
 		
-		int[] years=new int[37];for(int i = 0;i<38;i++){years[i]=i+1976;}
+		int[] years=new int[37];for(int i = 0;i<37;i++){years[i]=i+1976;}
 		Classes.exportYearlyClasses("../../../Data/raw/classesTechno/class.csv",
 				"../../../Data/raw/patent/patent.csv", "GDate",years,10,"res/technoPerYear");
 	}
