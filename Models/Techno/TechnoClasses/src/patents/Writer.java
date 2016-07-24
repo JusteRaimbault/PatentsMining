@@ -45,7 +45,8 @@ public class Writer {
 			BufferedWriter w = new BufferedWriter(new FileWriter(new File(file)));
 			for(T[] t:data){
 				for(int j = 0;j<t.length;j++){
-					w.write(t[j].toString());if(j<t.length-1){w.write(";");}
+					w.write(t[j].toString());
+					if(j<t.length-1){w.write(";");}
 				}
 				
 				w.write("\n");
