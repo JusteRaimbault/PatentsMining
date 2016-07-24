@@ -4,3 +4,6 @@ Data/raw
 .texpadtmp
 
 *.pyc
+
+Models/Semantic/probas
+
