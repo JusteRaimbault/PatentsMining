@@ -18,9 +18,9 @@ for(year in years[,1]){
   
   kmin = 0
   freqmin = 50
-  edge_th = 50
-  for(kmaxdec in c(0.15,0.2,0.25)){
-    for(freqmaxdec in c(0.15,0.2,0.25)){
+  for(edge_th in c(10,25)){
+  for(kmaxdec in c(0.15,0.25)){
+    for(freqmaxdec in c(0.15,0.25)){
       kmax=kmaxdec*max(degree(ggiant))
       freqmax=freqmaxdec*length(res$keyword_dico)
       sub = extractSubGraphCommunities(ggiant,kmin,kmax,freqmin,freqmax,edge_th)
@@ -28,7 +28,7 @@ for(year in years[,1]){
       save(sub,probas,file=paste0('probas/',graph,'_kmin',kmin,'_kmaxdec',kmaxdec,'_freqmin',freqmin,'_freqmaxdec',freqmaxdec,'_eth',edge_th,'.RData'))
     }
   }
-  
+  }
 }
 
 #################
