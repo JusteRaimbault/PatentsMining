@@ -26,19 +26,19 @@ def test_bootstrap():
 #    database.dico.create_index('id')
 
 
-def relevant_full_corpus(year,kwLimit):
+def relevant_full_corpus(years,kwLimit):
     #dbdata = 'patents_fung'
     #dbrelevant = 'relevant_fung'
     dbdata = 'patent'
     coldata = 'keywords'
     coldico = 'keywords'
     dbrelevant = 'relevant'
-    corpus = data.get_patent_data(dbdata,coldata,year,-1,full=False)
-    occurence_dicos = data.import_kw_dico(dbdata,coldico,year)
+    corpus = data.get_patent_data(dbdata,coldata,years,-1,full=False)
+    occurence_dicos = data.import_kw_dico(dbdata,coldico,years)
     print('corpus : '+str(len(corpus))+' ; dico : '+str(len(occurence_dicos[0]))+' , '+str(len(occurence_dicos[1])))
     if len(corpus) > 0 and len(occurence_dicos) > 0 :
-        relevant = 'relevant_'+str(year)+'_full_'+str(kwLimit)
-        network = 'network_'+str(year)+'_full_'+str(kwLimit)+'_eth10'
+        relevant = 'relevant_'+str(years[0])+"-"+str(years[len(years)-1])+'_full_'+str(kwLimit)
+        network = 'network_'+str(years[0])+"-"+str(years[len(years)-1])+'_full_'+str(kwLimit)+'_eth10'
         mongo = pymongo.MongoClient('mongodb://root:root@127.0.0.1:29019')
         #mongo = pymongo.MongoClient('localhost',29019)
         database = mongo[dbrelevant]
@@ -51,7 +51,7 @@ def relevant_full_corpus(year,kwLimit):
             update_kw_tm(kw,rel_kws[kw],frequencies[kw],math.log(rel_kws[kw])*math.log(len(corpus)/frequencies[kw]),database,relevant)
         print('insert edges...')
         database[network].delete_many({"weight":{"$gt":0}})
-	database[network].insert_many(edge_list)
+        database[network].insert_many(edge_list)
 
 
 
