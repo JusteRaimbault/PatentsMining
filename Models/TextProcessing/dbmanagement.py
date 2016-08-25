@@ -35,7 +35,34 @@ def data_to_kwtable(sqlitedb,mongodb):
     for row in data :
         col.update({'id':row[0]},{'$set' : {'year':str(row[1])}})
 
+# switch from GDate to AppDate
+def update_year_records():
+    mongo = pymongo.MongoClient('mongodb://root:root@127.0.0.1:29019')
+    #from redbook : get app_date !! some patents with no app_date record -> ?
+    #  replace in kw
+    kwdata = mongo['patent']['keywords_grant'].find()
+    print 'kw data : '+str(len(kwdata))
+    redbook = mongo['redbook']['raw'].find()
+    print 'redbook : '+str(len(redbook))
+    redbookdico={}
+    for r in redbook :
+        if 'id' in r and 'app_date' in r and 'grant_date' in r : redbookdico[r['id']]={'app_date':r['app_date'],'grant_date':r['grant_date']}
+    newkwdata = []
+    for kw in kwdata :
+        if 'id' in kw :
+            if kw['id'] in redbookdico :
+                appdate = redbookdico[kw['id']]['app_date']
+                grantdate = redbookdico[kw['id']]['grant_date']
+                if len(appdate)<4 : appdate = "0000"
+                if len(grantdate)<4 : grantdate = "0000"
+                newkwdata.append({'id':kw['id'],'keywords':kw['keywords'],'app_year':appdate[:4],'grant_year':grantdate[:4],'app_date':appdate,'grant_date':grantdate})
+    print 'new data to be inserted : '+str(len(newkwdata))
+    # insert new data
+    mongo['patent']['keywords'].insert_many(newkwdata)
 
-data_to_mongo('/mnt/volume1/juste/ComplexSystems/PatentsMining/data','patents_fung')
-keywords_to_mongo('/mnt/volume1/juste/ComplexSystems/PatentsMining/data/keywords.sqlite3','patents_fung')
-data_to_kwtable('/mnt/volume1/juste/ComplexSystems/PatentsMining/data/patent.sqlite3','patents_fung')
+
+update_year_records()
+
+#data_to_mongo('/mnt/volume1/juste/ComplexSystems/PatentsMining/data','patents_fung')
+#keywords_to_mongo('/mnt/volume1/juste/ComplexSystems/PatentsMining/data/keywords.sqlite3','patents_fung')
+#data_to_kwtable('/mnt/volume1/juste/ComplexSystems/PatentsMining/data/patent.sqlite3','patents_fung')
