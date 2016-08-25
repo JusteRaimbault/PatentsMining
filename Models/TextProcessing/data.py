@@ -32,13 +32,13 @@ def export_kw_dico(database,collection,p_kw_dico,year):
     col.insert_many(data)
 
 
-def import_kw_dico(database,collection,year):
+def import_kw_dico(database,collection,years):
     #mongo = pymongo.MongoClient('localhost', 29019)
     mongo = pymongo.MongoClient('mongodb://root:root@127.0.0.1:29019')
     database = mongo[database]
     col = database[collection]
 
-    data = col.find({"year":year})
+    data = col.find({"year":{"$in":years}})
     p_kw_dico={}
     kw_p_dico={}
 
@@ -101,7 +101,7 @@ def get_patent_id(cursor_raw):
 
 
 
-def get_patent_data(db,collection,year,limit,full=True):
+def get_patent_data(db,collection,years,limit,full=True):
     #mongo = pymongo.MongoClient('localhost', 29019)
     mongo = pymongo.MongoClient('mongodb://root:root@127.0.0.1:29019')
     #database = mongo['redbook']
@@ -109,9 +109,9 @@ def get_patent_data(db,collection,year,limit,full=True):
     #col = database['raw']
     col = database[collection]
     if full :
-	data = col.find({"year":year,"id":{"$regex":r'^[0-9]'},"abstract":{"$regex":r'.'}},{"id":1,"title":1,"abstract":1})#.limit(limit)
+        data = col.find({"year":{"$in":years},"id":{"$regex":r'^[0-9]'},"abstract":{"$regex":r'.'}},{"id":1,"title":1,"abstract":1})#.limit(limit)
     else :
-	data = col.find({"year":year,"id":{"$regex":r'^[0-9]'}},{"id":1})
+        data = col.find({"year":{"$in":years},"id":{"$regex":r'^[0-9]'}},{"id":1})
     #print(len(data))
     #print(col.count())
     #data = col.find()
