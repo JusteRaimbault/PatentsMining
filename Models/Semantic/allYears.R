@@ -2,6 +2,9 @@
 # parallel all year graph construction
 #
 #  should be invoked as R -f allYears.R --args yearfile
+#  (for parrun)
+#
+#  format for years (moving window) : begin-end
 
 setwd(paste0(Sys.getenv('CS_HOME'),'/PatentsMining/Models/Semantic'))
 source('networkConstruction.R')
