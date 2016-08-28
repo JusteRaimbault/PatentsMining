@@ -111,7 +111,7 @@ def get_patent_data(db,collection,years,limit,full=True):
     if full :
         data = col.find({"year":{"$in":years},"id":{"$regex":r'^[0-9]'},"abstract":{"$regex":r'.'}},{"id":1,"title":1,"abstract":1})#.limit(limit)
     else :
-        data = col.find({"year":{"$in":years},"id":{"$regex":r'^[0-9]'}},{"id":1})
+        data = col.find({"app_year":{"$in":years},"id":{"$regex":r'^[0-9]'}},{"id":1})
     #print(len(data))
     #print(col.count())
     #data = col.find()
