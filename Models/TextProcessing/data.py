@@ -38,7 +38,7 @@ def import_kw_dico(database,collection,years):
     database = mongo[database]
     col = database[collection]
 
-    data = col.find({"year":{"$in":years}})
+    data = col.find({"app_year":{"$in":years}})
     p_kw_dico={}
     kw_p_dico={}
 
