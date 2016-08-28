@@ -7,7 +7,7 @@
 WINDOW=5
 START=1976
 END=2008
-NRUNS=10
+NRUNS=15
 
 
 
@@ -28,17 +28,17 @@ done
 file=1
 for y in `seq $START $END`
 do
-    line="$y"
-    for i in `seq 1 ($WINDOW - 1)` # TODO
+    line=$y
+    for i in `seq 1 $((WINDOW - 1))` # TODO
     do
-	line="$line;($y+$i)" # TODO shell arithm
+	   line=$line";"$((y+i)) # TODO shell arithm
     done
-    echo $line > relevantyears/runmv$file # TODO : append
-    file = file + 1 mod NRUNS # TODO
+    echo $line >> relevantyears/runmv$file # TODO : append
+    file=$(((file % NRUNS ) + 1 )) # TODO
 done
 
 # command : python main.py yearfile
-#./parrunnum "python main.py relevantyears/runmv" $NRUNS
+./parrunnum "python main.py relevantyears/runmv" $NRUNS
 
 
 
@@ -57,13 +57,13 @@ done
 file=1
 for y in `seq $START $END`
 do
-    echo "$y-`$y+$WINDOW`" > relevantyears/runmv$file # TODO : append
-    file = file + 1 mod NRUNS # TODO
+    echo $y"-"$((y+WINDOW)) >> relevantyears/runmv$file # TODO : append
+    file=$(((file % NRUNS ) + 1 ))  # TODO
 done
 
 
 # command for graph construction : R -f allYears.R --args yearfile
-#./parrunnum "R -f allyears.R --args relevantyears/runmv" 10
+./parrunnum "R -f allyears.R --args relevantyears/runmv" 10
 
 # graphs stored in processed
 
