@@ -41,9 +41,9 @@ def update_year_records():
     #from redbook : get app_date !! some patents with no app_date record -> ?
     #  replace in kw
     kwdata = mongo['patent']['keywords_grant'].find()
-    print 'kw data : '+str(len(kwdata))
+    print 'kw data : '+str(kwdata.count())
     redbook = mongo['redbook']['raw'].find()
-    print 'redbook : '+str(len(redbook))
+    print 'redbook : '+str(redbook.count())
     redbookdico={}
     for r in redbook :
         if 'id' in r and 'app_date' in r and 'grant_date' in r : redbookdico[r['id']]={'app_date':r['app_date'],'grant_date':r['grant_date']}

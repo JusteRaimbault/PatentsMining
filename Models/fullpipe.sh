@@ -38,7 +38,7 @@ do
 done
 
 # command : python main.py yearfile
-./parrunnum "python main.py relevantyears/runmv" $NRUNS
+#./parrunnum "python main.py relevantyears/runmv" $NRUNS
 
 
 
@@ -61,9 +61,11 @@ do
     file=$(((file % NRUNS ) + 1 ))  # TODO
 done
 
+#pwd
+#ls -lh
 
 # command for graph construction : R -f allYears.R --args yearfile
-./parrunnum "R -f allyears.R --args relevantyears/runmv" 10
+./parrunnum "R -f allYears.R --args relevantyears/runmv" $NRUNS
 
 # graphs stored in processed
 
