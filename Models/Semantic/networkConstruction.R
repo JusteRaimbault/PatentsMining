@@ -72,7 +72,7 @@ importNetwork<-function(relevantcollection,kwcollection,kwyear,nwcollection,edge
   #mongo.authenticate(mongo,"root","root")
   # 
   relevant <- mongo.find.all(mongo,relevantcollection)
-  dico <- mongo.find.all(mongo,kwcollection,query=list(year=as.character(kwyear)))
+  dico <- mongo.find.all(mongo,kwcollection,query=list(app_year=as.character(kwyear)))
  
   show(paste0('dico size : ',length(dico)))
   show(paste0('relevant : ',length(relevant)))
