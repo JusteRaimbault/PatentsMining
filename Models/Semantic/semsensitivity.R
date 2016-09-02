@@ -6,21 +6,29 @@ library(dplyr)
 library(igraph)
 source('networkConstruction.R')
 
-#years = c("1998","1999","2000","2005","2006","2007","2008","2009","2010")
-years = read.csv(file=commandArgs(trailingOnly = TRUE)[1],header=FALSE)
+years = read.csv(file=commandArgs(trailingOnly = TRUE)[1],header=FALSE,sep=";")
 
+# TODO read kwnum from file
+kwNum = "100000"
+type="full" # full or giant : take full graph or giant component
 
-for(year in years[,1]){
+for(i in 1:nrow(years)){
+  yearRange=years[i,]
+  year = paste0(as.character(yearRange[1]),"-",as.character(yearRange[length(yearRange)]))
   
   graph=paste0('relevant_',year,'_full_100000')
   load(paste0('processed/',graph,'.RData'))
+  nPatents = length(res$keyword_dico)
   g=res$g;
   rm(res);gc()
   
   g = filterGraph(g,'data/filter.csv')
   
-  clust = clusters(g);cmax = which(clust$csize==max(clust$csize))
-  ggiant = induced.subgraph(g,which(clust$membership==cmax))
+  # TODO DO NOT USE giant component ?
+  clust = clusters(g);
+  cmax = which(clust$csize==max(clust$csize))
+  if(type=="full"){ggiant=g}
+  else{ggiant = induced.subgraph(g,which(clust$membership==cmax))}
 
   dd = V(ggiant)$docfreq
   d = degree(ggiant)
@@ -38,7 +46,13 @@ for(year in years[,1]){
   freqsmin=c();freqsmax=c()
   comsizes=list()
   i=1
-  for(freqmax in c(5000,10000,20000,50000)){
+  
+  #
+  # freqmin and freqmax as proportion of patent number ?
+  #  - freqmin can be independent in a first time ; as edge_th -
+  #    freqmax = c(5000,10000,20000,50000) ; 95 : 144706 patents -> ~ 0.25 max
+  for(freqmaxdec in c(0.025,0.05,0.15,0.25)){
+    freqmax = freqmaxdec*nPatents
     for(freqmin in c(50,100,200,500)){
       for(kmax in seq(from=0.05,to=0.6,by=0.05)*max(d)){
         for(edge_th in seq(from=50,to=250,by=20)){
@@ -66,8 +80,7 @@ for(year in years[,1]){
   
   d = data.frame(degree_max=dmax,edge_th=eth,vertices=gsizes,components=csizes,modularity=modularities,communities=comnumber,density=gdensity,comunitiesbalance=cbalance,freqmin=freqsmin,freqmax=freqsmax)
   
-  save(d,comsizes,file=paste0('sensitivity/',graph,'.RData'))
-  
+  save(d,comsizes,file=paste0('sensitivity/',graph,'_',type,'.RData'))
   
 }
 

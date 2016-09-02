@@ -4,8 +4,15 @@ library(dplyr)
 library(igraph)
 source('networkConstruction.R')
 
-years = read.csv(file=commandArgs(trailingOnly = TRUE)[1],header=FALSE)
-for(year in years[,1]){
+years = read.csv(file=commandArgs(trailingOnly = TRUE)[1],header=FALSE,sep=";")
+
+kwNum = "100000"
+type="full"
+
+for(i in 1:nrow(years)){
+  yearRange=years[i,]
+  year = paste0(as.character(yearRange[1]),"-",as.character(yearRange[length(yearRange)]))
+  
   show(paste0('computing probas for year ',year))
   graph=paste0('relevant_',year,'_full_100000')
   load(paste0('processed/',graph,'.RData'))
@@ -13,8 +20,11 @@ for(year in years[,1]){
   
   g = filterGraph(g,'data/filter.csv')
   
-  clust = clusters(g);cmax = which(clust$csize==max(clust$csize))
-  ggiant = induced.subgraph(g,which(clust$membership==cmax))
+  clust = clusters(g);
+  cmax = which(clust$csize==max(clust$csize))
+  if(type=="full"){ggiant=g}
+  else{ggiant = induced.subgraph(g,which(clust$membership==cmax))}
+  
   
   kmin = 0
   freqmin = 50
@@ -25,7 +35,7 @@ for(year in years[,1]){
       freqmax=freqmaxdec*length(res$keyword_dico)
       sub = extractSubGraphCommunities(ggiant,kmin,kmax,freqmin,freqmax,edge_th)
       probas = computeThemProbas(sub$gg,sub$com,res$keyword_dico)
-      save(sub,probas,file=paste0('probas/',graph,'_kmin',kmin,'_kmaxdec',kmaxdec,'_freqmin',freqmin,'_freqmaxdec',freqmaxdec,'_eth',edge_th,'.RData'))
+      save(sub,probas,file=paste0('probas/',graph,'_kmin',kmin,'_kmaxdec',kmaxdec,'_freqmin',freqmin,'_freqmaxdec',freqmaxdec,'_eth',edge_th,'_',type,'.RData'))
     }
   }
   }
