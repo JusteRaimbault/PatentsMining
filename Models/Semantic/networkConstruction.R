@@ -67,12 +67,12 @@ repeatedLouvain<-function(gg,Nrep){
 ##
 # construct network from mongo
 importNetwork<-function(relevantcollection,kwcollection,kwyear,nwcollection,edge_th,target){
-  show(paste0('Constructing network for year ',kwyear,' with eth ',edge_th))
+  show(paste0('Constructing network for years ',kwyear,' with eth ',edge_th))
   mongo <- mongo.create(host="127.0.0.1:29019")
   #mongo.authenticate(mongo,"root","root")
   # 
   relevant <- mongo.find.all(mongo,relevantcollection)
-  dico <- mongo.find.all(mongo,kwcollection,query=list(app_year=as.character(kwyear)))
+  dico <- mongo.find.all(mongo,kwcollection,query=list(app_year=list('$in'=as.character(kwyear))))
  
   show(paste0('dico size : ',length(dico)))
   show(paste0('relevant : ',length(relevant)))
