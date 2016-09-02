@@ -57,12 +57,15 @@ done
 file=1
 for y in `seq $START $END`
 do
-    echo $y"-"$((y+WINDOW)) >> relevantyears/runmv$file # TODO : append
+    #echo $y"-"$((y+WINDOW)) >> relevantyears/runmv$file # TODO : append
+    cp ../TextProcessing/relevantyears/runmv$file relevantyears/runmv$file
     file=$(((file % NRUNS ) + 1 ))  # TODO
 done
 
 #pwd
 #ls -lh
+
+# NOTE : for this part, rmongodb fails to authenticate -> relaunch db without auth
 
 # command for graph construction : R -f allYears.R --args yearfile
 ./parrunnum "R -f allYears.R --args relevantyears/runmv" $NRUNS
