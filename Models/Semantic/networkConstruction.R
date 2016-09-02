@@ -68,6 +68,7 @@ repeatedLouvain<-function(gg,Nrep){
 # construct network from mongo
 importNetwork<-function(relevantcollection,kwcollection,kwyear,nwcollection,edge_th,target){
   show(paste0('Constructing network for years ',kwyear,' with eth ',edge_th))
+  show(kwyear)
   mongo <- mongo.create(host="127.0.0.1:29019")
   #mongo.authenticate(mongo,"root","root")
   # 
