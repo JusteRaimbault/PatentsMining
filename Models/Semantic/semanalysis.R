@@ -56,6 +56,7 @@ for(year in years){
 #save(overlaps,cyears,file='res/techno_overlaps.RData')
 load(file='res/techno_overlaps.RData')
 
+
 inds=overlaps>0#1:length(overlaps)#
 #overlaps[overlaps==0]=1e-10
 g=ggplot(data.frame(overlap=overlaps[inds],year=cyears[inds]),aes(x=overlap,colour=as.character(year)))#aes(x=year,y=overlap))
