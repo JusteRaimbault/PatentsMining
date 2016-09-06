@@ -17,7 +17,6 @@ TASK=sensitivity
 ##########
 
 cd TextProcessing
-echo "Running relevance estimation..."
 
 # generate year files
 #remove old
@@ -39,7 +38,9 @@ do
 done
 
 # command : python main.py yearfile
-if [ "$TASK" == "relevant" ] then
+if [ "$TASK" == "relevant" ]
+then
+  echo "Running relevance estimation..."
   ./parrunnum "python main.py relevantyears/runmv" $NRUNS
 fi
 
@@ -70,7 +71,8 @@ done
 # NOTE : for this part, rmongodb fails to authenticate -> relaunch db without auth
 
 # command for graph construction : R -f allYears.R --args yearfile
-if [ "$TASK" == "network" ] then
+if [ "$TASK" == "network" ]
+then
   ./parrunnum "R -f allYears.R --args relevantyears/runmv" $NRUNS
 fi
 
@@ -88,11 +90,13 @@ fi
 #
 
 # semsensitivity
-if [ "$TASK" == "sensitivity" ] then
+if [ "$TASK" == "sensitivity" ]
+then
   ./parrunnum "R -f semsensitivity.R --args relevantyears/runmv" $NRUNS
 fi
 
-if [ "$TASK" == "probas" ] then
+if [ "$TASK" == "probas" ]
+then
   # probas
   ./parrunnum "R -f semthemprobas.R --args relevantyears/runmv" $NRUNS
 fi
