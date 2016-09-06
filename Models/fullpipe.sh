@@ -10,8 +10,8 @@ END=2008
 NRUNS=15
 
 # tasks : relevant ; network ; sensitivity ; probas
-TASK=probas
-
+#TASK=probas
+TASK=sensitivity
 
 ##########
 ##########
