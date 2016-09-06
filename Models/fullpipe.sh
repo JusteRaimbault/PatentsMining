@@ -9,7 +9,8 @@ START=1976
 END=2008
 NRUNS=15
 
-
+# tasks : relevant ; network ; sensitivity ; probas
+TASK=probas
 
 
 ##########
@@ -38,8 +39,9 @@ do
 done
 
 # command : python main.py yearfile
-#./parrunnum "python main.py relevantyears/runmv" $NRUNS
-
+if [ "$TASK" == "relevant" ] then
+  ./parrunnum "python main.py relevantyears/runmv" $NRUNS
+fi
 
 
 ############
@@ -68,7 +70,9 @@ done
 # NOTE : for this part, rmongodb fails to authenticate -> relaunch db without auth
 
 # command for graph construction : R -f allYears.R --args yearfile
-./parrunnum "R -f allYears.R --args relevantyears/runmv" $NRUNS
+if [ "$TASK" == "network" ] then
+  ./parrunnum "R -f allYears.R --args relevantyears/runmv" $NRUNS
+fi
 
 # graphs stored in processed
 
@@ -83,7 +87,15 @@ done
 #   -> TODO : check analyses citations (2nd order interdisc).
 #
 
+# semsensitivity
+if [ "$TASK" == "sensitivity" ] then
+  ./parrunnum "R -f semsensitivity.R --args relevantyears/runmv" $NRUNS
+fi
 
+if [ "$TASK" == "probas" ] then
+  # probas
+  ./parrunnum "R -f semthemprobas.R --args relevantyears/runmv" $NRUNS
+fi
 
 
 

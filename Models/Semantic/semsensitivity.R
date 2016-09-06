@@ -43,7 +43,8 @@ for(i in 1:nrow(years)){
   gsizes=c();
   gdensity=c();
   cbalance=c();
-  freqsmin=c();freqsmax=c()
+  freqsmin=c();freqsmax=c();
+  freqsmaxdec=c();kmaxsdec=c()
   comsizes=list()
   i=1
   
@@ -54,8 +55,9 @@ for(i in 1:nrow(years)){
   for(freqmaxdec in c(0.025,0.05,0.15,0.25)){
     freqmax = freqmaxdec*nPatents
     for(freqmin in c(50,100,200,500)){
-      for(kmax in seq(from=0.05,to=0.6,by=0.05)*max(d)){
-        for(edge_th in seq(from=50,to=250,by=20)){
+      for(kmaxdec in seq(from=0.05,to=0.6,by=0.05)){
+        kmax = kmaxdec*max(d)
+	for(edge_th in seq(from=50,to=250,by=20)){
           show(paste0('kmax : ',kmax,' e_th : ',edge_th,' ; freqmin : ',freqmin,' ; freqmax : ',freqmax))
           gg=induced_subgraph(ggiant,which(d>kmin&d<kmax&dd>freqmin&dd<freqmax))
           gg=subgraph.edges(gg,which(E(gg)$weight>edge_th))
@@ -71,14 +73,15 @@ for(i in 1:nrow(years)){
           cbalance=append(cbalance,sum((sizes(com)/length(V(gg)))^2))
           dmax=append(dmax,kmax);eth=append(eth,edge_th)
           freqsmin=append(freqsmin,freqmin);freqsmax=append(freqsmax,freqmax)
-          comsizes[[i]]=sizes(com)
+          freqsmaxdec=append(freqsmaxdec,freqmaxdec);kmaxsdec=append(kmaxsdec,kmaxdec)
+	  comsizes[[i]]=sizes(com)
           i=i+1
         }
       }
     }
   }
   
-  d = data.frame(degree_max=dmax,edge_th=eth,vertices=gsizes,components=csizes,modularity=modularities,communities=comnumber,density=gdensity,comunitiesbalance=cbalance,freqmin=freqsmin,freqmax=freqsmax)
+  d = data.frame(degree_max=dmax,edge_th=eth,vertices=gsizes,components=csizes,modularity=modularities,communities=comnumber,density=gdensity,comunitiesbalance=cbalance,freqmin=freqsmin,freqmax=freqsmax,kmaxdec=kmaxsdec,kmaxdec=kmaxsdec)
   
   save(d,comsizes,file=paste0('sensitivity/',graph,'_',type,'.RData'))
   
