@@ -10,7 +10,8 @@ years = read.csv(file=commandArgs(trailingOnly = TRUE)[1],header=FALSE,sep=";")
 
 # TODO read kwnum from file
 kwNum = "100000"
-type="full" # full or giant : take full graph or giant component
+#type="full" # full or giant : take full graph or giant component
+type="giant"
 
 for(i in 1:nrow(years)){
   yearRange=years[i,]
