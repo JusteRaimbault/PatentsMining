@@ -8,7 +8,7 @@ library(ggplot2)
 
 
 kwNum = "100000"
-type="full"
+type="giant"
 years=paste0(1976:2008,"-",1980:2012)
 
 # additional data for mse 
@@ -31,10 +31,10 @@ for(y in 1:length(years)){
   }
   d=cbind(msesizes,d)
    
-   g = ggplot(d) + scale_fill_gradient(low="yellow",high="red")#+ geom_raster(hjust = 0, vjust = 0)
+   g = ggplot(data.frame(d,freqmaxdec=d$freqmax/sizes[y])) + scale_fill_gradient(low="yellow",high="red")#+ geom_raster(hjust = 0, vjust = 0)
    plots=list()
    for(indic in c("modularity","communities","components","vertices","msesizes","balance")){
-     plots[[indic]] = g+geom_raster(aes_string("degree_max","edge_th",fill=indic))+facet_grid(freqmax~freqmin)
+     plots[[indic]] = g+geom_raster(aes_string("kmaxdec","edge_th",fill=indic))+facet_grid(freqmaxdec~freqmin)
    }
    multiplot(plotlist = plots,cols=3)
    

@@ -67,7 +67,13 @@ for(i in 1:nrow(years)){
            gg=induced_subgraph(ggiant,which(d>kmin&d<kmax&dd>freqmin&dd<freqmax))
            gg=subgraph.edges(gg,which(E(gg)$weight>edge_th))
            clust = clusters(gg);cmax = which(clust$csize==max(clust$csize))
+           
+           
+           # TODO remove this second filtering ?
+           #  -> seem not to change that much
            gg = induced.subgraph(gg,which(clust$membership==cmax))
+           write.graph(gg,'graphs/test.gml')
+           
            com = cluster_louvain(gg)
            # measures
            gsizes=append(gsizes,length(V(gg)));
