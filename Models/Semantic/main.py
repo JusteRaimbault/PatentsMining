@@ -6,9 +6,10 @@ def run():
     f=open(sys.argv[1])
     kwLimit = 100000
     for years in f.readlines():
-        currentyears = years.decode('utf-8').replace('\n','').split(";")
-        print currentyears
-        graph.construct_graph(print currentyears,kwLimit)
+        #currentyears = years.decode('utf-8').replace('\n','').split(";")
+        currentyears = years.replace('\n','').split(";")
+        print(currentyears)
+        graph.construct_graph(currentyears,kwLimit)
 
 
 

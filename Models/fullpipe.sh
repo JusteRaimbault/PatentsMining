@@ -11,7 +11,8 @@ NRUNS=15
 
 # tasks : relevant ; network ; sensitivity ; probas
 #TASK=probas
-TASK=sensitivity
+#TASK=sensitivity
+TASK=network-python
 
 ##########
 ##########
@@ -75,6 +76,16 @@ if [ "$TASK" == "network" ]
 then
   ./parrunnum "R -f allYears.R --args relevantyears/runmv" $NRUNS
 fi
+
+
+
+if [ "$TASK" == "network-python" ]
+then
+  ./parrunnum "python main.py relevantyears/runmv" $NRUNS
+fi
+
+
+
 
 # graphs stored in processed
 
