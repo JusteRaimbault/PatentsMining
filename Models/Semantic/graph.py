@@ -81,11 +81,12 @@ def export_probas_matrices(years,kwLimit,ncoms):
                 currentprobas[dico[kw]]=currentprobas[dico[kw]]+1
             nk=len(currentpatent['keywords'])
         currentprobas = list(map(lambda x: x /nk,currentprobas))
-        probas.append(currentprobas)
-        rownames.append(currentpatent['id'])
+        if sum(currentprobas)>0 :
+            probas.append(currentprobas)
+            rownames.append(currentpatent['id'])
 
     # export the matrix proba as csv
-    utils.export_matrix_csv(probas,rownames,'probas/probas_'+yearrange+'_ncoms'+str(ncoms)+'_kwLimit'+kwLimit+'.csv',";")
+    utils.export_matrix_csv(probas,rownames,'probas/probas_'+yearrange+'_ncoms'+str(ncoms)+'_kwLimit'+str(kwLimit)+'.csv',";")
 
     # export the kw;com dico as csv
-    utils.export_dico_csv(dico,'probas/keywords_'+yearrange+'_ncoms'+str(ncoms)+'_kwLimit'+kwLimit+'.csv',";")
+    utils.export_dico_csv(dico,'probas/keywords_'+yearrange+'_ncoms'+str(ncoms)+'_kwLimit'+str(kwLimit)+'.csv',";")
