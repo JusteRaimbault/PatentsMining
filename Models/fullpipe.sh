@@ -9,10 +9,11 @@ START=1976
 END=2008
 NRUNS=15
 
-# tasks : relevant ; network ; sensitivity ; probas
+# tasks : relevant ; network ; sensitivity ; probas ; network-python ; probas-python
 #TASK=probas
 #TASK=sensitivity
-TASK=network-python
+#TASK=network-python
+TASK=$1
 
 ##########
 ##########
@@ -21,7 +22,7 @@ cd TextProcessing
 
 # generate year files
 #remove old
-for file in `seq 1 $NRUNS` 
+for file in `seq 1 $NRUNS`
 do
     rm relevantyears/runmv$file
 done
@@ -53,7 +54,7 @@ cd ../Semantic
 echo "Semantic construction..."
 
 # year files slightly different for R
-for file in `seq 1 $NRUNS`  
+for file in `seq 1 $NRUNS`
 do
     rm relevantyears/runmv$file
 done
@@ -81,16 +82,20 @@ fi
 
 if [ "$TASK" == "network-python" ]
 then
-  ./parrunnum "python main.py relevantyears/runmv" $NRUNS
+  ./parrunnum "python main.py --graph relevantyears/runmv" $NRUNS
 fi
 
 
+if [ "$TASK" == "probas-python" ]
+then
+  ./parrunnum "python main.py --probas relevantyears/runmv" $NRUNS
+fi
 
 
 # graphs stored in processed
 
 
-# launch : 
+# launch :
 #  * semsensitivity : exploration of graphs
 #   -> TODO : relative param values
 #  * semthemprobas on same values
@@ -111,8 +116,3 @@ then
   # probas
   ./parrunnum "R -f semthemprobas.R --args relevantyears/runmv" $NRUNS
 fi
-
-
-
-
-
