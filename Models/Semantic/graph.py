@@ -57,8 +57,8 @@ def export_probas_matrices(years,kwLimit,ncoms):
 
     # load graph and communities
     yearrange = years[0]+"-"+years[len(years)-1]
-    graph=pickle.load(open('pickled/graph_'+yearrange+'_',kwLimit,'_eth10.pkl','rb'))
-    coms=pickle.load(open('pickled/coms_'+yearrange+'_',kwLimit,'_eth10.pkl','rb'))
+    graph=pickle.load(open('pickled/graph_'+yearrange+'_'+str(kwLimit)+'_eth10.pkl','rb'))
+    coms=pickle.load(open('pickled/coms_'+yearrange+'_'+str(kwLimit)+'_eth10.pkl','rb'))
 
     # clustering
     clustering = coms.as_clustering(ncoms)
@@ -71,8 +71,6 @@ def export_probas_matrices(years,kwLimit,ncoms):
 
     probas = [] #([0.0]*n)*k
     rownames = []
-
-    start=time.time()
 
     for i in range(1000):#npatents):
         if i%10000==0 : print(100*i/npatents)

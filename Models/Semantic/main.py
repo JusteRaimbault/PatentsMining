@@ -14,7 +14,7 @@ def run():
         if task == '--graph' :
             graph.construct_graph(currentyears,kwLimit)
         if task == '--probas' :
-            graph.export_probas_matrices(years,kwLimit,ncoms)
+            graph.export_probas_matrices(currentyears,kwLimit,ncoms)
 
 
 
