@@ -87,16 +87,18 @@ def update_techno_classes():
 
     techno_dico = get_techno_dico()
 
-    # update data adding classes - mutable, no need for new data structure
+    # update data adding classes
+    newdata=[]
     for p in data :
         p['classes'] = []
         if p['id'] in techno_dico : p['classes'] = list(techno_dico[p['id']])
+        newdata.append(p)
 
     # drop collection
     mongo['patent'].drop_collection('keywords')
 
     # insert everything
-    mongo['patent']['keywords'].insert_many(data)
+    mongo['patent']['keywords'].insert_many(newdata)
 
 
 def compute_kw_techno():
@@ -108,18 +110,18 @@ def compute_kw_techno():
     for p in data :
         for kw in p['keywords']:
             if not kw in counts : counts[kw]={}
-            for cl in techno_dico[p['id']]:
-                if cl not in counts[kw] : counts[kw][cl] = 0
-                counts[kw][cl] = counts[kw][cl] + 1
+            if p['id'] in techno_dico :
+                for cl in techno_dico[p['id']]:
+                    if cl not in counts[kw] : counts[kw][cl] = 0
+                    counts[kw][cl] = counts[kw][cl] + 1
 
     mongo['keywords']['techno'].insert_many(counts)
 
 
 
-
-compute_kw_techno()
+update_year_records()
+update_techno_classes()
 #update_techno_classes()
-#update_year_records()
 
 #data_to_mongo('/mnt/volume1/juste/ComplexSystems/PatentsMining/data','patents_fung')
 #keywords_to_mongo('/mnt/volume1/juste/ComplexSystems/PatentsMining/data/keywords.sqlite3','patents_fung')
