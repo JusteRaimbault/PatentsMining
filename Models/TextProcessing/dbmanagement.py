@@ -63,13 +63,8 @@ def update_year_records():
 
 
 
-def update_techno_classes():
-    # for now get classes from fung file, redbook not complete for xml years
-    mongo = pymongo.MongoClient('mongodb://root:root@127.0.0.1:29019')
 
-    # do it dirtily (should be quicker in perf) : get full collection, update, insert_many
-    data = mongo['patent']['keywords'].find()
-
+def get_techno_dico():
     # load techno classes from csv
     techno = utils.read_csv(os.environ['CS_HOME']+'/PatentsMining/Data/raw/classesTechno/class.csv',";")
 
@@ -80,6 +75,17 @@ def update_techno_classes():
         currentid = techno[i][0];currentclass = techno[i][2]
         if currentid not in techno_dico : techno_dico[currentid] = set()
         techno_dico[currentid].add(currentclass)
+    return(techno_dico)
+
+
+def update_techno_classes():
+    # for now get classes from fung file, redbook not complete for xml years
+    mongo = pymongo.MongoClient('mongodb://root:root@127.0.0.1:29019')
+
+    # do it dirtily (should be quicker in perf) : get full collection, update, insert_many
+    data = mongo['patent']['keywords'].find()
+
+    techno_dico = get_techno_dico()
 
     # update data adding classes - mutable, no need for new data structure
     for p in data :
@@ -92,11 +98,26 @@ def update_techno_classes():
     mongo['patent']['keywords'].insert_many(data)
 
 
+def compute_kw_techno():
+    mongo = pymongo.MongoClient('mongodb://root:root@127.0.0.1:29019')
+    data = mongo['patent']['keywords'].find()
+    techno_dico = get_techno_dico()
+
+    counts = {}
+    for p in data :
+        for kw in p['keywords']:
+            if not kw in counts : counts[kw]={}
+            for cl in techno_dico[p['id']]:
+                if cl not in counts[kw] : counts[kw][cl] = 0
+                counts[kw][cl] = counts[kw][cl] + 1
+
+    mongo['keywords']['techno'].insert_many(counts)
 
 
-update_techno_classes()
 
 
+compute_kw_techno()
+#update_techno_classes()
 #update_year_records()
 
 #data_to_mongo('/mnt/volume1/juste/ComplexSystems/PatentsMining/data','patents_fung')
