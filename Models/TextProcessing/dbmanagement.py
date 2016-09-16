@@ -108,8 +108,12 @@ def compute_kw_techno():
     data = mongo['patent']['keywords'].find()
     techno_dico = get_techno_dico()
 
+    npatents = data.count()
+
     counts = {}
-    for p in data :
+    for i in range(npatents)
+        if i % 10000 == 0 : print(100*i/npatents)
+        p=data.next()
         for kw in p['keywords']:
             if not kw in counts :
                 counts[kw]={}
@@ -123,9 +127,9 @@ def compute_kw_techno():
     mongo['keywords']['techno'].insert_many(counts.values())
 
 
-
-update_year_records()
-update_techno_classes()
+compute_kw_techno()
+#update_year_records()
+#update_techno_classes()
 #update_techno_classes()
 
 #data_to_mongo('/mnt/volume1/juste/ComplexSystems/PatentsMining/data','patents_fung')
