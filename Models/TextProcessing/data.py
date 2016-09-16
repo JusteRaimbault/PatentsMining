@@ -118,14 +118,14 @@ def get_patent_data(db,collection,years,limit,full=True):
     res=[]
     for row in data :
         #print row
-	i=""
-	if 'id' in row : i = row['id']
-	title = ""
-	if 'title' in row : title = row['title']
-	abstract = ""
-	if 'abstract' in row : abstract = row['abstract']
-	#if 'id' in row and 'title' in row and 'abstract' in row : print [i,title,abstract]
-	res.append([i,title,abstract])
+        i=""
+        if 'id' in row : i = row['id']
+        title = ""
+        if 'title' in row : title = row['title']
+        abstract = ""
+        if 'abstract' in row : abstract = row['abstract']
+        #if 'id' in row and 'title' in row and 'abstract' in row : print [i,title,abstract]
+        res.append([i,title,abstract])
     return(res)
 
 
