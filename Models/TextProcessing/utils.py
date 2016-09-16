@@ -18,7 +18,7 @@ def export_list(l,fileprefix):
 def read_csv(file,delimiter):
     f=open(file,'r')
     lines = f.readlines()
-    return([s.split(delimiter) for s in lines])
+    return([s.replace('\n','').split(delimiter) for s in lines])
 
 
 # returns sqlite connection
