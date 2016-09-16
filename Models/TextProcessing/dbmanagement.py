@@ -124,7 +124,7 @@ def compute_kw_techno():
 
 
 
-update_year_records()
+#update_year_records()
 update_techno_classes()
 #update_techno_classes()
 
