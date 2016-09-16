@@ -71,8 +71,9 @@ def get_techno_dico():
     # techno dico
     techno_dico = {};n=len(techno)
     for i in range(1,len(techno)) :
-        if i % 10000 == 0 : print(100*i/n)
-        currentid = techno[i][0];currentclass = techno[i][2]
+        #if i % 10000 == 0 : print(100*i/n)
+        currentid = techno[i][0];currentid=currentid[1:]
+        currentclass = techno[i][2]
         if currentid not in techno_dico : techno_dico[currentid] = set()
         techno_dico[currentid].add(currentclass)
     return(techno_dico)
@@ -95,10 +96,11 @@ def update_techno_classes():
         newdata.append(p)
 
     # drop collection
-    mongo['patent'].drop_collection('keywords')
+    #mongo['patent'].drop_collection('keywords')
 
     # insert everything
-    mongo['patent']['keywords'].insert_many(newdata)
+    # test in tmp ?
+    mongo['patent']['keywords_tmp'].insert_many(newdata)
 
 
 def compute_kw_techno():
@@ -109,13 +111,16 @@ def compute_kw_techno():
     counts = {}
     for p in data :
         for kw in p['keywords']:
-            if not kw in counts : counts[kw]={}
+            if not kw in counts :
+                counts[kw]={}
+                counts[kw]['keyword']=kw
             if p['id'] in techno_dico :
                 for cl in techno_dico[p['id']]:
                     if cl not in counts[kw] : counts[kw][cl] = 0
                     counts[kw][cl] = counts[kw][cl] + 1
 
-    mongo['keywords']['techno'].insert_many(counts)
+    # dico to list ? -> counts.values()
+    mongo['keywords']['techno'].insert_many(counts.values())
 
 
 
