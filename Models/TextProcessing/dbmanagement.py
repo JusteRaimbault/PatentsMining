@@ -111,7 +111,7 @@ def compute_kw_techno():
     npatents = data.count()
 
     counts = {}
-    for i in range(npatents)
+    for i in range(npatents):
         if i % 10000 == 0 : print(100*i/npatents)
         p=data.next()
         for kw in p['keywords']:
