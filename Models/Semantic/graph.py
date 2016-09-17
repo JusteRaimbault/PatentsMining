@@ -1,5 +1,5 @@
 
-import pymongo,pickle
+import pymongo,pickle,math
 #import igraph
 from igraph import *
 import utils
@@ -46,22 +46,44 @@ def construct_graph(years,kwLimit):
     pickle.dump(coms,open('pickled/coms_'+yearstr+'_'+str(kwLimit)+'_eth10.pkl','wb'))
 
 
+
+def dispersion(x):
+    s=sum(x)
+    return(sum(list(map(lambda y:(y/s)*(y/s),x))))
+
+##
+#
+def get_communities(yearrange,kwLimit,dispth,eth,mongo):
+    print("Constructing communities : "+yearrange+" ; "+str(dispth)+" ; "+str(eth))
+    graph=pickle.load(open('pickled/graph_'+yearrange+'_'+str(kwLimit)+'_eth10.pkl','rb'))
+    kwstechno = list(mongo['keywords']['techno'].find({'keyword':{'$in':graph.vs['name']}}))
+    disps = list(map(lambda d:(d['keyword'],len(d.keys())-1,dispersion([float(d[k]) for k in d.keys() if k!='keyword'and k!='_id'])),kwstechno))
+    disp_dico={}
+    for disp in disps :
+        disp_dico[disp[0]]=disp[2]
+    disp_list=[]
+    for name in graph.vs['name']:
+        disp_list.append(disp_dico[name])
+    graph.vs['disp']=disp_list
+    graph=graph.subgraph([i for i, d in enumerate(graph.vs['disp']) if d > dispth])
+    graph.delete_edges([i for i, w in enumerate(graph.es['weight']) if w<eth])
+    dd = graph.degree(range(graph.vcount()))
+    graph=graph.subgraph([i for i, d in enumerate(dd) if d > 0])
+    com = graph.community_multilevel(weights="weight",return_levels=True)
+    return([graph,com[len(com)-1]])
+
+
 ##
 #  construct patent probas at a given clustering level
-def export_probas_matrices(years,kwLimit,ncoms):
+def export_probas_matrices(years,kwLimit,dispth,ethunit):
     print("Constructing patent probas for years "+str(years))
     mongo = pymongo.MongoClient('mongodb://root:root@127.0.0.1:29019')
     # load keywords
     patents = mongo['patent']['keywords'].find({"app_year":{"$in":years}})
     npatents = patents.count()
-
-    # load graph and communities
     yearrange = years[0]+"-"+years[len(years)-1]
-    graph=pickle.load(open('pickled/graph_'+yearrange+'_'+str(kwLimit)+'_eth10.pkl','rb'))
-    coms=pickle.load(open('pickled/coms_'+yearrange+'_'+str(kwLimit)+'_eth10.pkl','rb'))
-
-    # clustering
-    clustering = coms.as_clustering(ncoms)
+    # load graph and construct communities
+    [graph,clustering]=get_communities(yearrange,kwLimit,dispth,math.floor(ethunit*npatents),mongo)
 
     #construct dico kw -> community
     dico = {}
@@ -72,7 +94,7 @@ def export_probas_matrices(years,kwLimit,ncoms):
     probas = [] #([0.0]*n)*k
     rownames = []
 
-    for i in range(1000):#npatents):
+    for i in range(npatents):
         if i%10000==0 : print(100*i/npatents)
         currentpatent = patents.next()
         currentprobas = [0.0]*n
@@ -86,7 +108,7 @@ def export_probas_matrices(years,kwLimit,ncoms):
             rownames.append(currentpatent['id'])
 
     # export the matrix proba as csv
-    utils.export_matrix_sparse_csv(probas,rownames,'probas/probas_'+yearrange+'_ncoms'+str(ncoms)+'_kwLimit'+str(kwLimit)+'.csv',";")
+    utils.export_matrix_sparse_csv(probas,rownames,'probas/probas_'+yearrange+'_kwLimit'+str(kwLimit)+'_dispth'+str(dispth)+'_ethunit'+str(ethunit)+'.csv',";")
 
     # export the kw;com dico as csv
-    utils.export_dico_csv(dico,'probas/keywords_'+yearrange+'_ncoms'+str(ncoms)+'_kwLimit'+str(kwLimit)+'.csv',";")
+    utils.export_dico_csv(dico,'probas/keywords_'+yearrange+'_kwLimit'+str(kwLimit)+'_dispth'+str(dispth)+'_ethunit'+str(ethunit)+'.csv',";")
