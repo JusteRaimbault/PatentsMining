@@ -7,7 +7,7 @@ def run():
     kwLimit = 100000
     # multiple years : csv files
     for years in f.readlines():
-        print str(years).replace('\n','').split(";")
+        print(str(years).replace('\n','').split(";"))
         bootstrap.relevant_full_corpus(str(years).replace('\n','').split(";"),kwLimit)
         #keywords.extract_keywords_year(str(year).replace('\n',''))
     #year=2005;limit=-1;kwLimit=3000;subCorpusSize=20000;bootstrapSize=10;nruns=2

@@ -47,7 +47,7 @@ def relevant_full_corpus(years,kwLimit):
         database[relevant].create_index('keyword')
         [rel_kws,dico,frequencies,edge_list] = keywords.extract_relevant_keywords(corpus,kwLimit,occurence_dicos)
         print('insert relevant...')
-	for kw in rel_kws.keys():
+        for kw in rel_kws.keys():
             update_kw_tm(kw,rel_kws[kw],frequencies[kw],math.log(rel_kws[kw])*math.log(len(corpus)/frequencies[kw]),database,relevant)
         print('insert edges...')
         database[network].delete_many({"weight":{"$gt":0}})
@@ -168,7 +168,7 @@ def bootstrap_subcorpuses(corpus,occurence_dicos,kwLimit,subCorpusSize,bootstrap
 
     for eind in range(len(extractions)) :
         print("bootstrap : run "+str(eind))
-	extraction = extractions[eind]
+        extraction = extractions[eind]
         subcorpus = [corpus[i] for i in extraction]
         [kws,p_kw_local_dico] = keywords.extract_relevant_keywords(subcorpus,kwLimit,occurence_dicos)
 
@@ -183,7 +183,7 @@ def bootstrap_subcorpuses(corpus,occurence_dicos,kwLimit,subCorpusSize,bootstrap
         for p in p_kw_local_dico.keys() :
             if p not in p_kw_dico : p_kw_dico[p] = set()
             for kw in p_kw_local_dico[p] :
-		        p_kw_dico[p].add(kw)
+                p_kw_dico[p].add(kw)
 
     res = keywords.extract_from_termhood(mean_termhoods,p_kw_dico,kwLimit)
     res.append(allkw)

@@ -37,7 +37,7 @@ def extract_remaining_keywords() :
 
 def extract_keywords_year(year):
     corpus = data.get_patent_data(year,0)
-    print 'corpus size : '+str(len(corpus))
+    print('corpus size : '+str(len(corpus)))
     [p_kw_dico,kw_p_dico] = construct_occurrence_dico(corpus)
     data.export_kw_dico('patent','keywords',p_kw_dico,year)
 
@@ -50,6 +50,8 @@ def extract_relevant_keywords(corpus,kwLimit,occurence_dicos):
 
     [p_kw_dico,kw_p_dico] = extract_sub_dicos(corpus,occurence_dicos)
 
+    print("subdicos : "+str(len(p_kw_dico.keys()))+" ; "+str(len(kw_p_dico.keys())))
+
     # compute frequencies
     print('Compute frequencies...')
     docfrequencies = {}
@@ -58,7 +60,7 @@ def extract_relevant_keywords(corpus,kwLimit,occurence_dicos):
 
     # compute unithoods
     print('Compute unithoods...')
-    unithoods = dict()
+    unithoods = {}
     for k in kw_p_dico.keys():
         l = len(k.split(' '))
         unithoods[k]=math.log(l+1)*len(kw_p_dico[k])
@@ -67,7 +69,9 @@ def extract_relevant_keywords(corpus,kwLimit,occurence_dicos):
     selected_kws = {} # dictionary : kw -> index in matrix
     #selected_kws_indexes = {} # dico index -> kw.  Q : use kw as keys in cooc matrix ?
     #  seems to be even more performant
+    print("len(unithoods = "+str(len(unithoods.keys())))
     sorted_unithoods = sorted(unithoods.items(), key=operator.itemgetter(1),reverse=True)
+    print("len(sorted_unithoods) = "+str(len(sorted_unithoods)))
     for i in range(4*kwLimit):
         selected_kws[sorted_unithoods[i][0]] = i
         #selected_kws.append(sorted_unithoods[i][0])
@@ -175,7 +179,7 @@ def extract_sub_dicos(corpus,occurence_dicos) :
     for patent in corpus :
         patent_id = data.get_patent_id(patent)
         keywords = []
-	if patent_id in p_kw_dico_all : keywords = p_kw_dico_all[patent_id]
+        if patent_id in p_kw_dico_all : keywords = p_kw_dico_all[patent_id]
         p_kw_dico[patent_id] = keywords
         for k in keywords :
             if k not in kw_p_dico : kw_p_dico[k] = []

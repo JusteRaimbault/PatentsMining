@@ -10,7 +10,17 @@ years = 1976:2012
 kmin = 0;freqmin = 50;edge_th = 50;kmaxdec=0.25;freqmaxdec=0.25
 sizeTh=10
 semprefix = paste0('_full_100000_kmin',kmin,'_kmaxdec',kmaxdec,'_freqmin',freqmin,'_freqmaxdec',freqmaxdec,'_eth',edge_th,'.RData')
-technoprefix=paste0(Sys.getenv('CS_HOME'),'/PatentsMining/Data/processed/classes/technoPerYear/technoProbas_')
+
+#technoprefix=paste0(Sys.getenv('CS_HOME'),'/PatentsMining/Data/processed/classes/technoPerYear/technoProbas_')
+# TODO : recompute techno probas on moving window ?
+# or better : single matrix with all patents ; gets corresponding rows with semantic rownames
+#  -> check rowname indexing perfs
+
+
+loadSemantic<-function(yearrange){
+      
+}
+
 
 loadProbas<-function(year){
   show(year)
