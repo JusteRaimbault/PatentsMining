@@ -79,7 +79,7 @@ def export_probas_matrices(years,kwLimit,dispth,ethunit):
     print("Constructing patent probas for years "+str(years))
     mongo = pymongo.MongoClient('mongodb://root:root@127.0.0.1:29019')
     # load keywords
-    patents = mongo['patent']['keywords'].find({"app_year":{"$in":years}})
+    patents = mongo['patent']['keywords'].find({"app_year":{"$in":years}},no_cursor_timeout=True)
     npatents = patents.count()
     yearrange = years[0]+"-"+years[len(years)-1]
     # load graph and construct communities
@@ -94,9 +94,10 @@ def export_probas_matrices(years,kwLimit,dispth,ethunit):
     probas = [] #([0.0]*n)*k
     rownames = []
 
-    for i in range(npatents):
+    i=0
+    for currentpatent in patents:
         if i%10000==0 : print(100*i/npatents)
-        currentpatent = patents.next()
+        #currentpatent = patents.next()
         currentprobas = [0.0]*n
         for kw in currentpatent['keywords']:
             if kw in dico :
@@ -106,7 +107,7 @@ def export_probas_matrices(years,kwLimit,dispth,ethunit):
         if sum(currentprobas)>0 :
             probas.append(currentprobas)
             rownames.append(currentpatent['id'])
-
+        i=i+1
     # export the matrix proba as csv
     utils.export_matrix_sparse_csv(probas,rownames,'probas/probas_'+yearrange+'_kwLimit'+str(kwLimit)+'_dispth'+str(dispth)+'_ethunit'+str(ethunit)+'.csv',";")
 
