@@ -91,6 +91,7 @@ def export_probas_matrices(years,kwLimit,dispth,ethunit):
         name = graph.vs['name'][n]
         dico[name] = clustering.membership[n]
 
+    ncommunities = len(clustering.sizes())
     probas = [] #([0.0]*n)*k
     rownames = []
 
@@ -98,7 +99,7 @@ def export_probas_matrices(years,kwLimit,dispth,ethunit):
     for currentpatent in patents:
         if i%10000==0 : print(100*i/npatents)
         #currentpatent = patents.next()
-        currentprobas = [0.0]*n
+        currentprobas = [0.0]*ncommunities
         for kw in currentpatent['keywords']:
             if kw in dico :
                 currentprobas[dico[kw]]=currentprobas[dico[kw]]+1
@@ -108,6 +109,9 @@ def export_probas_matrices(years,kwLimit,dispth,ethunit):
             probas.append(currentprobas)
             rownames.append(currentpatent['id'])
         i=i+1
+
+    patents.close()
+
     # export the matrix proba as csv
     utils.export_matrix_sparse_csv(probas,rownames,'probas/probas_'+yearrange+'_kwLimit'+str(kwLimit)+'_dispth'+str(dispth)+'_ethunit'+str(ethunit)+'.csv',";")
 
