@@ -177,7 +177,8 @@ def extract_sub_dicos(corpus,occurence_dicos) :
     kw_p_dico = dict()
 
     for patent in corpus :
-        patent_id = data.get_patent_id(patent)
+        #patent_id = data.get_patent_id(patent)
+        patent_id=patent[0]
         keywords = []
         if patent_id in p_kw_dico_all : keywords = p_kw_dico_all[patent_id]
         p_kw_dico[patent_id] = keywords

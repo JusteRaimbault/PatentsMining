@@ -17,9 +17,13 @@ semprefix = paste0('_full_100000_kmin',kmin,'_kmaxdec',kmaxdec,'_freqmin',freqmi
 #  -> check rowname indexing perfs
 
 
-loadSemantic<-function(yearrange){
-      
+loadSemantic<-function(years){
+    yearrange=paste0(years[1],"-",years[])
+    entrylist = read.csv(file=paste0,sep=";")
+    sparseMatrix
 }
+
+loadTechno<-function(
 
 
 loadProbas<-function(year){

@@ -39,11 +39,11 @@ def construct_graph(years,kwLimit):
     gf = gg.subgraph(ids)
 
     # get communities
-    coms = gg.community_fastgreedy(weights="weight")
+    #coms = gg.community_fastgreedy(weights="weight")
 
     # save everything
     pickle.dump(gf,open('pickled/graph_'+yearstr+'_'+str(kwLimit)+'_eth10.pkl','wb'))
-    pickle.dump(coms,open('pickled/coms_'+yearstr+'_'+str(kwLimit)+'_eth10.pkl','wb'))
+    #pickle.dump(coms,open('pickled/coms_'+yearstr+'_'+str(kwLimit)+'_eth10.pkl','wb'))
 
 
 
