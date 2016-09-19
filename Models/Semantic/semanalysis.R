@@ -10,30 +10,28 @@ windowSize=5
 
 #kmin = 0;freqmin = 50;edge_th = 50;kmaxdec=0.25;freqmaxdec=0.25
 #semprefix = paste0('_full_100000_kmin',kmin,'_kmaxdec',kmaxdec,'_freqmin',freqmin,'_freqmaxdec',freqmaxdec,'_eth',edge_th,'.RData')
-
+semsuffix='_kwLimit100000_dispth0.06_ethunit4.5e-05.csv'
 
 technoprefix=paste0(Sys.getenv('CS_HOME'),'/PatentsMining/Data/processed/classes/technoPerYear/technoProbas_')
-sizeTh=10
+#sizeTh=10
 # TODO : recompute techno probas on moving window ?
 # or better : single matrix with all patents ; gets corresponding rows with semantic rownames
 #  -> check rowname indexing perfs
 
 # load techno probas
-for(year in years){
-  load(paste0(technoprefix,year,'_sizeTh',sizeTh,'.RData'))
-}
-
+load(file=paste0(Sys.getenv('CS_HOME'),'/PatentsMining/Data/processed/classes/sparse.RData'))
 
 loadSemantic<-function(year){
-    yearrange=paste0((year-4),"-",year)
-    entrylist = read.csv(file=paste0('probas/'),sep=";")
-    sparseMatrix
+   show(paste0('loading year : ',year))
+    yearrange=paste0((year-windowSize+1),"-",year)
+    entrylist = read.csv(file=paste0('probas/probas_',yearrange,semsuffix),sep=";",header=FALSE)
+    rowinds = cumsum(c(1,as.integer(entrylist[1:(nrow(entrylist)-1),1]!=entrylist[2:nrow(entrylist),1])))
+    res = sparseMatrix(i=rowinds,j=entrylist[,2]+1,x=entrylist[,3])
+    rownames(res)<-unique(as.character(entrylist[,1]))
 }
 
-loadTechno<-function(){
-  
-}
 
+test = loadSemantic(1980)
 
 loadProbas<-function(year){
   show(year)
@@ -63,31 +61,37 @@ loadProbas<-function(year){
 
 #  1.1) Macro-level
 
-overlaps = c();cyears=c()
+techoverlaps = c();semoverlaps = c()
+techyears=c();semyears=c()
 for(year in years){
-  res = loadProbas(year);technoprobas=res$technoprobas;semprobas=res$semprobas
+  res = loadProbas(year);
+  technoprobas=res$technoprobas;semprobas=res$semprobas
   inds = which(colSums(technoprobas)>50)
-  #currentovs = rep(0,ncol(technoprobas)*(ncol(technoprobas)-1)/2)
-  currentovs = rep(0,ncol(semprobas)*(ncol(semprobas)-1)/2)
+  currenttechovs = rep(0,ncol(technoprobas)*(ncol(technoprobas)-1)/2)
+  currentsemovs = rep(0,ncol(semprobas)*(ncol(semprobas)-1)/2)
   k=1
-  #for(i in 1:(length(inds)-1)){show(i);for(j in (i+1):length(inds)){
-  #  currentovs[k]=sum(technoprobas[,inds[i]]*technoprobas[,inds[j]])/nrow(technoprobas);k=k+1
-  #}}
-  for(i in 1:(ncol(semprobas)-1)){show(i);for(j in (i+1):ncol(semprobas)){
-    currentovs=append(currentovs,sum(semprobas[,i]*semprobas[,j])/nrow(semprobas));
+  for(i in 1:(length(inds)-1)){show(i);for(j in (i+1):length(inds)){
+    currenttechovs=append(currenttechovs,sum(technoprobas[,inds[i]]*technoprobas[,inds[j]])/nrow(technoprobas))
   }}
-  overlaps=append(overlaps,currentovs)
-  cyears=append(cyears,rep(year,length(currentovs)))
+  for(i in 1:(ncol(semprobas)-1)){show(i);for(j in (i+1):ncol(semprobas)){
+    currentsemovs=append(currentsemovs,sum(semprobas[,i]*semprobas[,j])/nrow(semprobas));
+  }}
+  techoverlaps=append(techoverlaps,currenttechovs);semoverlaps=append(semoverlaps,currentsemovs)
+  techyears=append(techyears,rep(year,length(currenttechovs)));semyears=append(semyears,rep(year,length(currentsemovs)))
 }
 
 #save(overlaps,cyears,file='res/techno_overlaps.RData')
-load(file='res/techno_overlaps.RData')
-
+#load(file='res/techno_overlaps.RData')
 
 inds=overlaps>0#1:length(overlaps)#
 #overlaps[overlaps==0]=1e-10
+
+# distribution of overlaps 
 g=ggplot(data.frame(overlap=overlaps[inds],year=cyears[inds]),aes(x=overlap,colour=as.character(year)))#aes(x=year,y=overlap))
 g+geom_density(alpha=0.25)+scale_x_log10()+xlab("overlap")+ylab("density")#+scale_y_log10()
+
+# variation in time
+g=ggplot(data.frame(overlap=overlaps[inds],year=cyears[inds]),aes(x=year,y=overlap))
 g+geom_point(pch='.')+scale_y_log10()+stat_smooth()
 
 
@@ -101,9 +105,16 @@ for(year in years){
   cyears=append(cyears,rep(year,nrow(semprobas)+nrow(technoprobas)))
 }
 
+# techno patent origs
 df = data.frame(originality=origs[types=="techno"],year=as.character(cyears[types=="techno"]),type=types[types=="techno"])
 g=ggplot(df)
 g+geom_density(aes(x=originality,colour=year))
+
+# semantic patent origs
+df = data.frame(originality=origs[types=="semantic"],year=as.character(cyears[types=="semantic"]),type=types[types=="semantic"])
+g=ggplot(df)
+g+geom_density(aes(x=originality,colour=year))
+
 
 
 ##
