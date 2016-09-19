@@ -30,31 +30,41 @@ loadSemantic<-function(year){
     rownames(res)<-unique(as.character(entrylist[,1]))
 }
 
-
-test = loadSemantic(1980)
+# loadTechno<-function(year){
+#   techno=Matrix();colnames(techno)<-c()
+#  for(yy in (year-windowSize+1):year){
+#   load(paste0(technoprefix,year,'_sizeTh',sizeTh,'.RData'))
+#   rownames(m)<-sapply(rownames(m),function(s){ifelse(nchar(s)==8,substring(s,2),s)})
+#   newcols=setdiff(colnames(techno),colnames(m))
+#  techno=rbind(techno,m)
+# }
+#   return(m)
+# }
+#test = loadTechno(1980)
 
 loadProbas<-function(year){
-  show(year)
   res=list()
-  load(paste0('probas/relevant_',year,semprefix))
-  res$semprobas=probas[,3:ncol(probas)]
+  res$semprobas = loadSemantic(year)
  
-  for(yy in (year-windowSize+1):year){
-    load(paste0(technoprefix,year,'_sizeTh',sizeTh,'.RData'))
-    rownames(m)<-sapply(rownames(m),function(s){ifelse(nchar(s)==8,substring(s,2),s)})
-    techno=rbind(techno,m)
-  }
-  rowstoadd=setdiff(rownames(res$semprobas),rownames(m))
-  m=rbind(m,matrix(0,length(rowstoadd),ncol(m)));rownames(m)[(nrow(m)-length(rowstoadd)+1):nrow(m)]=rowstoadd
-  res$technoprobas = m[rownames(res$semprobas),]
+  rowstoadd=setdiff(rownames(res$semprobas),rownames(technoMatrix))
+  technoMatrix=rbind(technoMatrix,matrix(0,length(rowstoadd),ncol(technoMatrix)));
+  rownames(technoMatrix)[(nrow(technoMatrix)-length(rowstoadd)+1):nrow(technoMatrix)]=rowstoadd
+  res$technoprobas = technoMatrix[rownames(res$semprobas),]
   return(res)
 }
 
-
+# data conversion
 # for(year in years){
 #   load(paste0(technoprefix,year,'_sizeTh',sizeTh,'.RData'))
 #   save(m,file=paste0(technoprefix,year,'_sizeTh',sizeTh,'_uncompressed.RData'),compress=FALSE)
 # }
+
+# first load all probas
+probas=list()
+for(year in years){
+  probas[[year]]=loadProbas
+}
+
 
 ##
 #  1) First order interdisciplinarity
@@ -83,15 +93,25 @@ for(year in years){
 #save(overlaps,cyears,file='res/techno_overlaps.RData')
 #load(file='res/techno_overlaps.RData')
 
-inds=overlaps>0#1:length(overlaps)#
+
+
+# Techno
+inds=techoverlaps>0#1:length(overlaps)#
 #overlaps[overlaps==0]=1e-10
-
 # distribution of overlaps 
-g=ggplot(data.frame(overlap=overlaps[inds],year=cyears[inds]),aes(x=overlap,colour=as.character(year)))#aes(x=year,y=overlap))
-g+geom_density(alpha=0.25)+scale_x_log10()+xlab("overlap")+ylab("density")#+scale_y_log10()
-
+g=ggplot(data.frame(overlap=techoverlaps[inds],year=techyears[inds]),aes(x=overlap,colour=as.character(year)))#aes(x=year,y=overlap))
+g+geom_density(alpha=0.25)+scale_x_log10()+xlab("techno overlap")+ylab("density")#+scale_y_log10()
 # variation in time
-g=ggplot(data.frame(overlap=overlaps[inds],year=cyears[inds]),aes(x=year,y=overlap))
+g=ggplot(data.frame(overlap=techoverlaps[inds],year=techyears[inds]),aes(x=year,y=overlap))
+g+geom_point(pch='.')+scale_y_log10()+stat_smooth()
+
+# Semantic
+inds=semoverlaps>0
+# distribution of overlaps 
+g=ggplot(data.frame(overlap=semoverlaps[inds],year=semyears[inds]),aes(x=overlap,colour=as.character(year)))#aes(x=year,y=overlap))
+g+geom_density(alpha=0.25)+scale_x_log10()+xlab("sem overlap")+ylab("density")#+scale_y_log10()
+# variation in time
+g=ggplot(data.frame(overlap=semoverlaps[inds],year=semyears[inds]),aes(x=year,y=overlap))
 g+geom_point(pch='.')+scale_y_log10()+stat_smooth()
 
 
@@ -153,7 +173,8 @@ load(paste0(Sys.getenv('CS_HOME'),'/PatentsMining/Data/processed/citation/networ
 
 origs=c();cyears=c();types=c();
 for(year in years){
-  res = loadProbas(year);technoprobas=Matrix(as.matrix(res$technoprobas));semprobas=Matrix(as.matrix(res$semprobas))
+  res = probas[[year]];
+  technoprobas=Matrix(as.matrix(res$technoprobas));semprobas=Matrix(as.matrix(res$semprobas))
   currentnames=intersect(rownames(technoprobas),rownames(citadjacency))
   currentadj = citadjacency[currentnames,currentnames]
   currentadj = diag(rowSums(currentadj))%*%currentadj
@@ -163,6 +184,11 @@ for(year in years){
   origs = append(origs,1 - rowSums(semcit^2));types=append(types,rep("semantic",nrow(semcit)))
   cyears=append(cyears,rep(year,nrow(technocit)+nrow(semcit)))
 }
+
+#
+g=ggplot(data.frame(originality=origs[types=="techno"],year=as.character(cyears[types=="techno"])))
+g+geom_density(aes(x=originality,colour=year))
+
 
 g=ggplot(data.frame(originality=origs[types=="semantic"],year=as.character(cyears[types=="semantic"])))
 g+geom_density(aes(x=originality,colour=year))
