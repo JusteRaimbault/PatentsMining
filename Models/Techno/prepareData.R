@@ -17,7 +17,7 @@ library(Matrix)
 #   save(m,file=paste0(Sys.getenv('CS_HOME'),'/PatentsMining/Data/processed/classes/technoPerYear/technoProbas_',year,'_sizeTh',sizeTh,'.RData'))
 # }
 
-technolist = read.csv(paste0(Sys.getenv('CS_HOME'),'/PatentsMining/Data/raw/classesTechno/class.csv'),header=TRUE,sep=',',nrows = 1000)
+technolist = read.csv(paste0(Sys.getenv('CS_HOME'),'/PatentsMining/Data/raw/classesTechno/class.csv'),header=TRUE,sep=',')#,nrows = 1000)
 
 rowinds = cumsum(c(1,as.integer(technolist$Patent[1:(nrow(technolist)-1)]!=technolist$Patent[2:nrow(technolist)])))
 #data.frame(unique(rowinds),unique(technolist$Patent))
@@ -25,7 +25,7 @@ allclasses = unique(as.character(technolist$Class))
 colinds = sapply(technolist$Class,function(s){which(allclasses==s)})
 
 technoMatrix = sparseMatrix(i = rowinds,j=colinds,x=rep(1,length(rowinds)))
-rownames(technoMatrix)<-as.character(unique(technolist$Patent))
-colnames(technoMatrix)<-allclasses
+technorows=as.character(unique(technolist$Patent))
+technocols=allclasses
 
-save(technoMatrix,file=paste0(Sys.getenv('CS_HOME'),'/PatentsMining/Data/processed/classes/sparse.RData'))
+save(technorows,technocols,technoMatrix,file=paste0(Sys.getenv('CS_HOME'),'/PatentsMining/Data/processed/classes/sparse.RData'))
