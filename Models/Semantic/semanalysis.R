@@ -5,25 +5,34 @@
 
 setwd(paste0(Sys.getenv('CS_HOME'),'/PatentsMining/Models/Semantic'))
 
-years = 1976:2012
+years = 1980:2012
+windowSize=5
 
-kmin = 0;freqmin = 50;edge_th = 50;kmaxdec=0.25;freqmaxdec=0.25
+#kmin = 0;freqmin = 50;edge_th = 50;kmaxdec=0.25;freqmaxdec=0.25
+#semprefix = paste0('_full_100000_kmin',kmin,'_kmaxdec',kmaxdec,'_freqmin',freqmin,'_freqmaxdec',freqmaxdec,'_eth',edge_th,'.RData')
+
+
+technoprefix=paste0(Sys.getenv('CS_HOME'),'/PatentsMining/Data/processed/classes/technoPerYear/technoProbas_')
 sizeTh=10
-semprefix = paste0('_full_100000_kmin',kmin,'_kmaxdec',kmaxdec,'_freqmin',freqmin,'_freqmaxdec',freqmaxdec,'_eth',edge_th,'.RData')
-
-#technoprefix=paste0(Sys.getenv('CS_HOME'),'/PatentsMining/Data/processed/classes/technoPerYear/technoProbas_')
 # TODO : recompute techno probas on moving window ?
 # or better : single matrix with all patents ; gets corresponding rows with semantic rownames
 #  -> check rowname indexing perfs
 
+# load techno probas
+for(year in years){
+  load(paste0(technoprefix,year,'_sizeTh',sizeTh,'.RData'))
+}
 
-loadSemantic<-function(years){
-    yearrange=paste0(years[1],"-",years[])
-    entrylist = read.csv(file=paste0,sep=";")
+
+loadSemantic<-function(year){
+    yearrange=paste0((year-4),"-",year)
+    entrylist = read.csv(file=paste0('probas/'),sep=";")
     sparseMatrix
 }
 
-loadTechno<-function(
+loadTechno<-function(){
+  
+}
 
 
 loadProbas<-function(year){
@@ -31,8 +40,12 @@ loadProbas<-function(year){
   res=list()
   load(paste0('probas/relevant_',year,semprefix))
   res$semprobas=probas[,3:ncol(probas)]
-  load(paste0(technoprefix,year,'_sizeTh',sizeTh,'.RData'))
-  rownames(m)<-sapply(rownames(m),function(s){ifelse(nchar(s)==8,substring(s,2),s)})
+ 
+  for(yy in (year-windowSize+1):year){
+    load(paste0(technoprefix,year,'_sizeTh',sizeTh,'.RData'))
+    rownames(m)<-sapply(rownames(m),function(s){ifelse(nchar(s)==8,substring(s,2),s)})
+    techno=rbind(techno,m)
+  }
   rowstoadd=setdiff(rownames(res$semprobas),rownames(m))
   m=rbind(m,matrix(0,length(rowstoadd),ncol(m)));rownames(m)[(nrow(m)-length(rowstoadd)+1):nrow(m)]=rowstoadd
   res$technoprobas = m[rownames(res$semprobas),]
