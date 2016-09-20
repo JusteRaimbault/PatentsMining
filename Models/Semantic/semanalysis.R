@@ -65,6 +65,8 @@ for(year in years){
   probas[[year]]=loadProbas
 }
 
+save(probas,'probas/processed.RData')
+
 
 ##
 #  1) First order interdisciplinarity
