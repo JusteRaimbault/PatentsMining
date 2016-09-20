@@ -17,7 +17,7 @@ library(Matrix)
 #   save(m,file=paste0(Sys.getenv('CS_HOME'),'/PatentsMining/Data/processed/classes/technoPerYear/technoProbas_',year,'_sizeTh',sizeTh,'.RData'))
 # }
 
-technolist = read.csv(paste0(Sys.getenv('CS_HOME'),'/PatentsMining/Data/raw/classesTechno/class.csv'),header=TRUE,sep=',',nrows = 1000)
+technolist = read.csv(paste0(Sys.getenv('CS_HOME'),'/PatentsMining/Data/raw/classesTechno/class.csv'),header=TRUE,sep=',')#,nrows = 1000)
 
 allpatents=as.character(unique(technolist$Patent))
 inds = 1:length(allpatents)
