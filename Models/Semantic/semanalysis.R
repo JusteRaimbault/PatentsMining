@@ -130,20 +130,23 @@ g+geom_point(pch='.')+scale_y_log10()+stat_smooth()
 origs=c();cyears=c();types=c();
 for(year in years){
   show(year)
-  load(paste0('probas/processed_',year,'.RData'))
+  load(paste0('probas_processed/processed_',year,'.RData'))
   technoprobas=currentprobas$technoprobas;semprobas=currentprobas$semprobas;rm(currentprobas);gc()
   origs = append(origs,1 - rowSums(semprobas^2));types=append(types,rep("semantic",nrow(semprobas)))
   origs = append(origs,1 - rowSums(technoprobas^2));types=append(types,rep("techno",nrow(technoprobas)))
   cyears=append(cyears,rep(year,nrow(semprobas)+nrow(technoprobas)))
 }
+save(origs,cyears,types,file='res/patentlevel_orig.RData')
 
 # techno patent origs
-df = data.frame(originality=origs[types=="techno"],year=as.character(cyears[types=="techno"]),type=types[types=="techno"])
+inds=types=="techno"&origs<1
+df = data.frame(originality=origs[inds],year=as.character(cyears[inds]),type=types[inds])
 g=ggplot(df)
 g+geom_density(aes(x=originality,colour=year))
 
 # semantic patent origs
-df = data.frame(originality=origs[types=="semantic"],year=as.character(cyears[types=="semantic"]),type=types[types=="semantic"])
+inds=types=="semantic"&origs<1
+df = data.frame(originality=origs[inds],year=as.character(cyears[inds]),type=types[inds])
 g=ggplot(df)
 g+geom_density(aes(x=originality,colour=year))
 
