@@ -121,11 +121,17 @@ g=ggplot(data.frame(overlap=semoverlaps[inds],year=semyears[inds]),aes(x=year,y=
 g+geom_point(pch='.')+scale_y_log10()+stat_smooth()
 
 
+
+
+
+##################
 # 1.2) Micro-level : patent level interdisciplinarity
 
 origs=c();cyears=c();types=c();
 for(year in years){
-  res = loadProbas(year);technoprobas=res$technoprobas;semprobas=res$semprobas
+  show(year)
+  load(paste0('probas/processed_',year,'.RData'))
+  technoprobas=currentprobas$technoprobas;semprobas=currentprobas$semprobas;rm(currentprobas);gc()
   origs = append(origs,1 - rowSums(semprobas^2));types=append(types,rep("semantic",nrow(semprobas)))
   origs = append(origs,1 - rowSums(technoprobas^2));types=append(types,rep("techno",nrow(technoprobas)))
   cyears=append(cyears,rep(year,nrow(semprobas)+nrow(technoprobas)))
