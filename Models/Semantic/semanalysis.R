@@ -28,6 +28,7 @@ loadSemantic<-function(year){
     rowinds = cumsum(c(1,as.integer(entrylist[1:(nrow(entrylist)-1),1]!=entrylist[2:nrow(entrylist),1])))
     res = sparseMatrix(i=rowinds,j=entrylist[,2]+1,x=entrylist[,3])
     rownames(res)<-unique(as.character(entrylist[,1]))
+   return(res)
 }
 
 # loadTechno<-function(year){
@@ -43,12 +44,14 @@ loadSemantic<-function(year){
 #test = loadTechno(1980)
 
 loadProbas<-function(year){
+  show(year)
   res=list()
   res$semprobas = loadSemantic(year)
- 
   rowstoadd=setdiff(rownames(res$semprobas),rownames(technoMatrix))
-  technoMatrix=rbind(technoMatrix,matrix(0,length(rowstoadd),ncol(technoMatrix)));
-  rownames(technoMatrix)[(nrow(technoMatrix)-length(rowstoadd)+1):nrow(technoMatrix)]=rowstoadd
+  if(length(rowstoadd)>0){
+    technoMatrix=rbind(technoMatrix,matrix(0,length(rowstoadd),ncol(technoMatrix)));
+    rownames(technoMatrix)[(nrow(technoMatrix)-length(rowstoadd)+1):nrow(technoMatrix)]=rowstoadd
+  }
   res$technoprobas = technoMatrix[rownames(res$semprobas),]
   return(res)
 }
@@ -60,12 +63,13 @@ loadProbas<-function(year){
 # }
 
 # first load all probas
-probas=list()
+#probas=list()
 for(year in years){
-  probas[[year]]=loadProbas
+  currentprobas=loadProbas(year)
+  save(currentprobas,file=paste0('probas/processed_',year,'.RData'))
+  rm(currentprobas)
 }
 
-save(probas,'probas/processed.RData')
 
 
 ##
@@ -76,8 +80,8 @@ save(probas,'probas/processed.RData')
 techoverlaps = c();semoverlaps = c()
 techyears=c();semyears=c()
 for(year in years){
-  res = loadProbas(year);
-  technoprobas=res$technoprobas;semprobas=res$semprobas
+  load(paste0('probas/processed_',year,'.RData'))
+  technoprobas=currentprobas$technoprobas;semprobas=currentprobas$semprobas;rm(currentprobas);gc()
   inds = which(colSums(technoprobas)>50)
   currenttechovs = rep(0,ncol(technoprobas)*(ncol(technoprobas)-1)/2)
   currentsemovs = rep(0,ncol(semprobas)*(ncol(semprobas)-1)/2)

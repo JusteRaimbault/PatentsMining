@@ -35,6 +35,11 @@ technoMatrix = sparseMatrix(i = rowinds,j=colinds,x=rep(1,length(rowinds)))
 rownames(technoMatrix)<-allpatents
 colnames(technoMatrix)<-allclasses
 
-technoMatrix = t(apply(technoMatrix,1,function(row){return(row/sum(row))}))
+technoMatrix = Diagonal(x=1/rowSums(technoMatrix))%*%technoMatrix
+#test=Diagonal(x=1/rowSums(technoMatrix))%*%technoMatrix
+#prov = apply(t(technoMatrix),2,function(row){return(row/sum(row))})
+#technoMatrix = t(apply(technoMatrix,1,function(row){return(row/sum(row))}))
+
+rownames(technoMatrix)<-sapply(rownames(technoMatrix),function(s){ifelse(nchar(s)==8,substring(s,2),s)})
 
 save(technoMatrix,file=paste0(Sys.getenv('CS_HOME'),'/PatentsMining/Data/processed/classes/sparse.RData'))
