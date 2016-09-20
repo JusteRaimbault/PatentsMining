@@ -136,6 +136,7 @@ for(year in years){
   origs = append(origs,1 - rowSums(technoprobas^2));types=append(types,rep("techno",nrow(technoprobas)))
   cyears=append(cyears,rep(year,nrow(semprobas)+nrow(technoprobas)))
 }
+
 save(origs,cyears,types,file='res/patentlevel_orig.RData')
 
 # techno patent origs
