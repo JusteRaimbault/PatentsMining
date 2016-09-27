@@ -109,7 +109,8 @@ def export_probas_matrices(years,kwLimit,dispth,ethunit):
     ncommunities = len(clustering.sizes())
     probas = [] #([0.0]*n)*k
     rownames = []
-
+    counts = []
+    
     i=0
     for currentpatent in patents:
         if i%10000==0 : print(100*i/npatents)
@@ -119,16 +120,17 @@ def export_probas_matrices(years,kwLimit,dispth,ethunit):
             if kw in dico :
                 currentprobas[dico[kw]]=currentprobas[dico[kw]]+1
             nk=len(currentpatent['keywords'])
-        currentprobas = list(map(lambda x: x /nk,currentprobas))
+        #currentprobas = list(map(lambda x: x /nk,currentprobas))
         if sum(currentprobas)>0 :
             probas.append(currentprobas)
             rownames.append(currentpatent['id'])
+            counts.append(nk)
         i=i+1
 
     patents.close()
 
     # export the matrix proba as csv
-    utils.export_matrix_sparse_csv(probas,rownames,'probas/probas_'+yearrange+'_kwLimit'+str(kwLimit)+'_dispth'+str(dispth)+'_ethunit'+str(ethunit)+'.csv',";")
+    utils.export_matrix_sparse_csv(probas,[rownames,counts],'probas/counts_'+yearrange+'_kwLimit'+str(kwLimit)+'_dispth'+str(dispth)+'_ethunit'+str(ethunit)+'.csv',";")
 
     # export the kw;com dico as csv
-    utils.export_dico_csv(dico,'probas/keywords_'+yearrange+'_kwLimit'+str(kwLimit)+'_dispth'+str(dispth)+'_ethunit'+str(ethunit)+'.csv',";")
+    utils.export_dico_csv(dico,'probas/keywords-counts_'+yearrange+'_kwLimit'+str(kwLimit)+'_dispth'+str(dispth)+'_ethunit'+str(ethunit)+'.csv',";")

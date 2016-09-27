@@ -4,9 +4,9 @@
 
 
 
-WINDOW=3
+WINDOW=5
 START=1976
-END=2010
+END=2008
 NRUNS=15
 
 # tasks : relevant ; network ; sensitivity ; probas ; network-python ; probas-python
