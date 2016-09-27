@@ -51,10 +51,10 @@ def dispersion(x):
     s=sum(x)
     return(sum(list(map(lambda y:(y/s)*(y/s),x))))
 
+
 ##
-#
-def get_communities(yearrange,kwLimit,dispth,eth,mongo):
-    print("Constructing communities : "+yearrange+" ; "+str(dispth)+" ; "+str(eth))
+#  construct filtered graph
+def filtered_graph(yearrange,kwLimit,dispth,eth,mongo):
     graph=pickle.load(open('pickled/graph_'+yearrange+'_'+str(kwLimit)+'_eth10.pkl','rb'))
     kwstechno = list(mongo['keywords']['techno'].find({'keyword':{'$in':graph.vs['name']}}))
     disps = list(map(lambda d:(d['keyword'],len(d.keys())-1,dispersion([float(d[k]) for k in d.keys() if k!='keyword'and k!='_id'])),kwstechno))
@@ -69,8 +69,23 @@ def get_communities(yearrange,kwLimit,dispth,eth,mongo):
     graph.delete_edges([i for i, w in enumerate(graph.es['weight']) if w<eth])
     dd = graph.degree(range(graph.vcount()))
     graph=graph.subgraph([i for i, d in enumerate(dd) if d > 0])
+
+
+##
+#  get multilevel communities
+def get_communities(yearrange,kwLimit,dispth,eth,mongo):
+    print("Constructing communities : "+yearrange+" ; "+str(dispth)+" ; "+str(eth))
+    graph = filtered_graph(yearrange,kwLimit,dispth,eth,mongo)
     com = graph.community_multilevel(weights="weight",return_levels=True)
     return([graph,com[len(com)-1]])
+
+def export_filtered_graphs(years,kwLimit,dispth,ethunit):
+    mongo = pymongo.MongoClient('mongodb://root:root@127.0.0.1:29019')
+    patents = mongo['patent']['keywords'].find({"app_year":{"$in":years}},no_cursor_timeout=True)
+    npatents = patents.count()
+    yearrange = years[0]+"-"+years[len(years)-1]
+    graph=filtered_graph(yearrange,kwLimit,dispth,math.floor(ethunit*npatents),mongo)
+    
 
 
 ##
