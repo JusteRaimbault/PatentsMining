@@ -4,43 +4,80 @@ patent = read.table(file="C:/DataPatentMining/patent_class.txt",
 class = read.csv(file="C:/DataPatentMining/tech_class.csv",
                    sep=';', header=TRUE)
 
+citation = read.table(file="C:/DataPatentMining/yoann.txt",
+                    sep=',', header=TRUE, nrows=1000000)
+
 technoProba = load(file="C:/Users/yoann/OneDrive/Documents/DataPatentMining/technoProbas_1977_sizeTh10.RData", envir = parent.frame(), verbose = FALSE)
 
 exportSubset = read.table(file="C:/Users/yoann/OneDrive/Documents/DataPatentMining/exportSubset.txt",
                     sep=',', header=TRUE)
 
-patent10000 = patent[1:10000,]
-p =patent10000[order(patent10000$app_date),] 
-p = p[complete.cases(p),] #remove observations with NA
+#patent10000 = patent[1:10000,]
+#p =patent10000[order(patent10000$app_date),] 
+#p = p[complete.cases(p),] #remove observations with NA
 
-#compute the parameter for technological classes
-t = table(factor(class[,"class"])) #make a table of factors
-for (i in 1:451)
+c0 = citation[1:100000,]
+c = c0[order(c0$app_date_citing),] 
+c = c[complete.cases(c),] #remove observations with NA
+
+# compute the parameter for technological classes
+t = table(factor(c[,"class_citing"])) #make a table of factors
+lt = length(t)
+for (i in 1:lt)
 {
   t[[i]]=0
 }
-tpat = table(factor(p[,"patent"])) #make a table of factors
+
+tpat = table(factor(c[,"citing"])) #make a table of patents
 nb_patents = length(tpat)
 for (i in 1:nb_patents)
 {
   tpat[[i]]=0
 }
-
+PatList = unique(c$citing)
 theta = 0.01 #parameter of the model
 log_lik=0
 for (i in 1:nb_patents)
 {
-  #to continue
-  id = p[i,1]
-  cl = p[i,4]
-  if (id > idstart)
+  id = PatList[i]
+  subc = c[c$citing==id,]
+  tsubc = table(subc$class_citing)
+  nbC= length(tsubc) # number of patent's classes 
+  n1 = sum(t[tsubc])# nb of patents from the patent's classes
+  n2 = length(tpat[tpat >0]) # nb of patents
+  if (n2 == 0)
   {
-    if (id != p[i-1,1]) #two possibilities to find citation: 1) the patent has made previous citations, 2) it got cited by previous patents
+    n2=1
+  }
+  pr = min(1,n1/n2 + theta) # theoretical probability to cite patents from its own classes
+  pcited = unique(subc$cited)
+  nb_cited = length(pcited)
+  for (k in 1:nb_cited)
+  {
+    idcited=pcited[k]
+    if (idcited %in% names(tpat))
     {
-      #1)
-      
+      if (tpat[toString(idcited)] == 1)
+      {
+        Cl_cited = unique(subc[subc$cited==idcited,"class_cited"])# list of classes from the cited patent
+        nb_cl = length(Cl_cited)
+        for (l in 1:nb_cl)
+        {
+          if (Cl_cited[l] %in% names(tsubc))
+          {
+            log_lik = log_lik + log (pr)
+          }
+          else
+          {
+            log_lik = log_lik + log(1 - pr)
+          }
+        }
+      }
     }
   }
-  #add the class in table
-  t[[cl]] = t[[cl]]+1
+  tpat[toString(id)]=1 #add the cited patents in the table
+  for (j in 1:nbC) # add the corresponding classes
+  {
+    t[names(tsubc)[j]] = t[names(tsubc)[j]] + 1
+  }
 }
