@@ -31,6 +31,8 @@ loadSemantic<-function(year){
    return(res)
 }
 
+
+
 # loadTechno<-function(year){
 #   techno=Matrix();colnames(techno)<-c()
 #  for(yy in (year-windowSize+1):year){
@@ -71,6 +73,14 @@ for(year in years){
 }
 
 
+####
+kwex <- as.tbl(read.csv("keywords/keywords_2000-2004_kwLimit100000_dispth0.06_ethunit4.5e-05.csv",sep=";",header=FALSE))
+
+kwex %>% group_by(V2)
+data.frame(kwex[kwex$V2==156,1],stringsAsFactors = FALSE)
+
+
+
 
 ##
 #  1) First order interdisciplinarity
@@ -98,8 +108,11 @@ for(year in years){
 
 #save(overlaps,cyears,file='res/techno_overlaps.RData')
 #load(file='res/techno_overlaps.RData')
-
-
+load(file='res/classes_overlaps.RData')
+techoverlaps=unlist(lapply(res,function(l){l$techov}))
+techyears=unlist(lapply(res,function(l){l$techyear}))
+semoverlaps=unlist(lapply(res,function(l){l$semov}))
+semyears=unlist(lapply(res,function(l){l$semyear}))
 
 # Techno
 inds=techoverlaps>0#1:length(overlaps)#
@@ -137,7 +150,8 @@ for(year in years){
   cyears=append(cyears,rep(year,nrow(semprobas)+nrow(technoprobas)))
 }
 
-save(origs,cyears,types,file='res/patentlevel_orig.RData')
+#save(origs,cyears,types,file='res/patentlevel_orig.RData')
+load('res/patentlevel_origs.RData')
 
 # techno patent origs
 inds=types=="techno"&origs<1
@@ -149,7 +163,7 @@ g+geom_density(aes(x=originality,colour=year))
 inds=types=="semantic"&origs<1
 df = data.frame(originality=origs[inds],year=as.character(cyears[inds]),type=types[inds])
 g=ggplot(df)
-g+geom_density(aes(x=originality,colour=year))
+g+geom_density(aes(x=originality,colour=year))+scale_y_log10()
 
 
 
@@ -170,11 +184,19 @@ for(year in years){
   cyears=append(cyears,rep(year,ncol(technoprobas)*ncol(semprobas)))
 }
 
+#
+load('res/inter_overlaps.RData')
+overlaps=unlist(lapply(res,function(l){l$overlap}))
+cyears=unlist(lapply(res,function(l){l$year}))
+
 inds=overlaps>0
 #overlaps[overlaps==0]=1e-10
 g=ggplot(data.frame(overlaps=overlaps[inds],cyears=as.character(cyears[inds])))#,aes(x=cyears,y=overlaps))
 g+geom_density(aes(x=overlaps,colour=cyears),alpha=0.25,adjust=0.75)+scale_x_log10()+xlab("overlap")+ylab("density")#+scale_y_log10()
-#g+geom_point(pch='.')+scale_y_log10()+stat_smooth()
+
+
+g=ggplot(data.frame(overlaps=overlaps[inds],cyears=as.character(cyears[inds])),aes(x=cyears,y=overlaps))
+g+geom_point(pch='.')+scale_y_log10()+stat_smooth()
 
 
 
