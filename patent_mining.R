@@ -1,24 +1,26 @@
-patent = read.table(file="C:/DataPatentMining/patent_class.txt",
-                sep=',', header=TRUE)
+#patent = read.table(file="C:/DataPatentMining/patent_class.txt",
+#                sep=',', header=TRUE)
 
-class = read.csv(file="C:/DataPatentMining/tech_class.csv",
-                   sep=';', header=TRUE)
+#class = read.csv(file="C:/DataPatentMining/tech_class.csv",
+#                   sep=';', header=TRUE)
 
 citation = read.table(file="C:/DataPatentMining/yoann.txt",
-                    sep=',', header=TRUE, nrows=1000000)
+                    sep=',', header=FALSE, nrows=100000)
+names(citation)=c("citing", "cited", "y_cited", "y_citing", "class_citing", "class_cited", "app_date_citing", "grant_date_citing", "app_date_cited", "grant_date_cited")
 
-technoProba = load(file="C:/Users/yoann/OneDrive/Documents/DataPatentMining/technoProbas_1977_sizeTh10.RData", envir = parent.frame(), verbose = FALSE)
+#technoProba = load(file="C:/Users/yoann/OneDrive/Documents/DataPatentMining/technoProbas_1977_sizeTh10.RData", envir = parent.frame(), verbose = FALSE)
 
-exportSubset = read.table(file="C:/Users/yoann/OneDrive/Documents/DataPatentMining/exportSubset.txt",
-                    sep=',', header=TRUE)
+#exportSubset = read.table(file="C:/Users/yoann/OneDrive/Documents/DataPatentMining/exportSubset.txt",
+#                    sep=',', header=TRUE)
 
 #patent10000 = patent[1:10000,]
 #p =patent10000[order(patent10000$app_date),] 
 #p = p[complete.cases(p),] #remove observations with NA
 
-c0 = citation[1:100000,]
-c = c0[order(c0$app_date_citing),] 
+#c = citation[1:1000000,]
+c = citation[order(citation$app_date_citing),] 
 c = c[complete.cases(c),] #remove observations with NA
+
 
 # compute the parameter for technological classes
 t = table(factor(c[,"class_citing"])) #make a table of factors
@@ -35,8 +37,8 @@ for (i in 1:nb_patents)
   tpat[[i]]=0
 }
 PatList = unique(c$citing)
-theta = 0.01 #parameter of the model
-log_lik=0
+theta = seq(0.01, 1, by=0.01) #parameter of the model
+log_lik=rep(0,100)
 for (i in 1:nb_patents)
 {
   id = PatList[i]
@@ -49,7 +51,7 @@ for (i in 1:nb_patents)
   {
     n2=1
   }
-  pr = min(1,n1/n2 + theta) # theoretical probability to cite patents from its own classes
+  pr = pmin(1,n1/n2 + theta) # theoretical probability to cite patents from its own classes
   pcited = unique(subc$cited)
   nb_cited = length(pcited)
   for (k in 1:nb_cited)
@@ -66,10 +68,12 @@ for (i in 1:nb_patents)
           if (Cl_cited[l] %in% names(tsubc))
           {
             log_lik = log_lik + log (pr)
+            #print(log (pr))
           }
           else
           {
             log_lik = log_lik + log(1 - pr)
+            #print(log(1 - pr))
           }
         }
       }
@@ -81,3 +85,4 @@ for (i in 1:nb_patents)
     t[names(tsubc)[j]] = t[names(tsubc)[j]] + 1
   }
 }
+plot(theta, log_lik)
