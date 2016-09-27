@@ -5,15 +5,15 @@ years = 1980:2012
 windowSize=5
 
 library(doParallel)
-cl <- makeCluster(33,outfile='log')
+cl <- makeCluster(17,outfile='log')
 registerDoParallel(cl)
 
 startTime = proc.time()[3]
 
 res <- foreach(year=years) %dopar% {
-  load(paste0('probas/processed_',year,'.RData'))
+  load(paste0('probas_processed/processed_',year,'.RData'))
   technoprobas=currentprobas$technoprobas;semprobas=currentprobas$semprobas;#rm(currentprobas);gc()
-  inds = which(colSums(technoprobas)>50)
+  inds = which(colSums(technoprobas)>100)
   currenttechovs = c() #rep(0,ncol(technoprobas)*(ncol(technoprobas)-1)/2)
   currentsemovs = c() #rep(0,ncol(semprobas)*(ncol(semprobas)-1)/2)
   k=1
@@ -30,3 +30,29 @@ res <- foreach(year=years) %dopar% {
 save(res,file='res/classes_overlaps.RData')
 
 show(proc.time()[3]-startTime)
+
+
+startTime = proc.time()[3]
+
+overlaps=c();cyears=c()
+res <- foreach(year=years) %dopar% {
+  load(paste0('probas_processed/processed_',year,'.RData'))
+  technoprobas=currentprobas$technoprobas;semprobas=currentprobas$semprobas;#rm(currentprobas);gc()
+  # all couples (i\in sem, j\in techno)
+  inds = which(colSums(technoprobas)>100)
+  currentovs = rep(0,length(inds)*ncol(semprobas))
+  k=1
+  for(i in 1:ncol(semprobas)){show(i);for(j in inds){
+    currentovs[k]=sum(semprobas[,i]*technoprobas[,j])/nrow(technoprobas);k=k+1
+  }}
+  return(list(overlap=currentovs,year=rep(year,length(inds)*ncol(semprobas))))
+}
+
+save(res,file='res/inter_overlaps.RData')
+
+show(proc.time()[3]-startTime)
+
+stopCluster(cl)
+
+
+
