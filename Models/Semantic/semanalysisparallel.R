@@ -33,7 +33,9 @@ save(res,file='res/classes_overlaps.RData')
 
 show(proc.time()[3]-startTime)
 
+
 startTime = proc.time()[3]
+
 
 overlaps=c();cyears=c()
 res <- foreach(year=years) %dopar% {
@@ -54,3 +56,4 @@ save(res,file='res/inter_overlaps.RData')
 show(proc.time()[3]-startTime)
 
 stopCluster(cl)
+
