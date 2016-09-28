@@ -69,7 +69,7 @@ def filtered_graph(yearrange,kwLimit,dispth,eth,mongo):
     graph.delete_edges([i for i, w in enumerate(graph.es['weight']) if w<eth])
     dd = graph.degree(range(graph.vcount()))
     graph=graph.subgraph([i for i, d in enumerate(dd) if d > 0])
-
+    return(graph)
 
 ##
 #  get multilevel communities

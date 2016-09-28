@@ -8,55 +8,14 @@ setwd(paste0(Sys.getenv('CS_HOME'),'/PatentsMining/Models/Semantic'))
 years = 1980:2012
 windowSize=5
 
-#kmin = 0;freqmin = 50;edge_th = 50;kmaxdec=0.25;freqmaxdec=0.25
-#semprefix = paste0('_full_100000_kmin',kmin,'_kmaxdec',kmaxdec,'_freqmin',freqmin,'_freqmaxdec',freqmaxdec,'_eth',edge_th,'.RData')
-semsuffix='_kwLimit100000_dispth0.06_ethunit4.5e-05.csv'
-
-technoprefix=paste0(Sys.getenv('CS_HOME'),'/PatentsMining/Data/processed/classes/technoPerYear/technoProbas_')
-#sizeTh=10
-# TODO : recompute techno probas on moving window ?
-# or better : single matrix with all patents ; gets corresponding rows with semantic rownames
-#  -> check rowname indexing perfs
-
-# load techno probas
-load(file=paste0(Sys.getenv('CS_HOME'),'/PatentsMining/Data/processed/classes/sparse.RData'))
-
-loadSemantic<-function(year){
-   show(paste0('loading year : ',year))
-    yearrange=paste0((year-windowSize+1),"-",year)
-    entrylist = read.csv(file=paste0('probas/probas_',yearrange,semsuffix),sep=";",header=FALSE)
-    rowinds = cumsum(c(1,as.integer(entrylist[1:(nrow(entrylist)-1),1]!=entrylist[2:nrow(entrylist),1])))
-    res = sparseMatrix(i=rowinds,j=entrylist[,2]+1,x=entrylist[,3])
-    rownames(res)<-unique(as.character(entrylist[,1]))
-   return(res)
-}
+source('semanalfun.R')
 
 
 
-# loadTechno<-function(year){
-#   techno=Matrix();colnames(techno)<-c()
-#  for(yy in (year-windowSize+1):year){
-#   load(paste0(technoprefix,year,'_sizeTh',sizeTh,'.RData'))
-#   rownames(m)<-sapply(rownames(m),function(s){ifelse(nchar(s)==8,substring(s,2),s)})
-#   newcols=setdiff(colnames(techno),colnames(m))
-#  techno=rbind(techno,m)
-# }
-#   return(m)
-# }
-#test = loadTechno(1980)
 
-loadProbas<-function(year){
-  show(year)
-  res=list()
-  res$semprobas = loadSemantic(year)
-  rowstoadd=setdiff(rownames(res$semprobas),rownames(technoMatrix))
-  if(length(rowstoadd)>0){
-    technoMatrix=rbind(technoMatrix,matrix(0,length(rowstoadd),ncol(technoMatrix)));
-    rownames(technoMatrix)[(nrow(technoMatrix)-length(rowstoadd)+1):nrow(technoMatrix)]=rowstoadd
-  }
-  res$technoprobas = technoMatrix[rownames(res$semprobas),]
-  return(res)
-}
+
+
+
 
 # data conversion
 # for(year in years){
