@@ -1,0 +1,27 @@
+
+# find large class with "optic" ; years 2000-2004
+$ cat keywords/keywords_2000-2004_kwLimit100000_dispth0.06_ethunit4.5e-05.csv | grep ";5$" | wc -l
+1060
+(on 21841 keywords)
+
+# find a patent with large probas in this class (but also good in others ?)
+#  semanalysis.R ; load for 2004
+rownames(semprobas)[which(semprobas[,6]==max(semprobas[,6]))]
+  "6853482" "7170690" "7031055"
+# corresponding patents
+{ "_id" : ObjectId("57037774eb1ec9e45312c1d7"), "title" : "Microscope", "abstract" : " The microscope (S, ", "app_date" : "20000203", "year" : "2005", "id" : "6853482", "grant_date" : "20050208" }
+{ "_id" : ObjectId("57037e99eb1ec9222bbfac04"), "title" : "Zoom lens", "abstract" : " In a zoom lens (", "app_date" : "20031031", "year" : "2007", "id" : "7170690", "grant_date" : "20070130" }
+{ "_id" : ObjectId("570380caeb1ec9a5bfdb7971"), "title" : "Microscope", "abstract" : " A microscope (", "app_date" : "20031121", "year" : "2006", "id" : "7031055", "grant_date" : "20060418" }
+#  -> errors in parsing ?
+
+# try good originality and at least 50% ?
+# 8243175
+inds = which(semprobas[,6]>0.5&origs>0.5&difcols>1)
+# 7505210 : has a lot of optic and a bit of transmission, but not enough
+
+#  -> recompute with kw counts to find an interesting patent.
+
+
+
+
+

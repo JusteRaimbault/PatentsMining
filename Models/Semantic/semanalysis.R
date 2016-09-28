@@ -32,14 +32,33 @@ for(year in years){
 }
 
 
-####
+#######
+## kw examples
 kwex <- as.tbl(read.csv("keywords/keywords_2000-2004_kwLimit100000_dispth0.06_ethunit4.5e-05.csv",sep=";",header=FALSE))
 
 kwex %>% group_by(V2)
 data.frame(kwex[kwex$V2==156,1],stringsAsFactors = FALSE)
 
 
+#######
+## patent example
+# year : 2004 ; semantic class : 5 ("optic")
+year=2004
+load(file=paste0('probas_processed/processed_',year,'.RData'))
+technoprobas=currentprobas$technoprobas;semprobas=currentprobas$semprobas;rm(currentprobas)
 
+# beware : class 5 is index 6 (classes begin at 0 !)
+rownames(semprobas)[which(semprobas[,6]==max(semprobas[,6]))]
+
+origs=1 - rowSums(semprobas^2)
+difcols = rowSums(semprobas>0)
+inds = which(semprobas[,6]>0.2&difcols>2&rowSums(semprobas)>0.5)
+origs[inds]
+as.matrix(semprobas[inds,])
+# 8243175
+# best orig 0.744 - but single class.
+#inds = which(semprobas[,6]>0.5&origs>0.744)
+# 7534052 ? NO 
 
 ##
 #  1) First order interdisciplinarity
