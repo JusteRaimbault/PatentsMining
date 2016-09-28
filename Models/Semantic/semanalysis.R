@@ -180,11 +180,17 @@ g+geom_density(aes(x=originality,colour=year))
 
 # semantic patent origs
 inds=types=="semantic"&origs<1
+inds=origs<1
 df = data.frame(originality=origs[inds],year=as.character(cyears[inds]),type=types[inds])
+gc()
 g=ggplot(df)
 g+geom_density(aes(x=originality,colour=year))+scale_y_log10()
 
-
+byyearorigs = as.tbl(df) %>% group_by(year,type) %>% summarize(meanorig=mean(originality),count=n())
+gsum=ggplot(byyearorigs)
+labs=rep("",length(years));labs[seq(from=1,to=length(labs),by=3)]=as.character(years[seq(from=1,to=length(labs),by=3)])
+gsum+geom_point(aes(x=year,y=meanorig,colour=type),show.legend = FALSE)+facet_wrap(~type,scales ="free_y",)+
+  scale_x_discrete(breaks=as.character(years),labels=labs)
 
 ##
 #  2) Layers macro-structure comparison
