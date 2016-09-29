@@ -1,11 +1,10 @@
 
 library(Matrix)
-library(ggplot2)
+
 
 semsuffix='_kwLimit100000_dispth0.06_ethunit4.5e-05.csv'
 #semprefix='probas/probas_'
 semprefix='probas_count/counts_'
-year=1980
 
 technoprefix=paste0(Sys.getenv('CS_HOME'),'/PatentsMining/Data/processed/classes/technoPerYear/technoProbas_')
 #sizeTh=10
@@ -26,7 +25,7 @@ loadSemantic<-function(year){
     if(dim(entrylist)[2]==3){colinds=entrylist[,2]+1;vals=entrylist[,3]}else{colinds=entrylist[,3]+1;vals=entrylist[,4]}
     res = sparseMatrix(i=rowinds,j=colinds,x=vals)
     if(dim(entrylist)[2]==4){
-      res =Diagonal(x=1/rowSums(res))%*%res
+      res = diag(rowSums(res))%*%res
     }
     rownames(res)<-unique(as.character(entrylist[,1]))
    return(res)
