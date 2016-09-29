@@ -5,6 +5,7 @@ probasfung
 probas_
 probas_rdata
 res/patentlevel_origs.RData
+res/full-overlaps.RData
 
 .ipynb_checkpoints
 test
