@@ -97,17 +97,20 @@ as.matrix(semprobas[inds,])
 
 
 overlaps = c();years=c();measures=c();types=c();filters=c();nullovs=c();classnum=c();pcount=c();gc()
+ovsize=c()
 for(year in wyears){
   load(paste0('probas_processed/processed_',(year-windowSize+1),"-",year,'.RData'));show(year)
   technoprobas=currentprobas$technoprobas;semprobas=currentprobas$semprobas;rm(currentprobas);gc()
   techov=t(technoprobas)%*%technoprobas;
-  #diag(techov)<-0
+  diag(techov)<-0
   semov=t(semprobas)%*%semprobas;
-  nullovs=append(nullovs,length(which(techov==0)));nullovs=append(nullovs,length(which(semov==0)))
-  types=append(types,c("techno","semantic"));years=append(years,c(year,year))
-  classnum=append(classnum,ncol(techov));classnum=append(classnum,ncol(semov))
-  pcount=append(pcount,nrow(technoprobas),nrow(semprobas))
-  #diag(semov)<-0
+  diag(semov)<-0
+  #nullovs=append(nullovs,length(which(techov==0)));nullovs=append(nullovs,length(which(semov==0)))
+  #ovsize=append(ovsize,c(sum(techov),sum(semov)))
+  #types=append(types,c("techno","semantic"));years=append(years,c(year,year))
+  #classnum=append(classnum,ncol(techov));classnum=append(classnum,ncol(semov))
+  #pcount=append(pcount,c(nrow(semprobas),nrow(semprobas)))
+  
   # NON NORMALIZED
   #overlaps=append(overlaps,as.numeric(techov));n=length(as.numeric(techov));years=append(years,rep(year,n));types=append(types,rep("techno",n))#;measures=append(measures,rep("real",n));filters=append(filters,rep("all",n))
   #overlaps=append(overlaps,as.numeric(semov));n=length(as.numeric(semov));years=append(years,rep(year,n));types=append(types,rep("semantic",n))#;measures=append(measures,rep("real",n));filters=append(filters,rep("all",n))
@@ -153,8 +156,9 @@ df=data.frame(overlap=overlaps,year=as.character(years),type=types)#,measure=mea
 #}
 
 labs=rep("",length(wyears));labs[seq(from=1,to=length(labs),by=3)]=as.character(wyears[seq(from=1,to=length(labs),by=3)])
-g=ggplot(data.frame(empty=nullovs/(classnum*classnum),year=years,type=types,classes=classnum,pcount=pcount))
-g+geom_point(aes(x=year,y=empty,colour=type))+geom_line(aes(x=year,y=empty,colour=type))+ facet_wrap(~type,scales ="free_y")
+g=ggplot(data.frame(empty=ovsize/(pcount*(classnum*classnum/(classnum[1]*classnum[1]))),year=years,type=types,classes=classnum,pcount=pcount))
+g+geom_point(aes(x=year,y=empty,colour=type))+geom_line(aes(x=year,y=empty,colour=type))+ facet_wrap(~type,scales ="free_y")+
+  geom_line(aes(x=year,y=(pcount - min(pcount))/(max(pcount)-min(pcount))),color='purple',linetype=2)
   #scale_x_discrete(breaks=as.character(wyears),labels=labs)
 g+geom_point(aes(x=pcount,y=empty,colour=year,shape=type))+ facet_wrap(~type,scales ="free")
     
@@ -261,11 +265,11 @@ load(paste0(Sys.getenv('CS_HOME'),'/PatentsMining/Data/processed/citation/networ
 
 origs=c();cyears=c();types=c();
 for(year in years){
-  res = probas[[year]];
-  technoprobas=Matrix(as.matrix(res$technoprobas));semprobas=Matrix(as.matrix(res$semprobas))
+  load(paste0('probas_processed/processed_',(year-windowSize+1),"-",year,'.RData'));show(year)
+  technoprobas=currentprobas$technoprobas;semprobas=currentprobas$semprobas;rm(currentprobas);gc()
   currentnames=intersect(rownames(technoprobas),rownames(citadjacency))
   currentadj = citadjacency[currentnames,currentnames]
-  currentadj = diag(rowSums(currentadj))%*%currentadj
+  currentadj = Diagonal(x=rowSums(currentadj))%*%currentadj
   technocit = currentadj%*%technoprobas[currentnames,]
   semcit = currentadj%*%semprobas[currentnames,]
   origs = append(origs,1 - rowSums(technocit^2));types=append(types,rep("techno",nrow(technocit)))
@@ -275,7 +279,7 @@ for(year in years){
 
 #
 g=ggplot(data.frame(originality=origs[types=="techno"],year=as.character(cyears[types=="techno"])))
-g+geom_density(aes(x=originality,colour=year))
+g+geom_density(aes(x=originality,colour=year))#+facet_wrap(~type)
 
 
 g=ggplot(data.frame(originality=origs[types=="semantic"],year=as.character(cyears[types=="semantic"])))
