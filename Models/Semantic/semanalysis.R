@@ -74,27 +74,34 @@ as.matrix(semprobas[inds,])
 
 #  1.1) Macro-level
 
-# 
-# techoverlaps = c();semoverlaps = c()
-# techyears=c();semyears=c()
-# for(year in years){
-#   load(paste0('probas/processed_',(year-windowSize+1),"-",year,'.RData'))
-#   technoprobas=currentprobas$technoprobas;semprobas=currentprobas$semprobas;rm(currentprobas);gc()
-#   inds = which(colSums(technoprobas)>50)
-#   currenttechovs = rep(0,ncol(technoprobas)*(ncol(technoprobas)-1)/2)
-#   currentsemovs = rep(0,ncol(semprobas)*(ncol(semprobas)-1)/2)
-#   k=1
-#   for(i in 1:(length(inds)-1)){show(i);for(j in (i+1):length(inds)){
-#     currenttechovs=append(currenttechovs,sum(technoprobas[,inds[i]]*technoprobas[,inds[j]])/nrow(technoprobas))
-#   }}
-#   for(i in 1:(ncol(semprobas)-1)){show(i);for(j in (i+1):ncol(semprobas)){
-#     currentsemovs=append(currentsemovs,sum(semprobas[,i]*semprobas[,j])/nrow(semprobas));
-#   }}
-#   techoverlaps=append(techoverlaps,currenttechovs);semoverlaps=append(semoverlaps,currentsemovs)
-#   techyears=append(techyears,rep(year,length(currenttechovs)));semyears=append(semyears,rep(year,length(currentsemovs)))
-# }
 
+# size hierarchy in years
 
+sizes=c();nsizes=c();years=c();type=c();ranks=c();sortedsizes=c();sortednsizes=c()
+for(year in wyears){
+  load(paste0('probas/processed_counts_',(year-windowSize+1),"-",year,'.RData'));show(year)
+  technoprobas=currentprobas$technoprobas;semprobas=currentprobas$semprobas;rm(currentprobas);gc()
+  techsizes=colSums(technoprobas);semsizes=colSums(semprobas)
+  sizes=append(sizes,sort(semsizes,decreasing=TRUE));years=append(years,rep(year,length(semsizes)));ranks=append(ranks,1:length(semsizes))
+  #nsizes=append(nsizes,techsizes/nrow(technoprobas));;type=append(type,rep("techno",length(techsizes)));
+  #ranks=append(ranks,1:length(techsizes));sortedsizes=append(sortedsizes,sort(techsizes,decreasing = TRUE));sortednsizes=append(sortednsizes,sort(techsizes/nrow(technoprobas),decreasing = TRUE))
+  #sizes=append(sizes,semsizes);nsizes=append(nsizes,semsizes/nrow(semprobas));years=append(years,rep(year,length(semsizes)));type=append(type,rep("semantic",length(semsizes)))
+  #ranks=append(ranks,1:length(semsizes));sortedsizes=append(sortedsizes,sort(semsizes,decreasing = TRUE));sortednsizes=append(sortednsizes,sort(semsizes/nrow(semprobas),decreasing = TRUE))
+}
+
+g=ggplot(data.frame(size=sizes,year=as.character(years),rank=ranks))
+g+geom_line(aes(x=rank,y=size,colour=year,group=year))+scale_x_log10()+scale_y_log10()
+
+df=data.frame(size=sizes,nsize=nsizes,sortedsize=sortedsizes,sortednsize=sortednsizes,years=as.character(years),type=type)
+g=ggplot(df,aes(x=sizes,color=years))
+g+geom_density()+scale_x_log10()+facet_wrap(~type)
+
+g=ggplot(data.frame(size=sizes,nsize=nsizes,years=as.character(years),type=type)%>%group_by(years,type)%>%summarise(meansize=mean(size),meannsizes=mean(nsize)),
+         aes(x=years,y=meannsizes,color=type))
+g+geom_point()+geom_line()+stat_smooth()+scale_y_log10()+facet_wrap(~type)
+
+g=ggplot(df,aes(x=ranks,y=sortedsizes,colour=years,group=years))
+g+geom_point()+scale_x_log10()+scale_y_log10()+facet_wrap(~type)
 
 overlaps = c();years=c();measures=c();types=c();filters=c();nullovs=c();classnum=c();pcount=c();gc()
 ovsize=c()
