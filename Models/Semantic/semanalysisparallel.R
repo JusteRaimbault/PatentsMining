@@ -15,13 +15,13 @@ load("res/full-overlaps.RData")
 
 for(filter in c("all","positive")){
   for(measure in c("real","norm-patents","relative")){
-    g=ggplot(df[df$filter==filter&df$measure==measure,])
+    g=ggplot(df[df$filter==filter&df$measure==measure,],aes(x=overlap,colour=year))
     g+geom_density(alpha=0.25)+scale_x_log10()+xlab(measure)+ylab("density")+facet_wrap(~type,scales="free_y")
     ggsave(filename = paste0(resdir,measure,"_",filter,"_density.pdf"),width = 15, height = 10,unit="cm")
-    dsum = df[df$filter==filter&df$measure==measure,] %>% group_by(year,type) %>% summarise(overlap=mean(overlap),min=quantile(overlap,0.1),max=quantile(overlap,0.9))
-    g=ggplot(dsum,aes(x=year,y=overlap,colour=type,group=type),show.legend = FALSE)
+    dsum = df[df$filter==filter&df$measure==measure,] %>% group_by(year,type) %>% summarise(overlap=mean(overlap),mi=quantile(overlap,0.1),ma=quantile(overlap,0.9))
+    gsum=ggplot(dsum,aes(x=year,y=overlap,colour=type,group=type),show.legend = FALSE)
     labs=rep("",length(wyears));labs[seq(from=1,to=length(labs),by=3)]=as.character(wyears[seq(from=1,to=length(labs),by=3)])
-    gsum+geom_point()+geom_errorbar(ymin=min,ymax=max)+facet_wrap(~type,scales ="free_y",)+
+    gsum+geom_point()+geom_errorbar(ymin=mi,ymax=ma)+facet_wrap(~type,scales ="free_y",)+
       scale_x_discrete(breaks=as.character(wyears),labels=labs)
     ggsave(filename = paste0(resdir,measure,"_",filter,"_ts.pdf"),width = 15, height = 10,unit="cm")
     #rm(g,gsum);gc()
