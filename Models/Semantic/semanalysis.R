@@ -82,15 +82,18 @@ for(year in wyears){
   load(paste0('probas/processed_counts_',(year-windowSize+1),"-",year,'.RData'));show(year)
   technoprobas=currentprobas$technoprobas;semprobas=currentprobas$semprobas;rm(currentprobas);gc()
   techsizes=colSums(technoprobas);semsizes=colSums(semprobas)
-  sizes=append(sizes,sort(semsizes,decreasing=TRUE));years=append(years,rep(year,length(semsizes)));ranks=append(ranks,1:length(semsizes))
+  techsizes=techsizes[techsizes>0];semsizes=semsizes[semsizes>0]
+  sizes=append(sizes,sort(techsizes,decreasing=TRUE)/nrow(technoprobas));years=append(years,rep(year,length(techsizes)));ranks=append(ranks,1:length(techsizes));type=append(type,rep("techno",length(techsizes)))
+  sizes=append(sizes,sort(semsizes,decreasing=TRUE)/nrow(semprobas));years=append(years,rep(year,length(semsizes)));ranks=append(ranks,1:length(semsizes));type=append(type,rep("semantic",length(semsizes)))
+  
   #nsizes=append(nsizes,techsizes/nrow(technoprobas));;type=append(type,rep("techno",length(techsizes)));
   #ranks=append(ranks,1:length(techsizes));sortedsizes=append(sortedsizes,sort(techsizes,decreasing = TRUE));sortednsizes=append(sortednsizes,sort(techsizes/nrow(technoprobas),decreasing = TRUE))
   #sizes=append(sizes,semsizes);nsizes=append(nsizes,semsizes/nrow(semprobas));years=append(years,rep(year,length(semsizes)));type=append(type,rep("semantic",length(semsizes)))
   #ranks=append(ranks,1:length(semsizes));sortedsizes=append(sortedsizes,sort(semsizes,decreasing = TRUE));sortednsizes=append(sortednsizes,sort(semsizes/nrow(semprobas),decreasing = TRUE))
 }
 
-g=ggplot(data.frame(size=sizes,year=as.character(years),rank=ranks))
-g+geom_line(aes(x=rank,y=size,colour=year,group=year))+scale_x_log10()+scale_y_log10()
+g=ggplot(data.frame(size=sizes,year=as.character(years),rank=ranks,type=type))
+g+geom_line(aes(x=rank,y=size,colour=year,group=year))+scale_x_log10()+scale_y_log10()+facet_wrap(~type,scales="fixed")+ylab("normalized size")
 
 df=data.frame(size=sizes,nsize=nsizes,sortedsize=sortedsizes,sortednsize=sortednsizes,years=as.character(years),type=type)
 g=ggplot(df,aes(x=sizes,color=years))
@@ -103,10 +106,14 @@ g+geom_point()+geom_line()+stat_smooth()+scale_y_log10()+facet_wrap(~type)
 g=ggplot(df,aes(x=ranks,y=sortedsizes,colour=years,group=years))
 g+geom_point()+scale_x_log10()+scale_y_log10()+facet_wrap(~type)
 
+
+
+
 overlaps = c();years=c();measures=c();types=c();filters=c();nullovs=c();classnum=c();pcount=c();gc()
 ovsize=c()
 for(year in wyears){
-  load(paste0('probas_processed/processed_',(year-windowSize+1),"-",year,'.RData'));show(year)
+  #load(paste0('probas_processed/processed_',(year-windowSize+1),"-",year,'.RData'));show(year)
+  load(paste0('probas/processed_counts_',(year-windowSize+1),"-",year,'.RData'));show(year)
   technoprobas=currentprobas$technoprobas;semprobas=currentprobas$semprobas;rm(currentprobas);gc()
   techov=t(technoprobas)%*%technoprobas;
   diag(techov)<-0
@@ -129,12 +136,12 @@ for(year in wyears){
   #inds=which(techov>0);overlaps=append(overlaps,techov[inds]/nrow(technoprobas));n=length(inds);years=append(years,rep(year,n));types=append(types,rep("techno",n));#measures=append(measures,rep("norm-patents",n));filters=append(filters,rep("positive",n))
   #inds=which(semov>0);overlaps=append(overlaps,semov[inds]/nrow(semprobas));n=length(inds);years=append(years,rep(year,n));types=append(types,rep("semantic",n));#measures=append(measures,rep("norm-patents",n));filters=append(filters,rep("positive",n))
   # # RELATIVE OVERLAP
-   #technorm=Matrix(1,nrow(techov),ncol(techov))%*%Diagonal(x=colSums(technoprobas));
-   #semnorm=Matrix(1,nrow(semov),ncol(semov))%*%Diagonal(x=colSums(semprobas));
-   #techov=techov*2/(technorm+t(technorm))
-   #semov=semov*2/(semnorm+t(semnorm))
-   #overlaps=append(overlaps,as.numeric(techov));n=length(as.numeric(techov));years=append(years,rep(year,n));types=append(types,rep("techno",n));#measures=append(measures,rep("relative",n));filters=append(filters,rep("all",n))
-   #overlaps=append(overlaps,as.numeric(semov));n=length(as.numeric(semov));years=append(years,rep(year,n));types=append(types,rep("semantic",n));#measures=append(measures,rep("relative",n));filters=append(filters,rep("all",n))
+   technorm=Matrix(1,nrow(techov),ncol(techov))%*%Diagonal(x=colSums(technoprobas));
+   semnorm=Matrix(1,nrow(semov),ncol(semov))%*%Diagonal(x=colSums(semprobas));
+   techov=techov*2/(technorm+t(technorm))
+   semov=semov*2/(semnorm+t(semnorm))
+   overlaps=append(overlaps,as.numeric(techov));n=length(as.numeric(techov));years=append(years,rep(year,n));types=append(types,rep("techno",n));#measures=append(measures,rep("relative",n));filters=append(filters,rep("all",n))
+   overlaps=append(overlaps,as.numeric(semov));n=length(as.numeric(semov));years=append(years,rep(year,n));types=append(types,rep("semantic",n));#measures=append(measures,rep("relative",n));filters=append(filters,rep("all",n))
    #inds=which(techov>0);overlaps=append(overlaps,techov[inds]/nrow(technoprobas));n=length(inds);years=append(years,rep(year,n));types=append(types,rep("techno",n));#measures=append(measures,rep("relative",n));filters=append(filters,rep("positive",n))
    #inds=which(semov>0);overlaps=append(overlaps,semov[inds]/nrow(semprobas));n=length(inds);years=append(years,rep(year,n));types=append(types,rep("semantic",n));#measures=append(measures,rep("relative",n));filters=append(filters,rep("positive",n))
    rm(techov,semov,technorm,semnorm,technoprobas,semprobas);gc()
@@ -142,6 +149,7 @@ for(year in wyears){
 
 resdir=paste0(Sys.getenv('CS_HOME'),'/PatentsMining/Results/Semantic/Analysis/window5/overlap/')
 df=data.frame(overlap=overlaps,year=as.character(years),type=types)#,measure=measures,filter=filters)
+rm(overlaps,years,types);gc()
 #save(df,file="res/full-overlaps.RData")
 #load("res/full-overlaps.RData")
 
@@ -150,12 +158,13 @@ df=data.frame(overlap=overlaps,year=as.character(years),type=types)#,measure=mea
    filter="positive";measure="relative overlap"
    g=ggplot(df,aes(x=overlap,colour=year))#df[df$filter==filter&df$measure==measure,])
     g+geom_density(alpha=0.25)+xlab(measure)+ylab("density")+facet_wrap(~type,scales="free_y")+scale_x_log10()
+    rm(g);gc()
     #ggsave(filename = paste0(resdir,measure,"_",filter,"_density.pdf"),width=16,height=10,unit="cm")
     dsum = df%>% group_by(year,type) %>% summarise(meanoverlap=mean(overlap),mi=quantile(overlap,0.1),ma=quantile(overlap,0.9))
     gsum=ggplot(dsum,aes(x=year,y=meanoverlap,colour=type,group=type),show.legend = FALSE)
     labs=rep("",length(wyears));labs[seq(from=1,to=length(labs),by=3)]=as.character(wyears[seq(from=1,to=length(labs),by=3)])
     gsum+geom_point()+geom_line()+#geom_errorbar(aes(ymin=mi,ymax=ma))+
-      facet_wrap(~type,scales ="free_y")+
+      facet_wrap(~type,scales ="free_y")+ylab("mean relative overlap")+
       scale_x_discrete(breaks=as.character(wyears),labels=labs)#+scale_y_log10()
     #ggsave(filename = paste0(resdir,measure,"_",filter,"_ts.pdf"))
     #rm(g,gsum);gc()
