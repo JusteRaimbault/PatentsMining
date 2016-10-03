@@ -220,16 +220,21 @@ for(year in wyears){
   origs = append(origs,1 - rowSums(semprobas^2));types=append(types,rep("semantic",nrow(semprobas)))
   origs = append(origs,1 - rowSums(technoprobas^2));types=append(types,rep("techno",nrow(technoprobas)))
   cyears=append(cyears,rep(year,nrow(semprobas)+nrow(technoprobas)))
+  rm(semprobas,technoprobas);gc()
 }
 
 #save(origs,cyears,types,file='res/patentlevel_orig.RData')
 #load('res/patentlevel_origs.RData')
 
 # techno patent origs
-inds=types=="techno"&origs<1
+#inds=types=="techno"&origs<1
+inds=origs<1
 df = data.frame(originality=origs[inds],year=as.character(cyears[inds]),type=types[inds])
-g=ggplot(df)
-g+geom_density(aes(x=originality,colour=year))
+rm(origs,cyears,types);gc()
+
+g=ggplot(df[df$originality>0,])
+g+geom_density(aes(x=originality,colour=year))+facet_wrap(~type)
+rm(g);gc()
 
 # semantic patent origs
 inds=types=="semantic"&origs<1
@@ -239,11 +244,11 @@ gc()
 g=ggplot(df)
 g+geom_density(aes(x=originality,colour=year))+scale_y_log10()
 
-byyearorigs = as.tbl(df) %>% group_by(year,type) %>% summarize(meanorig=mean(originality),count=n())
-gsum=ggplot(byyearorigs)
-labs=rep("",length(years));labs[seq(from=1,to=length(labs),by=3)]=as.character(years[seq(from=1,to=length(labs),by=3)])
-gsum+geom_point(aes(x=year,y=meanorig,colour=type),show.legend = FALSE)+facet_wrap(~type,scales ="free_y",)+
-  scale_x_discrete(breaks=as.character(years),labels=labs)
+byyearorigs = as.tbl(df[df$originality>0,]) %>% group_by(year,type) %>% summarize(meanorig=mean(originality),count=n())
+gsum=ggplot(byyearorigs,aes(x=year,y=meanorig,colour=type,group=type))
+labs=rep("",length(wyears));labs[seq(from=1,to=length(labs),by=3)]=as.character(wyears[seq(from=1,to=length(labs),by=3)])
+gsum+geom_point()+geom_line()+facet_wrap(~type,scales ="free_y",)+
+  scale_x_discrete(breaks=as.character(wyears),labels=labs)
 
 ##
 #  2) Layers macro-structure comparison
@@ -285,21 +290,32 @@ g+geom_point(pch='.')+scale_y_log10()+stat_smooth()
 # load citation matrix
 load(paste0(Sys.getenv('CS_HOME'),'/PatentsMining/Data/processed/citation/network/adjacency.RData'))
 
+
+
+
+
 # 3.1) Patent level
 
-origs=c();cyears=c();types=c();
-for(year in years){
-  load(paste0('probas_processed/processed_',(year-windowSize+1),"-",year,'.RData'));show(year)
+#origs=c();cyears=c();types=c();
+sizes=c();fromwindow=c();cyears=c()
+for(year in wyears){
+  load(paste0('probas/processed_counts_',(year-windowSize+1),"-",year,'.RData'));show(year)
   technoprobas=currentprobas$technoprobas;semprobas=currentprobas$semprobas;rm(currentprobas);gc()
   currentnames=intersect(rownames(technoprobas),rownames(citadjacency))
-  currentadj = citadjacency[currentnames,currentnames]
-  currentadj = Diagonal(x=rowSums(currentadj))%*%currentadj
-  technocit = currentadj%*%technoprobas[currentnames,]
-  semcit = currentadj%*%semprobas[currentnames,]
-  origs = append(origs,1 - rowSums(technocit^2));types=append(types,rep("techno",nrow(technocit)))
-  origs = append(origs,1 - rowSums(semcit^2));types=append(types,rep("semantic",nrow(semcit)))
-  cyears=append(cyears,rep(year,nrow(technocit)+nrow(semcit)))
+  sizes=append(sizes,sum(citadjacency[currentnames,currentnames]));cyears=append(cyears,year)
+  fromwindow=append(fromwindow,sum(citadjacency[currentnames,]))
+  #currentadj = citadjacency[currentnames,currentnames]
+  #currentadj = Diagonal(x=rowSums(currentadj))%*%currentadj
+  #technocit = currentadj%*%technoprobas[currentnames,]
+  #semcit = currentadj%*%semprobas[currentnames,]
+  #origs = append(origs,1 - rowSums(technocit^2));types=append(types,rep("techno",nrow(technocit)))
+  #origs = append(origs,1 - rowSums(semcit^2));types=append(types,rep("semantic",nrow(semcit)))
+  #cyears=append(cyears,rep(year,nrow(technocit)+nrow(semcit)))
+  rm(technoprobas,semprobas,currentnames);gc()
 }
+
+g=ggplot(data.frame(inblockproportion=sizes/fromwindow,year=cyears),aes(x=year,y=inblockproportion))
+g+geom_point()+geom_line()#+scale_y_log10()
 
 #
 g=ggplot(data.frame(originality=origs[types=="techno"],year=as.character(cyears[types=="techno"])))
@@ -314,8 +330,10 @@ g+geom_density(aes(x=originality,colour=year))
 
 origs=c();cyears=c();types=c();
 for(year in years){
-  res = loadProbas(year);technoprobas=res$technoprobas;semprobas=res$semprobas
-  currentadj = adjacency[rownames(technoprobas),rownames(technoprobas)]
+  load(paste0('probas/processed_counts_',(year-windowSize+1),"-",year,'.RData'));show(year)
+  technoprobas=currentprobas$technoprobas;semprobas=currentprobas$semprobas;rm(currentprobas);gc()
+  currentnames=intersect(rownames(technoprobas),rownames(citadjacency))
+  currentadj = citadjacency[currentnames,currentnames]
   currentadj = diag(rowSums(currentadj))%*%currentadj
   technocit = t(technoprobas)%*%(currentadj%*%technoprobas)
   semcit = t(semprobas)%*%(currentadj%*%semprobas)
