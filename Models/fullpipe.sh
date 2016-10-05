@@ -91,6 +91,11 @@ then
   ./parrunnum "python main.py --probas relevantyears/runmv" $NRUNS
 fi
 
+if [ "$TASK" == "custom-python" ]
+then
+  ./parrunnum "python main.py --custom relevantyears/runmv" $NRUNS
+fi
+
 
 # graphs stored in processed
 

@@ -71,6 +71,28 @@ def filtered_graph(yearrange,kwLimit,dispth,eth,mongo):
     graph=graph.subgraph([i for i, d in enumerate(dd) if d > 0])
     return(graph)
 
+
+##
+# load additional vertex attributes
+def filtered_graph_with_attributes(yearrange,kwLimit,dispth,eth,mongo):
+    currentgraph = filtered_graph(yearrange,kwLimit,dispth,eth,mongo)
+    #
+    vertices = mongo['relevant']['relevant_'+yearrange+'_full_100000'].find()
+    nvertices = vertices.count()
+    # dico kw -> vertex in mongo
+    dico = {}
+    for currentvertex in vertices:
+        dico[currentvertex['keyword']]=currentvertex
+    tfidf = [];docf = [];termhood = []
+    for name in currentgraph.vs['name']:
+        attrs = dico[name]
+        tfidf.append(attrs['tidf']);docf.append(attrs['docfrequency']);termhood.append(attrs['cumtermhood'])
+    currentgraph.vs['tfidf']=tfidf
+    currentgraph.vs['docfreq']=docf
+    currentgraph.vs['termhood']=termhood
+
+
+
 ##
 #  get multilevel communities
 def get_communities(yearrange,kwLimit,dispth,eth,mongo):
@@ -79,15 +101,32 @@ def get_communities(yearrange,kwLimit,dispth,eth,mongo):
     com = graph.community_multilevel(weights="weight",return_levels=True)
     return([graph,com[len(com)-1]])
 
+
+##
+#  pickle filtered graphs with attributes
 def export_filtered_graphs(years,kwLimit,dispth,ethunit):
     mongo = pymongo.MongoClient('mongodb://root:root@127.0.0.1:29019')
     patents = mongo['patent']['keywords'].find({"app_year":{"$in":years}},no_cursor_timeout=True)
     npatents = patents.count()
     yearrange = years[0]+"-"+years[len(years)-1]
-    graph=filtered_graph(yearrange,kwLimit,dispth,math.floor(ethunit*npatents),mongo)
+    currentgraph=filtered_graph_with_attributes(yearrange,kwLimit,dispth,math.floor(ethunit*npatents),mongo)
+    pickle.dump(currentgraph,open('pickled/filteredgraph_'+yearrange+'_'+str(kwLimit)+'_eth10_dispth'+str(dispth)+'_ethunit'+str(ethunit)+'.pkl','wb'))
+
     
-
-
+##
+# 
+def export_kws_with_attrs(years,kwLimit,dispth,ethunit):
+    # load the graph
+    currentgraph=pickle.load(open('pickled/filteredgraph_'+yearrange+'_'+str(kwLimit)+'_eth10_dispth'+str(dispth)+'_ethunit'+str(ethunit)+'.pkl','rb'))
+    # reconstruct communities (!! repro test)
+    com = currentgraph.community_multilevel(weights="weight",return_levels=True)
+    membership = com[len(com)-1].membership
+    dico = {}
+    for n in range(currentgraph.vcount()):
+        dico[currentgraph.vs['name'][n]] = membership[n]
+    utils.export_dico_csv(dico,'probas/test-'+yearrange+'.csv',';')
+    
+        
 ##
 #  construct patent probas at a given clustering level
 def export_probas_matrices(years,kwLimit,dispth,ethunit):

@@ -17,7 +17,8 @@ def run():
             graph.construct_graph(currentyears,kwLimit)
         if task == '--probas' :
             graph.export_probas_matrices(currentyears,kwLimit,dispth,ethunit)
-
+        if task == '--custom' :
+            graph.export_filtered_graphs(currentyears,kwLimit,dispth,ethunit)
 
 
 def main():
