@@ -18,6 +18,18 @@ library(Matrix)
 # }
 
 technolist = read.csv(paste0(Sys.getenv('CS_HOME'),'/PatentsMining/Data/raw/classesTechno/class.csv'),header=TRUE,sep=',')#,nrows = 1000)
+#full=read.csv(paste0(Sys.getenv('CS_HOME'),'/PatentsMining/Data/raw/classesTechno/class.csv'),header=TRUE,sep=',')
+
+primary = TRUE
+
+
+if(primary){
+  # get only primary classes ; remove subclass record
+  technolist = technolist[technolist$Prim==1,1:3]
+  # remove duplicates
+  #dim(unique(technolist))
+  technolist=unique(technolist)
+}
 
 allpatents=as.character(unique(technolist$Patent))
 inds = 1:length(allpatents)
@@ -35,11 +47,40 @@ technoMatrix = sparseMatrix(i = rowinds,j=colinds,x=rep(1,length(rowinds)))
 rownames(technoMatrix)<-allpatents
 colnames(technoMatrix)<-allclasses
 
-technoMatrix = Diagonal(x=1/rowSums(technoMatrix))%*%technoMatrix
+if(!primary){
+  # normalize to probas if not primary class only
+  technoMatrix = Diagonal(x=1/rowSums(technoMatrix))%*%technoMatrix
+}else{
+  technoMatrix[rowSums(technoMatrix)>1,]<-t(apply(technoMatrix[rowSums(technoMatrix)>1,],1,function(r){i=which(r>0)[1];res=rep(0,length(r));res[i]=1;return(res)}))
+}
+
+# issue : patents with many Primary classes ?
+# ex 06886596
+#  -> corresponds to ≠ subclass records
+#           Patent Prim Class SubClass
+#12727491 06886596    1   137    62533
+#13230050 06886596    1   137   625.33
+#13230051 06886596    0   251      118
+#
+# still 1474 record with 2 classes 
+#  ex 07554801
+#          Patent Prim Class SubClass
+#16071453 07554801    1   361      685
+#16425985 07554801    1   439      680
+#  :: ERROR in file
+#  -> take first class only
+
 #test=Diagonal(x=1/rowSums(technoMatrix))%*%technoMatrix
 #prov = apply(t(technoMatrix),2,function(row){return(row/sum(row))})
 #technoMatrix = t(apply(technoMatrix,1,function(row){return(row/sum(row))}))
 
 rownames(technoMatrix)<-sapply(rownames(technoMatrix),function(s){ifelse(nchar(s)==8,substring(s,2),s)})
 
-save(technoMatrix,file=paste0(Sys.getenv('CS_HOME'),'/PatentsMining/Data/processed/classes/sparse.RData'))
+if(!primary){
+  save(technoMatrix,file=paste0(Sys.getenv('CS_HOME'),'/PatentsMining/Data/processed/classes/sparse.RData'))
+}else{
+  save(technoMatrix,file=paste0(Sys.getenv('CS_HOME'),'/PatentsMining/Data/processed/classes/techno_primary.RData'))
+}
+  
+  
+  

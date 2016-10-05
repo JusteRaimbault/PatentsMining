@@ -1,5 +1,6 @@
 
-
+library(igraph)
+library(Matrix)
 library(ggplot2)
 library(dplyr)
 
@@ -8,25 +9,47 @@ setwd(paste0(Sys.getenv('CS_HOME'),'/PatentsMining/Models/Semantic'))
 wyears = 1980:2012
 windowSize=5
 
-resdir=paste0(Sys.getenv('CS_HOME'),'/PatentsMining/Results/Semantic/Analysis/window5/overlap/')
+library(doParallel)
+cl <- makeCluster(17,outfile='log')
+registerDoParallel(cl)
 
+startTime = proc.time()[3]
 
-load("res/full-overlaps.RData")
-
-for(filter in c("all","positive")){
-  for(measure in c("real","norm-patents","relative")){
-    g=ggplot(df[df$filter==filter&df$measure==measure,],aes(x=overlap,colour=year))
-    g+geom_density(alpha=0.25)+scale_x_log10()+xlab(measure)+ylab("density")+facet_wrap(~type,scales="free_y")
-    ggsave(filename = paste0(resdir,measure,"_",filter,"_density.pdf"),width = 15, height = 10,unit="cm")
-    dsum = df[df$filter==filter&df$measure==measure,] %>% group_by(year,type) %>% summarise(overlap=mean(overlap),mi=quantile(overlap,0.1),ma=quantile(overlap,0.9))
-    gsum=ggplot(dsum,aes(x=year,y=overlap,colour=type,group=type),show.legend = FALSE)
-    labs=rep("",length(wyears));labs[seq(from=1,to=length(labs),by=3)]=as.character(wyears[seq(from=1,to=length(labs),by=3)])
-    gsum+geom_point()+geom_errorbar(ymin=mi,ymax=ma)+facet_wrap(~type,scales ="free_y",)+
-      scale_x_discrete(breaks=as.character(wyears),labels=labs)
-    ggsave(filename = paste0(resdir,measure,"_",filter,"_ts.pdf"),width = 15, height = 10,unit="cm")
-    #rm(g,gsum);gc()
-    }
+modularities <- foreach(year=wyears) %dopar% {
+  library(igraph);library(Matrix);source('semanalfun.R')
+  load(paste0('probas/processed_counts_prim_',(year-windowSize+1),"-",year,'.RData'));load(paste0('probas/citadj_',(year-windowSize+1),"-",year,'.RData'));show(year)
+  m=computemodularities(currentprobas,currentadj)
+  m$year=year
+  return(m)
 }
+
+save(modularities,file='res/modularities.RData')
+
+show(proc.time()[3]-startTime)
+
+stopCluster(cl)
+
+
+# 
+# resdir=paste0(Sys.getenv('CS_HOME'),'/PatentsMining/Results/Semantic/Analysis/window5/overlap/')
+# 
+# 
+# load("res/full-overlaps.RData")
+# 
+# for(filter in c("all","positive")){
+#   for(measure in c("real","norm-patents","relative")){
+#     g=ggplot(df[df$filter==filter&df$measure==measure,],aes(x=overlap,colour=year))
+#     g+geom_density(alpha=0.25)+scale_x_log10()+xlab(measure)+ylab("density")+facet_wrap(~type,scales="free_y")
+#     ggsave(filename = paste0(resdir,measure,"_",filter,"_density.pdf"),width = 15, height = 10,unit="cm")
+#     dsum = df[df$filter==filter&df$measure==measure,] %>% group_by(year,type) %>% summarise(overlap=mean(overlap),mi=quantile(overlap,0.1),ma=quantile(overlap,0.9))
+#     gsum=ggplot(dsum,aes(x=year,y=overlap,colour=type,group=type),show.legend = FALSE)
+#     labs=rep("",length(wyears));labs[seq(from=1,to=length(labs),by=3)]=as.character(wyears[seq(from=1,to=length(labs),by=3)])
+#     gsum+geom_point()+geom_errorbar(ymin=mi,ymax=ma)+facet_wrap(~type,scales ="free_y",)+
+#       scale_x_discrete(breaks=as.character(wyears),labels=labs)
+#     ggsave(filename = paste0(resdir,measure,"_",filter,"_ts.pdf"),width = 15, height = 10,unit="cm")
+#     #rm(g,gsum);gc()
+#     }
+# }
 
 
 

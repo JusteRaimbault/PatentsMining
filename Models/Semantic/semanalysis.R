@@ -6,13 +6,14 @@
 library(Matrix)
 library(ggplot2)
 library(dplyr)
+library(reshape2)
 
 setwd(paste0(Sys.getenv('CS_HOME'),'/PatentsMining/Models/Semantic'))
 
 wyears = 1980:2012
 windowSize=5
 
-source('semanalfun.R')
+#source('semanalfun.R')
 
 
 
@@ -29,10 +30,11 @@ source('semanalfun.R')
 
 # first load all probas
 #probas=list()
-for(year in years){
-  currentprobas=loadProbas(year)
+for(year in wyears){
+  #currentprobas=loadProbas(year)
   yearrange=paste0((year-windowSize+1),"-",year)
-  save(currentprobas,file=paste0('probas/processed_counts_',yearrange,'.RData'))
+  currentprobas=addPrimaryTechno(yearrange)
+  save(currentprobas,file=paste0('probas/processed_counts_prim_',yearrange,'.RData'))
   rm(currentprobas)
 }
 gc()
@@ -287,11 +289,7 @@ g+geom_point(pch='.')+scale_y_log10()+stat_smooth()
 ##
 #  3) Second order interdisciplinarity (citation)
 
-# load citation matrix
-load(paste0(Sys.getenv('CS_HOME'),'/PatentsMining/Data/processed/citation/network/adjacency.RData'))
-
-
-
+# preprocess adjacency matrices -> semanalfun.R
 
 
 # 3.1) Patent level
@@ -299,23 +297,37 @@ load(paste0(Sys.getenv('CS_HOME'),'/PatentsMining/Data/processed/citation/networ
 #origs=c();cyears=c();types=c();
 sizes=c();fromwindow=c();cyears=c()
 for(year in wyears){
-  load(paste0('probas/processed_counts_',(year-windowSize+1),"-",year,'.RData'));show(year)
-  technoprobas=currentprobas$technoprobas;semprobas=currentprobas$semprobas;rm(currentprobas);gc()
-  currentnames=intersect(rownames(technoprobas),rownames(citadjacency))
-  sizes=append(sizes,sum(citadjacency[currentnames,currentnames]));cyears=append(cyears,year)
-  fromwindow=append(fromwindow,sum(citadjacency[currentnames,]))
-  #currentadj = citadjacency[currentnames,currentnames]
-  #currentadj = Diagonal(x=rowSums(currentadj))%*%currentadj
-  #technocit = currentadj%*%technoprobas[currentnames,]
+  load(paste0('probas/processed_counts_prim_',(year-windowSize+1),"-",year,'.RData'));load(paste0('probas/citadj_',(year-windowSize+1),"-",year,'.RData'));show(year)
+  technoprobas=currentprobas$technoprobas;semprobas=currentprobas$semprobas;primtechnoprobas=currentprobas$primarytechnoprobas;rm(currentprobas);gc()
+  #currentadj = Diagonal(x=1/rowSums(currentadj))%*%currentadj
+  technocit = t(technoprobas)%*%(Diagonal(x=1/rowSums(currentadj))%*%currentadj)%*%technoprobas
+  technorm=Matrix(1,nrow(technocit),ncol(technocit))%*%Diagonal(x=colSums(technoprobas));
+  technocit=technocit*2/(technorm+t(technorm))
   #semcit = currentadj%*%semprobas[currentnames,]
   #origs = append(origs,1 - rowSums(technocit^2));types=append(types,rep("techno",nrow(technocit)))
   #origs = append(origs,1 - rowSums(semcit^2));types=append(types,rep("semantic",nrow(semcit)))
   #cyears=append(cyears,rep(year,nrow(technocit)+nrow(semcit)))
-  rm(technoprobas,semprobas,currentnames);gc()
+  rm(technoprobas,semprobas,currentadj,currentnames);gc()
 }
 
-g=ggplot(data.frame(inblockproportion=sizes/fromwindow,year=cyears),aes(x=year,y=inblockproportion))
+# test
+rownames(technocit)<-1:nrow(technocit);colnames(technocit)<-1:ncol(technocit)
+df = melt(as.matrix(technocit));colnames(df)<-c("t1","t2",'citcount')
+#g=ggplot(df)
+#g+geom_raster(aes(x=t1,y=t2,fill=citcount))
+
+sizes=log(1+colSums(technoprobas));centers=cumsum(sizes)-sizes/2
+df=cbind(df,sizes[df$t1],sizes[df$t2],centers[df$t1],centers[df$t2]);
+names(df)<-c("t1","t2",'citcount','w','h','x','y')
+g=ggplot(df)
+g+geom_tile(aes(x=x,y=y,width=w,height=h,fill=citcount))
+
+
+
+
+g=ggplot(data.frame(inblockcitation=sizes,year=cyears),aes(x=year,y=inblockcitation))
 g+geom_point()+geom_line()#+scale_y_log10()
+
 
 #
 g=ggplot(data.frame(originality=origs[types=="techno"],year=as.character(cyears[types=="techno"])))
@@ -330,7 +342,7 @@ g+geom_density(aes(x=originality,colour=year))
 
 origs=c();cyears=c();types=c();
 for(year in years){
-  load(paste0('probas/processed_counts_',(year-windowSize+1),"-",year,'.RData'));show(year)
+  load(paste0('probas/processed_counts_prim_',(year-windowSize+1),"-",year,'.RData'));show(year)
   technoprobas=currentprobas$technoprobas;semprobas=currentprobas$semprobas;rm(currentprobas);gc()
   currentnames=intersect(rownames(technoprobas),rownames(citadjacency))
   currentadj = citadjacency[currentnames,currentnames]
