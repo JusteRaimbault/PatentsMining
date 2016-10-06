@@ -5,7 +5,9 @@ def export_dico_csv(dico,filename,delimiter):
     outfile=open(filename,'w')
     for k in dico.keys():
         outfile.write(str(k)+delimiter)
-        outfile.write(str(dico[k])+'\n')
+        for i in range(len(dico[k])-1):
+            outfile.write(str(dico[k][i])+delimiter)
+        outfile.write(str(dico[k][len(dico[k])-1])+'\n')
 
 
         

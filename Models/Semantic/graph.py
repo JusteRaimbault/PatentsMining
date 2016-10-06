@@ -90,7 +90,7 @@ def filtered_graph_with_attributes(yearrange,kwLimit,dispth,eth,mongo):
     currentgraph.vs['tfidf']=tfidf
     currentgraph.vs['docfreq']=docf
     currentgraph.vs['termhood']=termhood
-
+    return(currentgraph)
 
 
 ##
@@ -117,13 +117,15 @@ def export_filtered_graphs(years,kwLimit,dispth,ethunit):
 # 
 def export_kws_with_attrs(years,kwLimit,dispth,ethunit):
     # load the graph
+    yearrange = years[0]+"-"+years[len(years)-1]
     currentgraph=pickle.load(open('pickled/filteredgraph_'+yearrange+'_'+str(kwLimit)+'_eth10_dispth'+str(dispth)+'_ethunit'+str(ethunit)+'.pkl','rb'))
     # reconstruct communities (!! repro test)
     com = currentgraph.community_multilevel(weights="weight",return_levels=True)
     membership = com[len(com)-1].membership
     dico = {}
     for n in range(currentgraph.vcount()):
-        dico[currentgraph.vs['name'][n]] = membership[n]
+        dico[currentgraph.vs['name'][n]] = [membership[n],currentgraph.vs['tfidf'][n],currentgraph.vs['docfreq'][n],currentgraph.vs['termhood'][n]]
+    ##  !! export of dico is shuffled, but same words same communities
     utils.export_dico_csv(dico,'probas/test-'+yearrange+'.csv',';')
     
         
