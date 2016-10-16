@@ -90,7 +90,7 @@ def filtered_graph_with_attributes(yearrange,kwLimit,dispth,eth,mongo):
     currentgraph.vs['tfidf']=tfidf
     currentgraph.vs['docfreq']=docf
     currentgraph.vs['termhood']=termhood
-
+    return(currentgraph)
 
 
 ##
@@ -117,15 +117,37 @@ def export_filtered_graphs(years,kwLimit,dispth,ethunit):
 # 
 def export_kws_with_attrs(years,kwLimit,dispth,ethunit):
     # load the graph
+    yearrange = years[0]+"-"+years[len(years)-1]
     currentgraph=pickle.load(open('pickled/filteredgraph_'+yearrange+'_'+str(kwLimit)+'_eth10_dispth'+str(dispth)+'_ethunit'+str(ethunit)+'.pkl','rb'))
+    
+    # load old kws from csv
+    # 
+    keywords = utils.import_csv('probas_count/keywords-counts_'+yearrange+'_kwLimit'+str(kwLimit)+'_dispth'+str(dispth)+'_ethunit'+str(ethunit)+'.csv',';')
+    
+    degree = currentgraph.degree(range(currentgraph.vcount()))
+    evcentrality = currentgraph.eigenvector_centrality(weights='weight')
+    bcentrality = currentgraph.betweenness(weights='weight')
+    ccentrality = currentgraph.closeness(weights='weight')
+    weighteddegree = currentgraph.strength(range(currentgraph.vcount()),weights='weight')
+    
     # reconstruct communities (!! repro test)
-    com = currentgraph.community_multilevel(weights="weight",return_levels=True)
-    membership = com[len(com)-1].membership
+    #com = currentgraph.community_multilevel(weights="weight",return_levels=True)
+    #membership = com[len(com)-1].membership
     dico = {}
     for n in range(currentgraph.vcount()):
-        dico[currentgraph.vs['name'][n]] = membership[n]
-    utils.export_dico_csv(dico,'probas/test-'+yearrange+'.csv',';')
+        dico[currentgraph.vs['name'][n]] = [currentgraph.vs['tfidf'][n],currentgraph.vs['disp'][n],currentgraph.vs['docfreq'][n],currentgraph.vs['termhood'][n],degree[n],weighteddegree[n],bcentrality[n],ccentrality[n],evcentrality[n]]
+    ##  !! export of dico is shuffled, but same words same communities
+    #utils.export_dico_csv(dico,'probas/test-'+yearrange+'.csv',';')
     
+    res = []
+    for row in keywords :
+        currentkw = row[0]
+        # small discrepancy in count -> small number of kws were not exported ?
+        if currentkw in dico :
+            res.append(row + dico[currentkw])
+    
+    # export
+    utils.export_csv(res,'probas/keywords-count-extended_'+yearrange+'_kwLimit'+str(kwLimit)+'_dispth'+str(dispth)+'_ethunit'+str(ethunit)+'.csv',';','keyword;community;tfidf;technodispersion;docfreq;termhood;degree;weighteddegree;betweennesscentrality;closenesscentrality;eigenvectorcentrality')
         
 ##
 #  construct patent probas at a given clustering level
