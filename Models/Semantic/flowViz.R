@@ -2,14 +2,10 @@
 # community flow visualization
 
 setwd(paste0(Sys.getenv('CS_HOME'),'/PatentsMining/Models/Semantic'))
-source('networkConstruction.R')
 
 library(networkD3)
-
-# example from package
-#sankeyNetwork(Links = Energy$links, Nodes = Energy$nodes, Source = "source",Target = "target", Value = "value", NodeID = "name",units = "TWh", fontSize = 12, nodeWidth = 30)
-
-
+library(dplyr)
+library(igraph)
 
 # TODO : single date overlaps -> use ?
 #  http://jokergoo.github.io/circlize/example/grouped_chordDiagram.html
@@ -17,48 +13,55 @@ library(networkD3)
 # TODO : inclusion in a shiny app : idem see
 #  https://christophergandrud.github.io/networkD3/
 
-#years = c("1998","1999","2005","2006","2007","2008","2009","2010")
-years = 1976:2012
+wyears = 1980:2012
+windowSize=5
+kwLimit="100000"
+dispth=0.06
+ethunit=4.5e-05
 
-coms=list()
-
-for(y in 1:length(years)){
-  show(paste0("year ",years[y]))
-  graph=paste0('relevant_',years[y],'_full_100000')
-  load(paste0('processed/',graph,'_filtered.RData'))
-  #g=res$g
-  #g = filterGraph(g,'data/filter.csv')
-  #save(g,file=paste0('processed/',graph,'_filtered.RData'))
-  clust = clusters(g);cmax = which(clust$csize==max(clust$csize))
-  ggiant = induced.subgraph(g,which(clust$membership==cmax))
-  
-  #sub = extractSubGraphCommunities(ggiant,0,optimaggreg$degree_max[y],optimaggreg$freqmin[y],optimaggreg$freqmax[y],optimaggreg$edge_th[y])
-  sub = extractSubGraphCommunities(ggiant,0,max(degree(ggiant))*0.16,50,50000,50)
-  
-  com=sub$com
-  d=V(sub$gg)$docfreq
-  
-  yearlycoms=list()
-  for(k in 1:length(com)){
-    # find name for each com : largest degree node
-    inds = which(com$membership==k)
-    yearlycoms[[V(sub$gg)$name[inds[which(max(d[inds])==d[inds])[1]]]]] = com[[k]]
-  }
-  coms[[years[y]]]=yearlycoms
-}
-
-#save(coms,file='graphs/all/optim_coms.RData')
-
-# construct distances between comunities
-#nodes=list()
-#links=list()
 
 # communities as list in time of list of kws
 #   list(year1 = list(com1 = c(...), com2 = c(...)))
 
+
+coms=list()
+
+for(year in wyears){
+  yearrange=paste0((year-windowSize+1),"-",year);show(year)
+  currentkws = as.tbl(read.csv(paste0("probas_count_extended/keywords-count-extended_",yearrange,"_kwLimit",kwLimit,'_dispth',dispth,"_ethunit",ethunit,".csv"),sep=";",header=TRUE,stringsAsFactors = FALSE))
+  #currentkws %>% group_by(V2)
+  currentcoms = list()
+  for(i in unlist(unique(currentkws[,2]))){
+    rows = currentkws[currentkws$community==i,]
+    # try to name by best techno disp
+    name = unlist(rows[rows$technodispersion==max(rows$technodispersion),1])[1]
+    currentcoms[[name]]=unlist(rows[,1])
+  }
+  coms[[as.character(year)]]=currentcoms
+}
+
+# test independance measures for naming
+#pcaname = prcomp(apply(currentkws[,3:11],2,function(col){return((col - min(col))/(max(col)-min(col)))}))
+#cor(apply(currentkws[,3:11],2,function(col){return((col - min(col))/(max(col)-min(col)))}))
+#summary(pcaname)
+
+# test com size filtering
+# for(year in wyears){
+#   lengths = sapply(coms[[as.character(year)]],length)
+#   #show(sum(lengths)/100)
+#   show(length(which(lengths>(sum(lengths)/100)))/length(coms[[as.character(year)]]))
+# }
+
+# -> 100 seems ok
+
+
+
 similarityIndex <- function(com1,com2){
   return(2 * length(intersect(com1,com2))/(length(com1)+length(com2)))
 }
+
+#similarityIndex(coms[["1980"]]$`insect trap`,coms[["1981"]]$`insect trap`)
+# PB in nameing taking the most disp word : chemicals -> insect trap !
 
 # compute nodes
 
@@ -72,6 +75,9 @@ similarityIndex <- function(com1,com2){
 # }
 
 # compute edges
+years=as.character(wyears)
+#sizeTh=100
+sizeQuantile = 0.97
 
 links=list();
 nodes=list()
@@ -79,26 +85,34 @@ nodes=list()
 novelties=data.frame();cumnovs=c()
 k=1;kn=0
 for(t in 2:length(years)){
+  show(years[t])
   prec = coms[[years[t-1]]];current = coms[[years[t]]]
   cumnov=0
+  currentsizes=sapply(current,length)
+  precsizes=sapply(prec,length)
   for(i in 1:length(current)){
-    
-    novelty=1
-    for(j in 1:length(prec)){
-        weight = similarityIndex(prec[[j]],current[[i]])
-        novelty=novelty-weight^2
-        if(weight>0.01&length(prec[[j]])>20&length(current[[i]]>20)){
-          precname=paste0(names(prec)[j],"_",years[t-1]);currentname=paste0(names(current)[i],"_",years[t])
-          if(!(precname %in% names(nodes))){nodes[[precname]]=kn;kn=kn+1}
-          if(!(currentname %in% names(nodes))){nodes[[currentname]]=kn;kn=kn+1}
-          links[[k]] = c(nodes[[precname]],nodes[[currentname]],weight)
-          k = k + 1
+    if(length(current[[i]])>quantile(currentsizes,sizeQuantile)){
+      if(i%%100==0){show(i/length(current))}
+      novelty=1
+      for(j in 1:length(prec)){
+        if(length(current[[i]])>quantile(precsizes,sizeQuantile)){
+          weight = similarityIndex(unlist(prec[[j]]),unlist(current[[i]]))
+          novelty=novelty-weight^2
+          if(weight>0.01&length(prec[[j]])>20&length(current[[i]]>20)){
+            # need community names indexing the list
+            precname=paste0(names(prec)[j],"_",years[t-1]);currentname=paste0(names(current)[i],"_",years[t])
+            if(!(precname %in% names(nodes))){nodes[[precname]]=kn;kn=kn+1}
+            if(!(currentname %in% names(nodes))){nodes[[currentname]]=kn;kn=kn+1}
+            links[[k]] = c(nodes[[precname]],nodes[[currentname]],weight)
+            k = k + 1
+          }
         }
+      }
+      #novelties=rbind(novelties,c(years[t],novelty*length(current[[i]])/sum(unlist(lapply(current,length)))))
+      #cumnov=cumnov+novelty*length(current[[i]])/sum(unlist(lapply(current,length))) 
     }
-    novelties=rbind(novelties,c(years[t],novelty*length(current[[i]])/sum(unlist(lapply(current,length)))))
-   cumnov=cumnov+novelty*length(current[[i]])/sum(unlist(lapply(current,length))) 
   }
-  cumnovs=append(cumnovs,cumnov)
+  #cumnovs=append(cumnovs,cumnov)
 }
 
 # plot(years[2:length(years)],cumnovs,type='l')
@@ -111,19 +125,55 @@ for(t in 2:length(years)){
 mlinks=as.data.frame(matrix(data = unlist(links),ncol=3,byrow=TRUE))
 names(mlinks)<-c("from","to","weight")
 #mlinks$weight=1000*mlinks$weight
-mnodes = data.frame(id=1:length(nodes),name=names(nodes))
+mnodes = data.frame(id=0:(length(nodes)-1),name=names(nodes))
 
 #plot(graph_from_data_frame(mlinks,vertices=mnodes))
+g = graph_from_data_frame(mlinks,vertices=mnodes)
+V(g)$year=as.numeric(sapply(V(g)$name,function(x){substring(text=x,first=nchar(x)-3)}))
+
+# Tests for layout
+#V(g)$x = V(g)$year;V(g)$y=runif(vcount(g))
+#layout = layout_with_fr(g);pca=prcomp(layout)
+#V(g)$y=(layout%*%pca$rotation)[,1];
+#V(g)$y=layout[,1]
+#V(g)$x=2*V(g)$year
+#for(year in unique(V(g)$year)){V(g)$y[V(g)$year==year]=rank(V(g)$y[V(g)$year==year],ties.method="random")*20/length(which(V(g)$year==year))}#V(g)$y[V(g)$year==year]-mean(V(g)$y[V(g)$year==year])}
+
+# specific algo for layout, using weight proximity
+V(g)$x=2*V(g)$year
+V(g)$y[V(g)$year==wyears[1]]=1:length(which(V(g)$year==wyears[1])) # random layout for first row
+for(currentyear in wyears[2:length(wyears)]){
+  V(g)$y[V(g)$year==currentyear]=1:length(which(V(g)$year==currentyear))
+  currentvertices = V(g)[V(g)$year==currentyear]
+  for(v in currentvertices){
+    currentedges = E(g)[V(g)%->%v]
+    if(length(currentedges)>0){
+      V(g)$y[V(g)==v] = sum(currentedges$weight/sum(currentedges$weight)*head_of(g,currentedges)$y)
+    }
+  }
+  # put rank for more visibility
+  V(g)$y[V(g)$year==currentyear] = rank(V(g)$y[V(g)$year==currentyear],ties.method = "random")
+}
+
+
+
+plot.igraph(g,#layout=layout_as_tree(g),
+            vertex.size=0.3,vertex.label=NA,#vertex.label.cex=0,
+            edge.arrow.size=0,edge.width=5*E(g)$weight)
+
+
+
+
 
 # plot the graph
-sankeyNetwork(Links = mlinks, Nodes = mnodes, Source = "from",
-              Target = "to", Value = "weight", NodeID = "name",
-              ,fontSize = 12, nodeWidth = 20)
+#sankeyNetwork(Links = mlinks, Nodes = mnodes, Source = "from",
+#              Target = "to", Value = "weight", NodeID = "name",
+#              fontSize = 12, nodeWidth = 20)
     
-forceNetwork(Links = mlinks, Nodes = mnodes, Source = "from",
-             Target = "to", Value = "weight", NodeID = "name",Group="name")
+#forceNetwork(Links = mlinks, Nodes = mnodes, Source = "from",
+#             Target = "to", Value = "weight", NodeID = "name",Group="name")
           
 #sankeyNetwork(Links = mlinks, Nodes = mnodes)         
 
-sankeyNetwork()
+#sankeyNetwork()
 

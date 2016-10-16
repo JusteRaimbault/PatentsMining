@@ -362,3 +362,47 @@ g+geom_density(aes(x=origs,colour=years),alpha=0.25,adjust=0.75)+scale_x_log10()
 
 
 
+################
+#  3.3)  Citation graph modularities
+
+load('res/modularities.RData')
+
+df = data.frame(year=sapply(modularities,function(l){l$year}),
+                technoovmod=sapply(modularities,function(l){l$technoovmod}),
+                semovmod=sapply(modularities,function(l){l$semovmod}),
+                technodirmod=sapply(modularities,function(l){l$technodirmod}),
+                semdirmod=sapply(modularities,function(l){l$semdirmod}),
+                technodirgraphmod=sapply(modularities,function(l){l$technodirgraphmod}),
+                semdirgraphmod=sapply(modularities,function(l){l$semdirgraphmod}),
+                technoundirgraphmod=sapply(modularities,function(l){l$technoundirgraphmod}),
+                semundirgraphmod=sapply(modularities,function(l){l$semundirgraphmod})
+                )
+
+g=ggplot(data.frame(year=c(df$year,df$year),mod = c(df$technoovmod,df$semovmod),type=c(rep("techno",nrow(df)),rep("semantic",nrow(df)))),aes(x=year,y=mod,colour=type,group=type))
+g+geom_line()+geom_point()+ylab("overlapping modularity")+scale_y_log10()
+
+g=ggplot(data.frame(year=c(df$year,df$year),mod = c(df$technodirmod,df$semdirmod),type=c(rep("techno",nrow(df)),rep("semantic",nrow(df)))),aes(x=year,y=mod,colour=type,group=type))
+g+geom_line()+geom_point()+ylab("modularity")+scale_y_log10()
+
+##
+
+g+geom_line(aes(x=year,y=technoovmod,colour="techno"))+geom_line(aes(x=year,y=semovmod,colour="semantic"))+scale_y_log10()
+g+geom_line(aes(x=year,y=technodirmod,colour="techno"))+geom_line(aes(x=year,y=semdirmod,colour="semantic"))
+g+geom_line(aes(x=year,y=technodirgraphmod))
+g+geom_line(aes(x=year,y=semdirgraphmod))
+
+
+
+
+##################
+##################
+
+pca = prcomp(semprobas)
+
+## BigPCA ;; NCmisc libraries
+
+
+
+
+
+
