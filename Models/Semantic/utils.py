@@ -10,9 +10,9 @@ def export_dico_csv(dico,filename,delimiter):
         outfile.write(str(dico[k][len(dico[k])-1])+'\n')
 
 
-        
+
 ##
-#  
+#
 def export_matrix_sparse_csv(matrix,firstcols,filename,delimiter):
     outfile=open(filename,'w')
     for i in range(len(matrix)):
@@ -31,7 +31,7 @@ def export_csv(data,filename,delimiter,header):
         for i in range(len(row)-1):
             outfile.write(str(row[i])+delimiter)
         outfile.write(str(row[len(row)-1])+'\n')
-                
+
 
 def import_csv(csvfile,delimiter):
     infile = open(csvfile,'r')
@@ -39,5 +39,3 @@ def import_csv(csvfile,delimiter):
     for line in infile.readlines():
         res.append(line.replace('\n','').split(delimiter))
     return(res)
-        
-                
