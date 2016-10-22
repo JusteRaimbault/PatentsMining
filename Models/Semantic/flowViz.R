@@ -141,7 +141,7 @@ V(g)$year=as.numeric(sapply(V(g)$name,function(x){substring(text=x,first=nchar(x
 
 # specific algo for layout, using weight proximity
 V(g)$x=2*V(g)$year
-V(g)$y[V(g)$year==wyears[1]]=1:length(which(V(g)$year==wyears[1])) # random layout for first row
+V(g)$y[V(g)$year==wyears[1]]=(1:length(which(V(g)$year==wyears[1])))/length(which(V(g)$year==wyears[1])) # random layout for first row
 for(currentyear in wyears[2:length(wyears)]){
   V(g)$y[V(g)$year==currentyear]=1:length(which(V(g)$year==currentyear))
   currentvertices = V(g)[V(g)$year==currentyear]
@@ -152,7 +152,7 @@ for(currentyear in wyears[2:length(wyears)]){
     }
   }
   # put rank for more visibility
-  V(g)$y[V(g)$year==currentyear] = rank(V(g)$y[V(g)$year==currentyear],ties.method = "random")
+  #V(g)$y[V(g)$year==currentyear] = rank(V(g)$y[V(g)$year==currentyear],ties.method = "random")/length(which(V(g)$year==currentyear))
 }
 
 
