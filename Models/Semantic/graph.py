@@ -46,7 +46,9 @@ def construct_graph(years,kwLimit):
     #pickle.dump(coms,open('pickled/coms_'+yearstr+'_'+str(kwLimit)+'_eth10.pkl','wb'))
 
 
-
+##
+#  Dispersion index
+#  d = \sum (k_j / sum k_j) ^ 2
 def dispersion(x):
     s=sum(x)
     return(sum(list(map(lambda y:(y/s)*(y/s),x))))
