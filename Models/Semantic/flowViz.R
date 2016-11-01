@@ -140,8 +140,10 @@ V(g)$year=as.numeric(sapply(V(g)$name,function(x){substring(text=x,first=nchar(x
 #for(year in unique(V(g)$year)){V(g)$y[V(g)$year==year]=rank(V(g)$y[V(g)$year==year],ties.method="random")*20/length(which(V(g)$year==year))}#V(g)$y[V(g)$year==year]-mean(V(g)$y[V(g)$year==year])}
 
 # specific algo for layout, using weight proximity
-V(g)$x=2*V(g)$year
-V(g)$y[V(g)$year==wyears[1]]=(1:length(which(V(g)$year==wyears[1])))/length(which(V(g)$year==wyears[1])) # random layout for first row
+V(g)$x=V(g)$year
+
+
+V(g)$y[V(g)$year==wyears[1]]=(1:length(which(V(g)$year==wyears[1])))#/length(which(V(g)$year==wyears[1])) # random layout for first row
 for(currentyear in wyears[2:length(wyears)]){
   V(g)$y[V(g)$year==currentyear]=1:length(which(V(g)$year==currentyear))
   currentvertices = V(g)[V(g)$year==currentyear]
@@ -159,21 +161,24 @@ for(currentyear in wyears[2:length(wyears)]){
 
 plot.igraph(g,#layout=layout_as_tree(g),
             vertex.size=0.3,vertex.label=NA,#vertex.label.cex=0,
-            edge.arrow.size=0,edge.width=5*E(g)$weight)
+            edge.arrow.size=0,edge.width=5*E(g)$weight#,
+            #edge.curved=TRUE,margin=0
+            )
 
 
 
+# try brutal optimisation
+
+penalty<-function(coordinates)
+
+
+optim <- ga(type="real-valued",fitness=penalty,min=rep(0,vcount(g)),max=rep(1,vcount(g)))
+  
 
 
 # plot the graph
 #sankeyNetwork(Links = mlinks, Nodes = mnodes, Source = "from",
 #              Target = "to", Value = "weight", NodeID = "name",
 #              fontSize = 12, nodeWidth = 20)
-    
-#forceNetwork(Links = mlinks, Nodes = mnodes, Source = "from",
-#             Target = "to", Value = "weight", NodeID = "name",Group="name")
-          
-#sankeyNetwork(Links = mlinks, Nodes = mnodes)         
 
-#sankeyNetwork()
 

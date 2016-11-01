@@ -12,6 +12,7 @@ setwd(paste0(Sys.getenv('CS_HOME'),'/PatentsMining/Models/Semantic'))
 
 wyears = 1980:2012
 windowSize=5
+kwLimit="100000"
 
 #source('semanalfun.R')
 
@@ -41,9 +42,10 @@ gc()
 
 #######
 ## kw examples
-kwex <- as.tbl(read.csv("keywords/keywords_2000-2004_kwLimit100000_dispth0.06_ethunit4.5e-05.csv",sep=";",header=FALSE))
+year=2004;yearrange=paste0((year-windowSize+1),"-",year)
+kwex <- as.tbl(read.csv(paste0("probas_count_extended/keywords-count-extended_",yearrange,"_kwLimit",kwLimit,"_dispth0.06_ethunit4.5e-05.csv"),sep=";",header=FALSE))
 
-kwex %>% group_by(V2)
+sizes = kwex %>% group_by(V2) %>% summarise(count=n())
 data.frame(kwex[kwex$V2==156,1],stringsAsFactors = FALSE)
 
 
@@ -51,7 +53,7 @@ data.frame(kwex[kwex$V2==156,1],stringsAsFactors = FALSE)
 ## patent example
 # year : 2004 ; semantic class : 5 ("optic")
 year=1980;yearrange=paste0((year-windowSize+1),"-",year)
-load(file=paste0('probas_processed/processed_',yearrange,'.RData'))
+load(file=paste0('probas/processed_counts_',yearrange,'.RData'))
 technoprobas=currentprobas$technoprobas;semprobas=currentprobas$semprobas;rm(currentprobas);gc()
 
 #techov=t(technoprobas)%*%technoprobas
@@ -71,7 +73,7 @@ as.matrix(semprobas[inds,])
 #inds = which(semprobas[,6]>0.5&origs>0.744)
 # 7534052 ? NO 
 
-##
+#
 #  1) First order interdisciplinarity
 
 #  1.1) Macro-level
@@ -79,14 +81,19 @@ as.matrix(semprobas[inds,])
 
 # size hierarchy in years
 
+
 sizes=c();nsizes=c();years=c();type=c();ranks=c();sortedsizes=c();sortednsizes=c()
 for(year in wyears){
   load(paste0('probas/processed_counts_',(year-windowSize+1),"-",year,'.RData'));show(year)
   technoprobas=currentprobas$technoprobas;semprobas=currentprobas$semprobas;rm(currentprobas);gc()
   techsizes=colSums(technoprobas);semsizes=colSums(semprobas)
   techsizes=techsizes[techsizes>0];semsizes=semsizes[semsizes>0]
-  sizes=append(sizes,sort(techsizes,decreasing=TRUE)/nrow(technoprobas));years=append(years,rep(year,length(techsizes)));ranks=append(ranks,1:length(techsizes));type=append(type,rep("techno",length(techsizes)))
-  sizes=append(sizes,sort(semsizes,decreasing=TRUE)/nrow(semprobas));years=append(years,rep(year,length(semsizes)));ranks=append(ranks,1:length(semsizes));type=append(type,rep("semantic",length(semsizes)))
+  sizes=append(sizes,sort(techsizes,decreasing=TRUE));
+  years=append(years,rep(year,length(techsizes)));ranks=append(ranks,1:length(techsizes));
+  type=append(type,rep("technological classes",length(techsizes)))
+  sizes=append(sizes,sort(semsizes,decreasing=TRUE));
+  years=append(years,rep(year,length(semsizes)));ranks=append(ranks,1:length(semsizes));
+  type=append(type,rep("semantic classes",length(semsizes)))
   
   #nsizes=append(nsizes,techsizes/nrow(technoprobas));;type=append(type,rep("techno",length(techsizes)));
   #ranks=append(ranks,1:length(techsizes));sortedsizes=append(sortedsizes,sort(techsizes,decreasing = TRUE));sortednsizes=append(sortednsizes,sort(techsizes/nrow(technoprobas),decreasing = TRUE))
@@ -95,7 +102,11 @@ for(year in wyears){
 }
 
 g=ggplot(data.frame(size=sizes,year=as.character(years),rank=ranks,type=type))
-g+geom_line(aes(x=rank,y=size,colour=year,group=year))+scale_x_log10()+scale_y_log10()+facet_wrap(~type,scales="fixed")+ylab("normalized size")
+g+geom_line(aes(x=rank,y=size,colour=year,group=year))+
+  scale_x_log10()+scale_y_log10()+facet_wrap(~type,scales="fixed")+ylab("size") + theme(axis.title = element_text(size = 22), 
+    axis.text.x = element_text(size = 15), 
+    axis.text.y = element_text(size = 15))
+  
 
 df=data.frame(size=sizes,nsize=nsizes,sortedsize=sortedsizes,sortednsize=sortednsizes,years=as.character(years),type=type)
 g=ggplot(df,aes(x=sizes,color=years))
@@ -153,7 +164,7 @@ for(year in wyears){
   #overlaps=append(overlaps,as.numeric(semov));n=length(as.numeric(semov));years=append(years,rep(year,n));types=append(types,rep("semantic",n));#measures=append(measures,rep("relative",n));filters=append(filters,rep("all",n))
   ##inds=which(techov>0);overlaps=append(overlaps,techov[inds]/nrow(technoprobas));n=length(inds);years=append(years,rep(year,n));types=append(types,rep("techno",n));#measures=append(measures,rep("relative",n));filters=append(filters,rep("positive",n))
   ##inds=which(semov>0);overlaps=append(overlaps,semov[inds]/nrow(semprobas));n=length(inds);years=append(years,rep(year,n));types=append(types,rep("semantic",n));#measures=append(measures,rep("relative",n));filters=append(filters,rep("positive",n))
-   rm(techov,semov,technorm,semnorm,technoprobas,semprobas);gc()
+  rm(techov,semov,technorm,semnorm,technoprobas,semprobas);gc()
 }
 
 resdir=paste0(Sys.getenv('CS_HOME'),'/PatentsMining/Results/Semantic/Analysis/window5/overlap/')
@@ -219,38 +230,41 @@ for(year in wyears){
   #load(paste0('probas_processed/processed_',year,'.RData'))
   load(paste0('probas/processed_counts_',(year-windowSize+1),"-",year,'.RData'))
   technoprobas=currentprobas$technoprobas;semprobas=currentprobas$semprobas;rm(currentprobas);gc()
-  origs = append(origs,1 - rowSums(semprobas^2));types=append(types,rep("semantic",nrow(semprobas)))
-  origs = append(origs,1 - rowSums(technoprobas^2));types=append(types,rep("techno",nrow(technoprobas)))
+  origs = append(origs,1 - rowSums(semprobas^2));types=append(types,rep("semantic classification",nrow(semprobas)))
+  origs = append(origs,1 - rowSums(technoprobas^2));types=append(types,rep("technological classification",nrow(technoprobas)))
   cyears=append(cyears,rep(year,nrow(semprobas)+nrow(technoprobas)))
   rm(semprobas,technoprobas);gc()
 }
 
 #save(origs,cyears,types,file='res/patentlevel_orig.RData')
-#load('res/patentlevel_origs.RData')
+load('res/patentlevel_orig.RData')
+
+# length(which(origs<1))/length(origs)
+# 5.2 % of patent in total are not classified : quite ok
 
 # techno patent origs
-#inds=types=="techno"&origs<1
+
 inds=origs<1
 df = data.frame(originality=origs[inds],year=as.character(cyears[inds]),type=types[inds])
 rm(origs,cyears,types);gc()
 
-g=ggplot(df[df$originality>0,])
-g+geom_density(aes(x=originality,colour=year))+facet_wrap(~type)
+g=ggplot(df)#[df$originality>0,])
+g+geom_density(aes(x=originality,colour=year))+facet_wrap(~type) + 
+  xlab("patent diversity")+
+  theme(axis.title = element_text(size = 22), axis.text.x = element_text(size = 15),  axis.text.y = element_text(size = 15))
 rm(g);gc()
 
-# semantic patent origs
-inds=types=="semantic"&origs<1
-inds=origs<1
-df = data.frame(originality=origs[inds],year=as.character(cyears[inds]),type=types[inds])
-gc()
-g=ggplot(df)
-g+geom_density(aes(x=originality,colour=year))+scale_y_log10()
+# time series by year
 
-byyearorigs = as.tbl(df[df$originality>0,]) %>% group_by(year,type) %>% summarize(meanorig=mean(originality),count=n())
+byyearorigs = as.tbl(df#[df$originality>0,]
+                     ) %>% group_by(year,type) %>% summarize(meanorig=mean(originality),count=n())
 gsum=ggplot(byyearorigs,aes(x=year,y=meanorig,colour=type,group=type))
-labs=rep("",length(wyears));labs[seq(from=1,to=length(labs),by=3)]=as.character(wyears[seq(from=1,to=length(labs),by=3)])
-gsum+geom_point()+geom_line()+facet_wrap(~type,scales ="free_y",)+
-  scale_x_discrete(breaks=as.character(wyears),labels=labs)
+labs=rep("",length(wyears));labs[seq(from=1,to=length(labs),by=5)]=as.character(wyears[seq(from=1,to=length(labs),by=5)])
+gsum+geom_point()+geom_line()+facet_wrap(~type,scales ="free_y")+
+  scale_x_discrete(breaks=as.character(wyears),labels=labs)+
+  xlab("year")+ylab("mean patent diversity") +
+  theme(legend.position = "none",axis.title = element_text(size = 22), axis.text.x = element_text(size = 15),  axis.text.y = element_text(size = 15))
+
 
 ##
 #  2) Layers macro-structure comparison
