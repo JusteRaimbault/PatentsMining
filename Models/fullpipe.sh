@@ -40,10 +40,16 @@ do
 done
 
 # command : python main.py yearfile
+if [ "$TASK" == "keywords" ]
+then
+  echo "Running keywords extraction..."
+  ./parrunnum "python main.py --keywords relevantyears/runmv" $NRUNS
+fi
+
 if [ "$TASK" == "relevant" ]
 then
   echo "Running relevance estimation..."
-  ./parrunnum "python main.py relevantyears/runmv" $NRUNS
+  ./parrunnum "python main.py --relevant relevantyears/runmv" $NRUNS
 fi
 
 
@@ -73,20 +79,20 @@ done
 # NOTE : for this part, rmongodb fails to authenticate -> relaunch db without auth
 
 # command for graph construction : R -f allYears.R --args yearfile
-if [ "$TASK" == "network" ]
+if [ "$TASK" == "network-r" ]
 then
   ./parrunnum "R -f allYears.R --args relevantyears/runmv" $NRUNS
 fi
 
 
 
-if [ "$TASK" == "network-python" ]
+if [ "$TASK" == "network" ]
 then
   ./parrunnum "python main.py --graph relevantyears/runmv" $NRUNS
 fi
 
 
-if [ "$TASK" == "probas-python" ]
+if [ "$TASK" == "probas" ]
 then
   ./parrunnum "python main.py --probas relevantyears/runmv" $NRUNS
 fi
@@ -111,12 +117,12 @@ fi
 #
 
 # semsensitivity
-if [ "$TASK" == "sensitivity" ]
+if [ "$TASK" == "sensitivity-r" ]
 then
   ./parrunnum "R -f semsensitivity.R --args relevantyears/runmv" $NRUNS
 fi
 
-if [ "$TASK" == "probas" ]
+if [ "$TASK" == "probas-r" ]
 then
   # probas
   ./parrunnum "R -f semthemprobas.R --args relevantyears/runmv" $NRUNS
