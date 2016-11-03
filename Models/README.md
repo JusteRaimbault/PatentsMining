@@ -26,3 +26,5 @@ The tasks to be done in order : keywords extraction, relevance estimation, netwo
  - `--probas`
 
 Custom run of `main.py` in `Semantic` : `--custom`
+
+**Deprecated** R scripts.

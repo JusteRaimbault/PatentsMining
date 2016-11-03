@@ -18,7 +18,6 @@ def test_db():
 ##
 #  export to mongo
 def export_kw_dico(database,collection,p_kw_dico,year):
-    #mongo = pymongo.MongoClient('localhost', 29019)
     mongo = pymongo.MongoClient('mongodb://root:root@127.0.0.1:29019')
     database = mongo[database]
     col = database[collection]
@@ -31,6 +30,16 @@ def export_kw_dico(database,collection,p_kw_dico,year):
 
     col.insert_many(data)
 
+
+def export_set_dico(database,collection,dico,fields):
+    mongo = pymongo.MongoClient('mongodb://root:root@127.0.0.1:29019')
+    database = mongo[database]
+    col = database[collection]
+    col.create_index(fields[0])
+    data = []
+    for p in dico.keys() :
+        data.append({fields[0]:p,fields[1]:list(dico[p])})
+    col.insert_many(data)
 
 def import_kw_dico(database,collection,years):
     #mongo = pymongo.MongoClient('localhost', 29019)

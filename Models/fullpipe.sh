@@ -25,8 +25,18 @@ cd TextProcessing
 for file in `seq 1 $NRUNS`
 do
     rm relevantyears/runmv$file
+    rm kwyears/run$file
 done
 
+# single year files (kw extraction)
+file=1
+for y in `seq $START $((END + WINDOW - 1))`
+do
+  echo $y >> kwyears/run$file
+  file=$(((file % NRUNS ) + 1 ))
+done
+
+# moving window files
 file=1
 for y in `seq $START $END`
 do
@@ -43,7 +53,7 @@ done
 if [ "$TASK" == "keywords" ]
 then
   echo "Running keywords extraction..."
-  ./parrunnum "python main.py --keywords relevantyears/runmv" $NRUNS
+  ./parrunnum "python main.py --keywords kwyears/run" $NRUNS
 fi
 
 if [ "$TASK" == "relevant" ]
