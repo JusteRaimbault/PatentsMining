@@ -13,8 +13,10 @@ from = c(as.character(edf1[,1]),as.character(edf2[,1]))
 to = c(as.character(edf1[,6]),as.character(edf2[,6]))
 
 # keep uspto only
-from = from[sapply(from,nchar)<=8]
-to = to[sapply(to,nchar)<=8]
+fromok=sapply(from,nchar)<=8
+took=sapply(to,nchar)<=8
+from = from[fromok&took]
+to = to[fromok&took]
 
 # apply : 7digits ids
 from[sapply(from,nchar)==8] <- substr(from[sapply(from,nchar)==8],2,8)
