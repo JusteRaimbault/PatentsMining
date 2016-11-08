@@ -52,10 +52,14 @@ data.frame(kwex[kwex$V2==156,1],stringsAsFactors = FALSE)
 #######
 ## patent example
 # year : 2004 ; semantic class : 5 ("optic")
-year=1980;yearrange=paste0((year-windowSize+1),"-",year)
+
+for(year in wyears){
+  #year=1980;
+  yearrange=paste0((year-windowSize+1),"-",year)
 load(file=paste0('probas/processed_counts_',yearrange,'.RData'))
 technoprobas=currentprobas$technoprobas;semprobas=currentprobas$semprobas;rm(currentprobas);gc()
-
+show(sum(technoprobas)/nrow(technoprobas))
+}
 #techov=t(technoprobas)%*%technoprobas
 #diag(techov)<-0
 #hist(log(techov[techov>0]),breaks=10000)
@@ -118,6 +122,22 @@ g+geom_point()+geom_line()+stat_smooth()+scale_y_log10()+facet_wrap(~type)
 
 g=ggplot(df,aes(x=ranks,y=sortedsizes,colour=years,group=years))
 g+geom_point()+scale_x_log10()+scale_y_log10()+facet_wrap(~type)
+
+
+## Classes concentrations
+years=c();type=c();concentration=c()
+for(year in wyears){
+  load(paste0('probas/processed_counts_',(year-windowSize+1),"-",year,'.RData'));show(year)
+  technoprobas=currentprobas$technoprobas;semprobas=currentprobas$semprobas;rm(currentprobas);gc()
+  
+  show(tail(setdiff(rownames(semprobas),rownames(technoMatrix))))
+  #concentration=append(concentration,c(1-sum((colSums(semprobas)/nrow(semprobas))^2),1-sum((colSums(technoprobas)/nrow(technoprobas))^2)))
+  #years=append(years,c(year,year));type=append(type,c("semantic","technological"))
+}
+
+df=data.frame(year=years,type=type,concentration=concentration)
+g = ggplot(df[type=="semantic",],aes(x=year,y=concentration,colour=type,group=type))
+g+geom_point()+geom_line() + theme(axis.title = element_text(size = 22), axis.text.x = element_text(size = 15),   axis.text.y = element_text(size = 15))
 
 
 

@@ -6,17 +6,17 @@ import data,keywords,utils
 ##
 # Extract keywords for a given year
 def extract_keywords_year(year):
-    corpus = data.get_patent_data('redbook','raw',[year],0,full=True)
+    corpus = data.get_patent_data('redbook','raw',[year],"app_year",0,full=True)
     print('corpus size : '+str(len(corpus)))
     [p_kw_dico,kw_p_dico,stem_dico] = construct_occurrence_dico(corpus)
     data.export_kw_dico('patent','keywords',p_kw_dico,year)
     data.export_set_dico('patent','stems',stem_dico,['stem','keywords'])
 
+
 # extract relevant keywords, using unithood and termhood
 #  @returns [tselected,p_tsel_dico] : dico kw -> termhood ; dico patent -> kws
-def extract_relevant_keywords(corpus,kwLimit,occurence_dicos):
+def extract_relevant_keywords(corpus,kwLimit,occurence_dicos,edge_th):
     print('Extracting relevant keywords...')
-    #[p_kw_dico,kw_p_dico]=construct_occurrence_dico(corpus) # DO NOT RECOMPUTE OCCURRENCES AT EACH STEP !
 
     [p_kw_dico,kw_p_dico] = extract_sub_dicos(corpus,occurence_dicos)
 
@@ -50,12 +50,6 @@ def extract_relevant_keywords(corpus,kwLimit,occurence_dicos):
     print('Computing cooccurrences...')
     # compute termhoods :: coocurrence matrix -> in \Theta(16 N^2) - N must thus stay 'small'
     coocs = {}
-
-    #for i in range(len(selected_kws.keys())):
-    #    coocs.append(([0]*len(selected_kws.keys())))
-    # fill the cooc matrix
-    # for each patent : kws are coocurring if selected.
-    # Beware to filter BEFORE launching O(n^2) procedure
 
     n=len(p_kw_dico)/100;pr=0
     for p in p_kw_dico.keys() :
@@ -95,10 +89,6 @@ def extract_relevant_keywords(corpus,kwLimit,occurence_dicos):
         termhoods[ki]=s
 
     # sort and filter on termhoods
-    #sorting_termhoods = {}
-    #for k in selected_kws.keys():
-    #    sorting_termhoods[k]=termhoods[selected_kws[k]]
-
     [tselected,dico,freqselected] = extract_from_termhood(termhoods,p_kw_dico,docfrequencies,kwLimit)
 
     # construct graph edge list (! undirected)
@@ -106,7 +96,7 @@ def extract_relevant_keywords(corpus,kwLimit,occurence_dicos):
     for kw in tselected.keys():
         for ki in coocs[kw].keys():
             if ki in tselected :
-                if coocs[kw][ki] >= 10 :
+                if coocs[kw][ki] >= edge_th :
                     edge_list.append({'edge' : kw+";"+ki, 'weight' : coocs[kw][ki]})
 
 

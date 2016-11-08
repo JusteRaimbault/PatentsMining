@@ -2,19 +2,6 @@ import sqlite3,pymongo
 
 
 
-def test_dico():
-    # with export
-    corpus = get_patent_data(2007,1000)
-    [p_kw_dico,kw_p_dico] = construct_occurrence_dico(corpus)
-    export_kw_dico('../../Data/processed/keywords_y2007_1000.sqlite3',p_kw_dico)
-
-def test_db():
-    for patent in get_patent_data(2000,100):
-        print(patent)
-
-
-
-
 ##
 #  export to mongo
 def export_kw_dico(database,collection,p_kw_dico,year):
@@ -110,20 +97,14 @@ def get_patent_id(cursor_raw):
 
 
 
-def get_patent_data(db,collection,years,limit,full=True):
-    #mongo = pymongo.MongoClient('localhost', 29019)
+def get_patent_data(db,collection,years,yearfield,limit,full=True):
     mongo = pymongo.MongoClient('mongodb://root:root@127.0.0.1:29019')
-    #database = mongo['redbook']
     database = mongo[db]
-    #col = database['raw']
     col = database[collection]
     if full :
-        data = col.find({"year":{"$in":years},"id":{"$regex":r'^[0-9]'},"abstract":{"$regex":r'.'}},{"id":1,"title":1,"abstract":1})#.limit(limit)
+        data = col.find({yearfield:{"$in":years},"id":{"$regex":r'^[0-9]'},"abstract":{"$regex":r'.'}},{"id":1,"title":1,"abstract":1})#.limit(limit)
     else :
-        data = col.find({"app_year":{"$in":years},"id":{"$regex":r'^[0-9]'}},{"id":1})
-    #print(len(data))
-    #print(col.count())
-    #data = col.find()
+        data = col.find({yearfield:{"$in":years},"id":{"$regex":r'^[0-9]'}},{"id":1})
     res=[]
     for row in data :
         #print row
@@ -133,7 +114,6 @@ def get_patent_data(db,collection,years,limit,full=True):
         if 'title' in row : title = row['title']
         abstract = ""
         if 'abstract' in row : abstract = row['abstract']
-        #if 'id' in row and 'title' in row and 'abstract' in row : print [i,title,abstract]
         res.append([i,title,abstract])
     return(res)
 

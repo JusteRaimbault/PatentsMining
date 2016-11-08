@@ -157,7 +157,7 @@ def export_probas_matrices(years,kwLimit,dispth,ethunit):
     print("Constructing patent probas for years "+str(years))
     mongo = pymongo.MongoClient('mongodb://root:root@127.0.0.1:29019')
     # load keywords
-    patents = mongo['patent']['keywords'].find({"app_year":{"$in":years}},no_cursor_timeout=True)
+    patents = mongo['patent']['keywords'].find({"year":{"$in":years}},no_cursor_timeout=True)
     npatents = patents.count()
     yearrange = years[0]+"-"+years[len(years)-1]
     # load graph and construct communities
@@ -205,7 +205,7 @@ def export_patent_measures(years,kwLimit,dispth,ethunit):
     print("Constructing patent measures for years "+str(years))
     mongo = pymongo.MongoClient('mongodb://root:root@127.0.0.1:29019')
     # load keywords
-    patents = mongo['patent']['keywords'].find({"app_year":{"$in":years}},no_cursor_timeout=True)
+    patents = mongo['patent']['keywords'].find({"year":{"$in":years}},no_cursor_timeout=True)
     npatents = patents.count()
     yearrange = years[0]+"-"+years[len(years)-1]
 
