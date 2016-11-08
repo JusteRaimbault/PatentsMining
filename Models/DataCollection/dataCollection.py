@@ -23,4 +23,5 @@ def import_file(f):
 
     database.raw.insert_many(data)
 
+
 import_file(sys.argv[1])

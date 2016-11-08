@@ -28,13 +28,12 @@ def export_set_dico(database,collection,dico,fields):
         data.append({fields[0]:p,fields[1]:list(dico[p])})
     col.insert_many(data)
 
-def import_kw_dico(database,collection,years):
-    #mongo = pymongo.MongoClient('localhost', 29019)
+def import_kw_dico(database,collection,years,yearfield):
     mongo = pymongo.MongoClient('mongodb://root:root@127.0.0.1:29019')
     database = mongo[database]
     col = database[collection]
 
-    data = col.find({"app_year":{"$in":years}})
+    data = col.find({yearfield:{"$in":years}})
     p_kw_dico={}
     kw_p_dico={}
 
