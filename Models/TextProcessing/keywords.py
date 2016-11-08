@@ -1,4 +1,4 @@
-import nltk,operator,math,pymongo
+import nltk,operator,math,pymongo,functools
 import data,keywords,utils
 
 
@@ -227,10 +227,11 @@ def extract_keywords(raw_text,id):
             if i+l < len(tagged_text) :
                 tags = [tagged_text[k] for k in range(i,i+l)]
                 if potential_multi_term(tags) :
-                    multistemlist = [str.lower(stemmer.stem(tagged_text[k][0]).encode('ascii','ignore')) for k in range(i,i+l)]
+                    multistemlist = [str.lower(stemmer.stem(tagged_text[k][0])) for k in range(i,i+l)]
                     #multistem.sort(key=str.lower)
-                    multistem = reduce(lambda s1,s2 : s1+' '+s2,multistemlist)
-                    rawtext = reduce(lambda s1,s2 : s1+' '+s2,[str.lower(tagged_text[k][0]).encode('ascii','ignore') for k in range(i,i+l)])
+		    #python 3 : remove .encode('ascii','ignore')
+                    multistem = functools.reduce(lambda s1,s2 : s1+' '+s2,multistemlist)
+                    rawtext = functools.reduce(lambda s1,s2 : s1+' '+s2,[str.lower(tagged_text[k][0]) for k in range(i,i+l)])
                     multiterms.add(multistem)
                     if multistem in stem_dico :
                         stem_dico[multistem].add(rawtext)
