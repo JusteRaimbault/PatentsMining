@@ -13,7 +13,7 @@
 #  -> check rowname indexing perfs
 
 # load techno probas
-#load(file=paste0(Sys.getenv('CS_HOME'),'/PatentsMining/Data/processed/classes/sparse.RData'))
+load(file=paste0(Sys.getenv('CS_HOME'),'/PatentsMining/Data/processed/classes/sparse.RData'))
 #technoMatrixAll=technoMatrix
 #load(file=paste0(Sys.getenv('CS_HOME'),'/PatentsMining/Data/processed/classes/techno_primary.RData'))
 

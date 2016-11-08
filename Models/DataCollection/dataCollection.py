@@ -13,7 +13,7 @@ def test_xml_import() :
 
 def import_file(f):
     print 'importing file '+str(f)
-    mongo = pymongo.MongoClient('localhost', 29019)
+    mongo = pymongo.MongoClient('mongodb://root:root@127.0.0.1:29019')
     database = mongo['redbook']
     database.raw.create_index('id')
 
@@ -22,8 +22,5 @@ def import_file(f):
     data = parser.parse_file(f,year)
 
     database.raw.insert_many(data)
-
-#import_dat_file(sys.argv[1])
-#test_xml_import()
 
 import_file(sys.argv[1])

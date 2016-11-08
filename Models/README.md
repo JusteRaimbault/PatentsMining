@@ -9,22 +9,25 @@
 
 The utility `fullpipe.sh` can launch most of the processing pipe.
 
-### Options :
+## Options :
   (to be changed in shell script)
   - `$WINDOW` : window size in years
   - `$START` : beginning of first window
   - `$END` : beginning of last window
   - `$NRUNS` : number of parallel runs
 
-### Tasks :
+## Tasks :
 
 The tasks to be done in order : keywords extraction, relevance estimation, network construction, semantic probas construction, are launched with the following options :
 
- - `--keywords`
- - `--relevant`
- - `--network`
- - `--probas`
+ - `keywords`
+ - `relevant`
+ - `network`
+ - `probas`
 
-Custom run of `main.py` in `Semantic` : `--custom`
+Custom run of `main.py` in `Semantic` : `custom-python`
 
 **Deprecated** R scripts.
+
+
+## Data Collection

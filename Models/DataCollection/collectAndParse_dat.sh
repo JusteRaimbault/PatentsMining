@@ -15,4 +15,3 @@ cd ..
 echo "File : data/$FILE.dat"
 
 python dataCollection.py "data/$FILE.dat"
-

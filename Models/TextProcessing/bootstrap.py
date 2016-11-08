@@ -27,13 +27,11 @@ def test_bootstrap():
 
 
 def relevant_full_corpus(years,kwLimit):
-    #dbdata = 'patents_fung'
-    #dbrelevant = 'relevant_fung'
     dbdata = 'patent'
     coldata = 'keywords'
     coldico = 'keywords'
     dbrelevant = 'relevant'
-    corpus = data.get_patent_data(dbdata,coldata,years,-1,full=False)
+    corpus = data.get_patent_data(dbdata,coldata,years,"year",-1,full=False)
     occurence_dicos = data.import_kw_dico(dbdata,coldico,years)
     print('corpus : '+str(len(corpus))+' ; dico : '+str(len(occurence_dicos[0]))+' , '+str(len(occurence_dicos[1])))
     if len(corpus) > 0 and len(occurence_dicos) > 0 :
