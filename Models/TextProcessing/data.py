@@ -2,6 +2,39 @@ import sqlite3,pymongo
 
 
 
+
+
+
+
+##
+#  Given large occurence dico, extracts corresponding subdico
+#  assumes large dicos contains all subcorpus.
+#  @returns [p_kw_dico,kw_p_dico]
+def extract_sub_dicos(corpus,occurence_dicos) :
+    p_kw_dico_all = occurence_dicos[0]
+    kw_p_dico_all = occurence_dicos[1]
+
+    p_kw_dico = dict()
+    kw_p_dico = dict()
+
+    for patent in corpus :
+        #patent_id = data.get_patent_id(patent)
+        patent_id=patent[0]
+        keywords = []
+        if patent_id in p_kw_dico_all : keywords = p_kw_dico_all[patent_id]
+        p_kw_dico[patent_id] = keywords
+        for k in keywords :
+            if k not in kw_p_dico : kw_p_dico[k] = []
+            kw_p_dico[k].append(patent_id)
+
+    return([p_kw_dico,kw_p_dico])
+
+
+
+
+
+
+
 ##
 #  export to mongo
 def export_kw_dico(database,collection,p_kw_dico,year):
@@ -66,29 +99,6 @@ def export_kw_dico_sqlite(database,p_kw_dico) :
     conn.commit()
     conn.close()
 
-##
-#  import dictionnaries from sqlite db ; table assumed as keywords = (patent_id ; keywords separated by ';')
-def import_kw_dico_sqlite(database,rawdb,year) :
-    conn = sqlite3.connect(database)
-    c = conn.cursor()
-    c.execute('ATTACH DATABASE \''+rawdb+'\' as \'patent\'')
-    c.execute('SELECT keywords.id,keywords.keywords FROM keywords,patent WHERE patent.patent=keywords.id AND patent.GYear='+str(year)+';')
-    res = c.fetchall()
-
-    p_kw_dico = dict()
-    kw_p_dico = dict()
-
-    for row in res :
-        patent_id = row[0].encode('ascii','ignore')
-        #print(patent_id)
-        keywords = row[1].encode('ascii','ignore').split(';')
-        p_kw_dico[patent_id] = keywords
-        for kw in keywords :
-            if kw not in kw_p_dico : kw_p_dico[kw] = []
-            kw_p_dico[kw].append(kw)
-
-    return([p_kw_dico,kw_p_dico])
-
 
 # get patent id
 def get_patent_id(cursor_raw):
@@ -144,13 +154,4 @@ def get_patent_data_sqlite(sqlitedir,year,limit,full) :
     res=cursor.fetchall()
     #first=res[0]
     #raw_text = first[0]+". "+first[1]
-    return res
-
-# get from query
-def get_patent_data_query(query,dbraw,dbdesc,dbdescname):
-    conn = sqlite3.connect(dbraw)
-    cursor = conn.cursor()
-    cursor.execute('ATTACH DATABASE \''+dbdesc+'\' as \'\'')
-    cursor.execute(query)
-    res=cursor.fetchall()
     return res

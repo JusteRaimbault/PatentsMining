@@ -14,3 +14,5 @@
     }
     else echo "Upload error";
 ?>
+
+<a href=".">Data Directory</a>

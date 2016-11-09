@@ -1,5 +1,5 @@
-import time,keywords
-import sys
+import time,sys
+import keywords,relevant
 
 
 def run():
@@ -11,7 +11,7 @@ def run():
     for years in f.readlines():
         print('Years : '+str(years).replace('\n',''))
         if task=='--relevant':
-            keywords.relevant_full_corpus(str(years).replace('\n','').split(";"),kwLimit,edge_th)
+            relevant.relevant_full_corpus(str(years).replace('\n','').split(";"),kwLimit,edge_th)
         if task=='--keywords':
             keywords.extract_keywords_year(str(years).replace('\n',''))
 
