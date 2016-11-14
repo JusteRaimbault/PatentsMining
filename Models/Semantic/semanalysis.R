@@ -32,10 +32,11 @@ kwLimit="100000"
 # first load all probas
 #probas=list()
 for(year in wyears){
-  #currentprobas=loadProbas(year)
+  currentprobas=loadProbas(year)
   yearrange=paste0((year-windowSize+1),"-",year)
   currentprobas=addPrimaryTechno(yearrange)
   save(currentprobas,file=paste0('probas/processed_counts_prim_',yearrange,'.RData'))
+  save(currentprobas,file=paste0('probas/processed_counts',yearrange,'.RData'))
   rm(currentprobas)
 }
 gc()

@@ -31,3 +31,9 @@ Custom run of `main.py` in `Semantic` : `custom-python`
 
 
 ## Data Collection
+
+### Raw Data Collection
+
+### Data Preprocessing
+
+from csv technological classes to R-formatted sparse Matrix

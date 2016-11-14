@@ -20,32 +20,6 @@ def extract_keywords_year(year):
 
 
 
-##
-#  Given large occurence dico, extracts corresponding subdico
-#  assumes large dicos contains all subcorpus.
-#  @returns [p_kw_dico,kw_p_dico]
-def extract_sub_dicos(corpus,occurence_dicos) :
-    p_kw_dico_all = occurence_dicos[0]
-    kw_p_dico_all = occurence_dicos[1]
-
-    p_kw_dico = dict()
-    kw_p_dico = dict()
-
-    for patent in corpus :
-        #patent_id = data.get_patent_id(patent)
-        patent_id=patent[0]
-        keywords = []
-        if patent_id in p_kw_dico_all : keywords = p_kw_dico_all[patent_id]
-        p_kw_dico[patent_id] = keywords
-        for k in keywords :
-            if k not in kw_p_dico : kw_p_dico[k] = []
-            kw_p_dico[k].append(patent_id)
-
-    return([p_kw_dico,kw_p_dico])
-
-
-
-
 
 
 

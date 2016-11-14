@@ -1,58 +1,38 @@
 
 # import and saving as RData of yearly techno classes structures
 
-setwd(paste0(Sys.getenv('CS_HOME'),'/PatentsMining/Models/Techno/TechnoClasses/res/technoPerYear'))
-
 library(Matrix)
 
-# years = 1976:2012
-# 
-# sizeTh = 10
-# 
-# for(year in years){
-#   show(year)
-#   d = read.table(file=paste0('technoProbas_',year,'_sizeTh',sizeTh),sep=";",row.names = 1,header=TRUE)
-#   #d[is.na(d)]=0
-#   m = Matrix(as.matrix(d),sparse=TRUE)
-#   save(m,file=paste0(Sys.getenv('CS_HOME'),'/PatentsMining/Data/processed/classes/technoPerYear/technoProbas_',year,'_sizeTh',sizeTh,'.RData'))
-# }
+technolist = read.csv(paste0(Sys.getenv('CS_HOME'),'/PatentsMining/Data/processed/classes/class_CLEANED_20161114_2.csv'),header=TRUE,sep=',')
 
-technolist = read.csv(paste0(Sys.getenv('CS_HOME'),'/PatentsMining/Data/raw/classesTechno/class.csv'),header=TRUE,sep=',')#,nrows = 1000)
-#full=read.csv(paste0(Sys.getenv('CS_HOME'),'/PatentsMining/Data/raw/classesTechno/class.csv'),header=TRUE,sep=',')
+# get only primary classes ; remove subclass record
+technolistprim = technolist[technolist$Prim==1,1:3]
+# remove duplicates
+technolistprim=unique(technolistprim)
 
-primary = TRUE
-
-
-if(primary){
-  # get only primary classes ; remove subclass record
-  technolist = technolist[technolist$Prim==1,1:3]
-  # remove duplicates
-  #dim(unique(technolist))
-  technolist=unique(technolist)
+getTechnoMatrix <- function(technolist){
+  allpatents=as.character(unique(technolist$Patent))
+  inds = 1:length(allpatents)
+  names(inds)<-allpatents
+  rowinds=inds[as.character(technolist$Patent)]
+  allclasses = unique(as.character(technolist$Class))
+  inds =  1:length(allclasses)
+  names(inds)<-allclasses
+  colinds = inds[as.character(technolist$Class)]
+  technoMatrix = sparseMatrix(i = rowinds,j=colinds,x=rep(1,length(rowinds)))
+  rownames(technoMatrix)<-allpatents
+  colnames(technoMatrix)<-allclasses
+  return(technoMatrix)
 }
 
-allpatents=as.character(unique(technolist$Patent))
-inds = 1:length(allpatents)
-names(inds)<-allpatents
-rowinds=inds[as.character(technolist$Patent)]
-#rowinds2 = cumsum(c(1,as.integer(technolist$Patent[1:(nrow(technolist)-1)]!=technolist$Patent[2:nrow(technolist)])))
-#data.frame(unique(rowinds),unique(technolist$Patent))
-#length(as.character(unique(technolist$Patent)))
-allclasses = unique(as.character(technolist$Class))
-inds =  1:length(allclasses)
-names(inds)<-allclasses
-colinds = inds[as.character(technolist$Class)]#sapply(technolist$Class,function(s){which(allclasses==s)})
+technoMatrix = getTechnoMatrix(technolist)
+technoMatrixPrim = getTechnoMatrix(technolistprim)
 
-technoMatrix = sparseMatrix(i = rowinds,j=colinds,x=rep(1,length(rowinds)))
-rownames(technoMatrix)<-allpatents
-colnames(technoMatrix)<-allclasses
+# normalize to probas if not primary class only
+technoMatrix = Diagonal(x=1/rowSums(technoMatrix))%*%technoMatrix
+# prim
+technoMatrixPrim[rowSums(technoMatrixPrim)>1,]<-t(apply(technoMatrixPrim[rowSums(technoMatrixPrim)>1,],1,function(r){i=which(r>0)[1];res=rep(0,length(r));res[i]=1;return(res)}))
 
-if(!primary){
-  # normalize to probas if not primary class only
-  technoMatrix = Diagonal(x=1/rowSums(technoMatrix))%*%technoMatrix
-}else{
-  technoMatrix[rowSums(technoMatrix)>1,]<-t(apply(technoMatrix[rowSums(technoMatrix)>1,],1,function(r){i=which(r>0)[1];res=rep(0,length(r));res[i]=1;return(res)}))
-}
 
 # issue : patents with many Primary classes ?
 # ex 06886596
@@ -75,12 +55,11 @@ if(!primary){
 #technoMatrix = t(apply(technoMatrix,1,function(row){return(row/sum(row))}))
 
 rownames(technoMatrix)<-sapply(rownames(technoMatrix),function(s){ifelse(nchar(s)==8,substring(s,2),s)})
+rownames(technoMatrixPrim)<-sapply(rownames(technoMatrixPrim),function(s){ifelse(nchar(s)==8,substring(s,2),s)})
 
-if(!primary){
-  save(technoMatrix,file=paste0(Sys.getenv('CS_HOME'),'/PatentsMining/Data/processed/classes/sparse.RData'))
-}else{
-  save(technoMatrix,file=paste0(Sys.getenv('CS_HOME'),'/PatentsMining/Data/processed/classes/techno_primary.RData'))
-}
+save(technoMatrix,file=paste0(Sys.getenv('CS_HOME'),'/PatentsMining/Data/processed/classes/techno_sparse.RData'))
+save(technoMatrixPrim,file=paste0(Sys.getenv('CS_HOME'),'/PatentsMining/Data/processed/classes/techno_sparse_primary.RData'))
+
   
   
   
