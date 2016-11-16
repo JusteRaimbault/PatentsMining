@@ -3,22 +3,35 @@
 
 library(Matrix)
 
-technolist = read.csv(paste0(Sys.getenv('CS_HOME'),'/PatentsMining/Data/processed/classes/class_CLEANED_20161114_2.csv'),header=TRUE,sep=',')
+#technolist = read.csv(paste0(Sys.getenv('CS_HOME'),'/PatentsMining/Data/processed/classes/class_CLEANED_20161114_2.csv'),header=TRUE,sep=',')
+technolist = read.csv(paste0(Sys.getenv('CS_HOME'),'/PatentsMining/Data/processed/classes/class.csv'),header=TRUE,sep=',')
+
 
 # get only primary classes ; remove subclass record
-technolistprim = technolist[technolist$Prim==1,1:3]
+#technolistprim = technolist[technolist$Prim==1,1:3]
 # remove duplicates
-technolistprim=unique(technolistprim)
+#technolistprim=unique(technolistprim)
 
-getTechnoMatrix <- function(technolist){
-  allpatents=as.character(unique(technolist$Patent))
+getTechnoMatrix <- function(technolist,primary=FALSE){
+  allpatents=as.character(unique(technolist$patent))
   inds = 1:length(allpatents)
   names(inds)<-allpatents
-  rowinds=inds[as.character(technolist$Patent)]
-  allclasses = unique(as.character(technolist$Class))
+  rowinds=inds[as.character(technolist$patent)]
+  primRows=which(c(1,diff(rowinds))>0)
+  allclasses = unique(as.character(technolist$class))
+  if(primary==TRUE){
+    rowinds=1:length(primRows)
+    allclasses = unique(as.character(technolist$class[primRows]))
+  }
+  #allclasses = unique(as.character(technolist$class))
   inds =  1:length(allclasses)
   names(inds)<-allclasses
-  colinds = inds[as.character(technolist$Class)]
+  colinds = inds[as.character(technolist$class)]
+  #if(primary==TRUE){
+  #  colinds = colinds[primRows]
+  #}
+  show(head(rowinds))
+  show(head(colinds))
   technoMatrix = sparseMatrix(i = rowinds,j=colinds,x=rep(1,length(rowinds)))
   rownames(technoMatrix)<-allpatents
   colnames(technoMatrix)<-allclasses
@@ -26,7 +39,7 @@ getTechnoMatrix <- function(technolist){
 }
 
 technoMatrix = getTechnoMatrix(technolist)
-technoMatrixPrim = getTechnoMatrix(technolistprim)
+technoMatrixPrim = getTechnoMatrix(technolist,primary=TRUE)
 
 # normalize to probas if not primary class only
 technoMatrix = Diagonal(x=1/rowSums(technoMatrix))%*%technoMatrix
