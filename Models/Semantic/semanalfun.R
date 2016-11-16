@@ -1,24 +1,38 @@
 
-#library(Matrix)
+
+##
+# construct consistent adjacency matrices
+#
+#  TODO : does not work when called as function, need to fix env for subfunctions
+preProcessData<-function(){
+  library(Matrix)
+  setwd(paste0(Sys.getenv('CS_HOME'),'/PatentsMining/Models/Semantic'))
+  
+  semprefix = 'probas_count/counts_'
+  semsuffix = '_kwLimit100000_dispth0.06_ethunit4.5e-05.csv'
+
+  wyears = 1980:2012
+  windowSize=5
+  kwLimit="100000"
+  
+  # load techno probas
+  load(file=paste0(Sys.getenv('CS_HOME'),'/PatentsMining/Data/processed/classes/techno_sparse.RData'))
+  load(file=paste0(Sys.getenv('CS_HOME'),'/PatentsMining/Data/processed/classes/techno_sparse_primary.RData'))
+  
+  # first load all probas
+  #probas=list()
+  for(year in wyears){
+    currentprobas=loadProbas(year,semprefix,semsuffix)
+    yearrange=paste0((year-windowSize+1),"-",year)
+    save(currentprobas,file=paste0('probas/processed_',yearrange,'.RData'))
+    rm(currentprobas);gc()
+  }
+  
+}
 
 
-#semsuffix='_kwLimit100000_dispth0.06_ethunit4.5e-05.csv'
-#semprefix='probas/probas_'
-#semprefix='probas_count/counts_'
 
-#technoprefix=paste0(Sys.getenv('CS_HOME'),'/PatentsMining/Data/processed/classes/technoPerYear/technoProbas_')
-#sizeTh=10
-# TODO : recompute techno probas on moving window ?
-# or better : single matrix with all patents ; gets corresponding rows with semantic rownames
-#  -> check rowname indexing perfs
-
-# load techno probas
-load(file=paste0(Sys.getenv('CS_HOME'),'/PatentsMining/Data/processed/classes/sparse.RData'))
-#technoMatrixAll=technoMatrix
-#load(file=paste0(Sys.getenv('CS_HOME'),'/PatentsMining/Data/processed/classes/techno_primary.RData'))
-
-
-loadSemantic<-function(year){
+loadSemantic<-function(year,semprefix,semsuffix){
     show(paste0('loading year : ',year))
     yearrange=paste0((year-windowSize+1),"-",year)
     entrylist = read.csv(file=paste0(semprefix,yearrange,semsuffix),sep=";",header=FALSE)
@@ -26,7 +40,7 @@ loadSemantic<-function(year){
     if(dim(entrylist)[2]==3){colinds=entrylist[,2]+1;vals=entrylist[,3]}else{colinds=entrylist[,3]+1;vals=entrylist[,4]}
     res = sparseMatrix(i=rowinds,j=colinds,x=vals)
     if(dim(entrylist)[2]==4){
-      res = diag(rowSums(res))%*%res
+      res = Diagonal(x=1/rowSums(res))%*%res
     }
     rownames(res)<-unique(as.character(entrylist[,1]))
    return(res)
@@ -34,31 +48,24 @@ loadSemantic<-function(year){
 
 
 
-loadProbas<-function(year){
+loadProbas<-function(year,semprefix,semsuffix){
   show(year)
   res=list()
-  res$semprobas = loadSemantic(year)
+  res$semprobas = loadSemantic(year,semprefix,semsuffix)
   rowstoadd=setdiff(rownames(res$semprobas),rownames(technoMatrix))
   if(length(rowstoadd)>0){
     technoMatrix=rbind(technoMatrix,matrix(0,length(rowstoadd),ncol(technoMatrix)));
     rownames(technoMatrix)[(nrow(technoMatrix)-length(rowstoadd)+1):nrow(technoMatrix)]=rowstoadd
   }
   res$technoprobas = technoMatrix[rownames(res$semprobas),]
-  return(res)
-}
-
-
-##
-# further data preprocessing : primary techno probas
-addPrimaryTechno<-function(yearrange){
-  load(paste0('probas/processed_counts_',yearrange,'.RData'))
-  res=currentprobas
-  rowstoadd=setdiff(rownames(res$semprobas),rownames(technoMatrix))
+  
+  rowstoaddprim=setdiff(rownames(res$semprobas),rownames(technoMatrixPrim))
   if(length(rowstoadd)>0){
-    technoMatrix=rbind(technoMatrix,matrix(0,length(rowstoadd),ncol(technoMatrix)));
-    rownames(technoMatrix)[(nrow(technoMatrix)-length(rowstoadd)+1):nrow(technoMatrix)]=rowstoadd
+    technoMatrixPrim=rbind(technoMatrixPrim,matrix(0,length(rowstoadd),ncol(technoMatrixPrim)));
+    rownames(technoMatrixPrim)[(nrow(technoMatrixPrim)-length(rowstoadd)+1):nrow(technoMatrixPrim)]=rowstoadd
   }
-  res$primarytechnoprobas = technoMatrix[rownames(res$semprobas),]
+  res$technoprobasprim = technoMatrixPrim[rownames(res$semprobas),]
+  
   return(res)
 }
 

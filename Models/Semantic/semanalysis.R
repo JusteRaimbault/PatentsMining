@@ -10,36 +10,14 @@ library(reshape2)
 
 setwd(paste0(Sys.getenv('CS_HOME'),'/PatentsMining/Models/Semantic'))
 
-wyears = 1980:2012
+#wyears = 1980:2012
+wyears = 1980:2007
 windowSize=5
 kwLimit="100000"
 
-#source('semanalfun.R')
+# data preprocessing -> preProcessData in semanalfun.R
 
-
-
-
-
-
-
-
-# data conversion
-# for(year in years){
-#   load(paste0(technoprefix,year,'_sizeTh',sizeTh,'.RData'))
-#   save(m,file=paste0(technoprefix,year,'_sizeTh',sizeTh,'_uncompressed.RData'),compress=FALSE)
-# }
-
-# first load all probas
-#probas=list()
-for(year in wyears){
-  currentprobas=loadProbas(year)
-  yearrange=paste0((year-windowSize+1),"-",year)
-  currentprobas=addPrimaryTechno(yearrange)
-  save(currentprobas,file=paste0('probas/processed_counts_prim_',yearrange,'.RData'))
-  save(currentprobas,file=paste0('probas/processed_counts',yearrange,'.RData'))
-  rm(currentprobas)
-}
-gc()
+source('semanalfun.R')
 
 #######
 ## kw examples
@@ -57,8 +35,9 @@ data.frame(kwex[kwex$V2==156,1],stringsAsFactors = FALSE)
 for(year in wyears){
   #year=1980;
   yearrange=paste0((year-windowSize+1),"-",year)
-load(file=paste0('probas/processed_counts_',yearrange,'.RData'))
+load(file=paste0('probas/processed_',yearrange,'.RData'))
 technoprobas=currentprobas$technoprobas;semprobas=currentprobas$semprobas;rm(currentprobas);gc()
+show(sum(semprobas)/nrow(semprobas))
 show(sum(technoprobas)/nrow(technoprobas))
 }
 #techov=t(technoprobas)%*%technoprobas
@@ -89,7 +68,7 @@ as.matrix(semprobas[inds,])
 
 sizes=c();nsizes=c();years=c();type=c();ranks=c();sortedsizes=c();sortednsizes=c()
 for(year in wyears){
-  load(paste0('probas/processed_counts_',(year-windowSize+1),"-",year,'.RData'));show(year)
+  load(paste0('probas/processed_',(year-windowSize+1),"-",year,'.RData'));show(year)
   technoprobas=currentprobas$technoprobas;semprobas=currentprobas$semprobas;rm(currentprobas);gc()
   techsizes=colSums(technoprobas);semsizes=colSums(semprobas)
   techsizes=techsizes[techsizes>0];semsizes=semsizes[semsizes>0]

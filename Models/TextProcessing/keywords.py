@@ -18,11 +18,6 @@ def extract_keywords_year(year):
 
 
 
-
-
-
-
-
 ##
 #  Constructs occurrence dicos from raw data
 def construct_occurrence_dico(data) :
@@ -58,7 +53,8 @@ def construct_occurrence_dico(data) :
 
 
 
-
+##
+# Rule for potentially relevant multi stem
 # tagged of the form (word,TAG)
 def potential_multi_term(tagged) :
     res = True
@@ -68,7 +64,8 @@ def potential_multi_term(tagged) :
 
 
 
-#print(res)
+##
+# Extract multi-stem from a text.
 def extract_keywords(raw_text,id):
 
     print("Extracting keywords for "+id)
@@ -108,39 +105,3 @@ def extract_keywords(raw_text,id):
                         stem_dico[multistem] = set([rawtext])
 
     return [list(multiterms),stem_dico]
-
-
-
-### DEPRECATED
-
-
-
-
-## -- Issue with // processing --
-#def test_kw():
-#    def f(patent):
-#        return extract_keywords(patent[1]+". "+patent[2],patent[0])
-#
-#    p = Pool(4)
-#    print(p.map(f, get_patent_data(2000,1000)))
-
-
-
-
-#def termhood_extraction():
-#    corpus = io.get_patent_data(2000,10000)
-#    dicos = io.import_kw_dico('../../Data/processed/keywords_y2000_10000.sqlite3')
-#    [relevantkw,relevant_dico] = keywords.extract_relevant_keywords(corpus,1000,dicos)
-#    #for k in relevant_dico.keys():
-#    #    print(k+' : '+str(relevant_dico[k]))
-#    utils.export_dico_csv(relevant_dico,'../../data/processed/relevantDico_y2000_size10000_kwLimit4000')
-#    utils.export_list(relevantkw,'../../data/processed/relevantkw_y2000_size10000_kwLimit4000')
-#
-#def extract_all_keywords() :
-#    corpus = get_patent_data(2000,10000)
-#    [p_kw_dico,kw_p_dico] = construct_occurrence_dico(corpus)
-#    export_kw_dico('../../Data/processed/keywords_y2000_10000.sqlite3',p_kw_dico)
-#
-#def extract_remaining_keywords() :
-#    mongo = pymongo.MongoClient()
-#    existing = mongo['patents_keywords'].keywords.find({},{'id'})

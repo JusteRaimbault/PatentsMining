@@ -30,6 +30,12 @@ Custom run of `main.py` in `Semantic` : `custom-python`
 **Deprecated** R scripts.
 
 
+## Analysis
+
+ - preprocess the data in `semanalfun.R`
+ 
+
+
 ## Data Collection
 
 ### Raw Data Collection
@@ -37,4 +43,3 @@ Custom run of `main.py` in `Semantic` : `custom-python`
 ### Data Preprocessing
 
  - from csv technological classes to R-formatted sparse Matrix : use `Models/Techno/prepareData.R`
- 
