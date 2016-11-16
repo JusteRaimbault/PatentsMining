@@ -36,4 +36,5 @@ Custom run of `main.py` in `Semantic` : `custom-python`
 
 ### Data Preprocessing
 
-from csv technological classes to R-formatted sparse Matrix
+ - from csv technological classes to R-formatted sparse Matrix : use `Models/Techno/prepareData.R`
+ 
