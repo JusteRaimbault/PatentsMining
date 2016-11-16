@@ -90,7 +90,8 @@ g+geom_line(aes(x=rank,y=size,colour=year,group=year))+
   scale_x_log10()+scale_y_log10()+facet_wrap(~type,scales="fixed")+ylab("size") + theme(axis.title = element_text(size = 22), 
     axis.text.x = element_text(size = 15), 
     axis.text.y = element_text(size = 15))
-  
+ggsave(file=paste0(Sys.getenv("CS_HOME"),'/PatentsMining/Results/Semantic/Analysis/window5/sizes/all_raw_counts.pdf'),width=10,height=5)
+
 
 df=data.frame(size=sizes,nsize=nsizes,sortedsize=sortedsizes,sortednsize=sortednsizes,years=as.character(years),type=type)
 g=ggplot(df,aes(x=sizes,color=years))
@@ -228,7 +229,7 @@ origs=c();cyears=c();types=c();
 for(year in wyears){
   show(year)
   #load(paste0('probas_processed/processed_',year,'.RData'))
-  load(paste0('probas/processed_counts_',(year-windowSize+1),"-",year,'.RData'))
+  load(paste0('probas/processed_',(year-windowSize+1),"-",year,'.RData'))
   technoprobas=currentprobas$technoprobas;semprobas=currentprobas$semprobas;rm(currentprobas);gc()
   origs = append(origs,1 - rowSums(semprobas^2));types=append(types,rep("semantic classification",nrow(semprobas)))
   origs = append(origs,1 - rowSums(technoprobas^2));types=append(types,rep("technological classification",nrow(technoprobas)))
@@ -237,7 +238,7 @@ for(year in wyears){
 }
 
 #save(origs,cyears,types,file='res/patentlevel_orig.RData')
-load('res/patentlevel_orig.RData')
+#load('res/patentlevel_orig.RData')
 
 # length(which(origs<1))/length(origs)
 # 5.2 % of patent in total are not classified : quite ok
@@ -248,22 +249,42 @@ inds=origs<1
 df = data.frame(originality=origs[inds],year=as.character(cyears[inds]),type=types[inds])
 rm(origs,cyears,types);gc()
 
-g=ggplot(df)#[df$originality>0,])
+g=ggplot(df)
 g+geom_density(aes(x=originality,colour=year))+facet_wrap(~type) + 
-  xlab("patent diversity")+
+  xlab("patent diversity")+scale_y_log10()+
   theme(axis.title = element_text(size = 22), axis.text.x = element_text(size = 15),  axis.text.y = element_text(size = 15))
+ggsave(file=paste0(Sys.getenv("CS_HOME"),'/PatentsMining/Results/Semantic/Analysis/window5/diversity/patentlevelorigs_all_semcounts_log10.pdf'),width=10,height=5)
+rm(g);gc()
+
+g=ggplot(df[df$originality>0,])
+g+geom_density(aes(x=originality,colour=year))+facet_wrap(~type) + 
+  xlab("patent diversity")+scale_y_log10()+
+  theme(axis.title = element_text(size = 22), axis.text.x = element_text(size = 15),  axis.text.y = element_text(size = 15))
+ggsave(file=paste0(Sys.getenv("CS_HOME"),'/PatentsMining/Results/Semantic/Analysis/window5/diversity/patentlevelorigs_positive_semcounts_log10.pdf'),width=10,height=5)
 rm(g);gc()
 
 # time series by year
 
-byyearorigs = as.tbl(df#[df$originality>0,]
-                     ) %>% group_by(year,type) %>% summarize(meanorig=mean(originality),count=n())
+byyearorigs = as.tbl(df) %>% group_by(year,type) %>% summarize(meanorig=mean(originality),count=n())
 gsum=ggplot(byyearorigs,aes(x=year,y=meanorig,colour=type,group=type))
 labs=rep("",length(wyears));labs[seq(from=1,to=length(labs),by=5)]=as.character(wyears[seq(from=1,to=length(labs),by=5)])
 gsum+geom_point()+geom_line()+facet_wrap(~type,scales ="free_y")+
   scale_x_discrete(breaks=as.character(wyears),labels=labs)+
   xlab("year")+ylab("mean patent diversity") +
   theme(legend.position = "none",axis.title = element_text(size = 22), axis.text.x = element_text(size = 15),  axis.text.y = element_text(size = 15))
+ggsave(file=paste0(Sys.getenv("CS_HOME"),'/PatentsMining/Results/Semantic/Analysis/window5/diversity/patentlevelorigs_all_ts_semcounts.pdf'),width=10,height=5)
+
+
+byyearorigs = as.tbl(df[df$originality>0,]) %>% group_by(year,type) %>% summarize(meanorig=mean(originality),count=n())
+gsum=ggplot(byyearorigs,aes(x=year,y=meanorig,colour=type,group=type))
+labs=rep("",length(wyears));labs[seq(from=1,to=length(labs),by=5)]=as.character(wyears[seq(from=1,to=length(labs),by=5)])
+gsum+geom_point()+geom_line()+facet_wrap(~type,scales ="free_y")+
+  scale_x_discrete(breaks=as.character(wyears),labels=labs)+
+  xlab("year")+ylab("mean patent diversity") +
+  theme(legend.position = "none",axis.title = element_text(size = 22), axis.text.x = element_text(size = 15),  axis.text.y = element_text(size = 15))
+ggsave(file=paste0(Sys.getenv("CS_HOME"),'/PatentsMining/Results/Semantic/Analysis/window5/diversity/patentlevelorigs_positive_ts_semcounts.pdf'),width=10,height=5)
+
+
 
 
 ##
