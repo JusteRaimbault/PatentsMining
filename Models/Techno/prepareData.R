@@ -17,19 +17,19 @@ getTechnoMatrix <- function(technolist,primary=FALSE){
   inds = 1:length(allpatents)
   names(inds)<-allpatents
   rowinds=inds[as.character(technolist$patent)]
-  primRows=which(c(1,diff(rowinds))>0)
+  primRows=(c(1,diff(rowinds)))>0
   allclasses = unique(as.character(technolist$class))
   if(primary==TRUE){
-    rowinds=1:length(primRows)
+    rowinds=inds
     allclasses = unique(as.character(technolist$class[primRows]))
   }
   #allclasses = unique(as.character(technolist$class))
   inds =  1:length(allclasses)
   names(inds)<-allclasses
   colinds = inds[as.character(technolist$class)]
-  #if(primary==TRUE){
-  #  colinds = colinds[primRows]
-  #}
+  if(primary==TRUE){
+    colinds = inds[as.character(technolist$class[primRows])]
+  }
   show(head(rowinds))
   show(head(colinds))
   technoMatrix = sparseMatrix(i = rowinds,j=colinds,x=rep(1,length(rowinds)))
