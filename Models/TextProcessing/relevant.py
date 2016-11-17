@@ -123,6 +123,9 @@ def extract_relevant_keywords(corpus,kwLimit,occurence_dicos,edge_th):
     return([tselected,dico,freqselected,edge_list])
 
 
+
+##
+# select best keywords given dictionary and computed termhood
 def extract_from_termhood(termhoods,p_kw_dico,frequencies,kwLimit):
     sorted_termhoods = sorted(termhoods.items(), key=operator.itemgetter(1),reverse=True)
 
@@ -142,3 +145,17 @@ def extract_from_termhood(termhoods,p_kw_dico,frequencies,kwLimit):
 
     # eventually write to file ? -> do that in other proc (! atomicity)
     return([tselected,p_tsel_dico,freqselected])
+
+
+
+
+##
+#
+def update_kw_tm(kw,incr,frequency,tidf,database,table):
+    prev = database[table].find_one({'keyword':kw})
+    if prev is not None:
+        prev['cumtermhood']=prev['cumtermhood']+incr
+        prev['frequency'] = frequency;prev['tidf']=tidf
+        database[table].replace_one({'keyword':kw},prev)
+    else :
+        database[table].insert_one({'keyword':kw,'cumtermhood':incr,'docfrequency':frequency,'tidf':tidf})

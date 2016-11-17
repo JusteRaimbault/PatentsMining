@@ -63,6 +63,13 @@ then
 fi
 
 
+if [ "$TASK" == "kw-consolidation" ]
+then
+  echo "keywords consolidation"
+  python dbmanagement.py --kw-consolidation
+fi
+
+
 ############
 ############
 
