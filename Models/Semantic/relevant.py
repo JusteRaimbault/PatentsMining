@@ -2,7 +2,7 @@
 
 ## Keywords relevance estimation
 import math,pymongo,functools
-import data
+import data,utils
 
 
 ##

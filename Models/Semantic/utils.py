@@ -1,6 +1,24 @@
 #import datetime
 
 
+##
+# get param value from param file
+def get_parameter(param_name,as_string=False,ignored=False):
+    if not ignored :
+        pfile=import_csv('../conf/parameters.csv',';')
+    else :
+        pfile=import_csv('../conf/parameters_ignored.csv',';')
+    value = 0
+    for line in pfile:
+        if line[0]==param_name :
+            if not as_string :
+                value=float(line[1])
+            else :
+                value = line[1]
+    return(value)
+
+
+
 def export_dico_csv(dico,filename,delimiter):
     outfile=open(filename,'w')
     for k in dico.keys():
@@ -37,5 +55,6 @@ def import_csv(csvfile,delimiter):
     infile = open(csvfile,'r')
     res = []
     for line in infile.readlines():
-        res.append(line.replace('\n','').split(delimiter))
+        if line[0]!="#" :
+            res.append(line.replace('\n','').split(delimiter))
     return(res)

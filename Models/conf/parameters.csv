@@ -1,0 +1,11 @@
+# parameter file ; format : parameter name;value;comments
+# runtime params
+window-size;5;-
+start-year;1976;beginning of first window
+end-year;2008;beginning of last window
+nruns;15;-
+# construction parameters
+kwLimit;100000;-
+edge_th;10;-
+dispth;0.06;-
+ethunit;4.5e-5;-

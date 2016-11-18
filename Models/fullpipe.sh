@@ -2,12 +2,12 @@
 # full semantic nw/anal construction process
 # (run in //)
 
+PARAM_FILE="conf/parameters.csv"
 
-
-WINDOW=5
-START=1976
-END=2008
-NRUNS=15
+WINDOW=`cat $PARAM_FILE|grep window-size|awk -F";" '{print $2}'`
+START=`cat $PARAM_FILE|grep start-year|awk -F";" '{print $2}'`
+END=`cat $PARAM_FILE|grep end-year|awk -F";" '{print $2}'`
+NRUNS=`cat $PARAM_FILE|grep nruns|awk -F";" '{print $2}'`
 
 # tasks : relevant ; network ; sensitivity ; probas ; network-python ; probas-python
 #TASK=probas
@@ -18,13 +18,14 @@ TASK=$1
 ##########
 ##########
 
+####
+# generate year files
+
 cd TextProcessing
 
-# generate year files
 #remove old
 for file in `seq 1 $NRUNS`
 do
-    rm relevantyears/runmv$file
     rm kwyears/run$file
 done
 
@@ -36,18 +37,7 @@ do
   file=$(((file % NRUNS ) + 1 ))
 done
 
-# moving window files
-file=1
-for y in `seq $START $END`
-do
-    line=$y
-    for i in `seq 1 $((WINDOW - 1))` # TODO
-    do
-	   line=$line";"$((y+i)) # TODO shell arithm
-    done
-    echo $line >> relevantyears/runmv$file # TODO : append
-    file=$(((file % NRUNS ) + 1 )) # TODO
-done
+
 
 # command : python main.py yearfile
 if [ "$TASK" == "keywords" ]
@@ -56,16 +46,10 @@ then
   ./parrunnum "python main.py --keywords kwyears/run" $NRUNS
 fi
 
-if [ "$TASK" == "relevant" ]
-then
-  echo "Running relevance estimation..."
-  ./parrunnum "python main.py --relevant relevantyears/runmv" $NRUNS
-fi
-
 
 if [ "$TASK" == "kw-consolidation" ]
 then
-  echo "keywords consolidation"
+  echo "Running keywords consolidation"
   python dbmanagement.py --kw-consolidation
 fi
 
@@ -74,7 +58,8 @@ fi
 ############
 
 cd ../Semantic
-echo "Semantic construction..."
+#echo "Semantic construction..."
+
 
 # year files slightly different for R
 for file in `seq 1 $NRUNS`
@@ -82,65 +67,35 @@ do
     rm relevantyears/runmv$file
 done
 
+
+# moving window files
 file=1
 for y in `seq $START $END`
 do
-    #echo $y"-"$((y+WINDOW)) >> relevantyears/runmv$file # TODO : append
-    cp ../TextProcessing/relevantyears/runmv$file relevantyears/runmv$file
-    file=$(((file % NRUNS ) + 1 ))  # TODO
+    line=$y
+    for i in `seq 1 $((WINDOW - 1))`
+    do
+	   line=$line";"$((y+i))
+    done
+    echo $line >> relevantyears/runmv$file
+    file=$(((file % NRUNS ) + 1 ))
 done
 
-#pwd
-#ls -lh
 
-# NOTE : for this part, rmongodb fails to authenticate -> relaunch db without auth
 
-# command for graph construction : R -f allYears.R --args yearfile
-if [ "$TASK" == "network-r" ]
+
+if [ "$TASK" == "raw-network" ]
 then
-  ./parrunnum "R -f allYears.R --args relevantyears/runmv" $NRUNS
+  ./parrunnum "python main.py --raw-network relevantyears/runmv" $NRUNS
 fi
 
 
-
-if [ "$TASK" == "network" ]
+if [ "$TASK" == "classification" ]
 then
-  ./parrunnum "python main.py --graph relevantyears/runmv" $NRUNS
-fi
-
-
-if [ "$TASK" == "probas" ]
-then
-  ./parrunnum "python main.py --probas relevantyears/runmv" $NRUNS
+  ./parrunnum "python main.py --classification relevantyears/runmv" $NRUNS
 fi
 
 if [ "$TASK" == "custom-python" ]
 then
   ./parrunnum "python main.py --custom relevantyears/runmv" $NRUNS
-fi
-
-
-# graphs stored in processed
-
-
-# launch :
-#  * semsensitivity : exploration of graphs
-#   -> TODO : relative param values
-#  * semthemprobas on same values
-#
-# then semoptimparams ; semoptimprobas to be launched by hand
-#   -> TODO : adapt techno classes distrib with moving window
-#   -> TODO : check analyses citations (2nd order interdisc).
-#
-
-# semsensitivity
-if [ "$TASK" == "sensitivity-r" ]
-then
-  ./parrunnum "R -f semsensitivity.R --args relevantyears/runmv" $NRUNS
-fi
-
-if [ "$TASK" == "probas-r" ]
-then
-  # probas
-  ./parrunnum "R -f semthemprobas.R --args relevantyears/runmv" $NRUNS
 fi

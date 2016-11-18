@@ -4,6 +4,48 @@
 
 
 ###############
+### from utils.py
+
+
+# returns sqlite connection
+def configure_sqlite(database):
+    return(sqlite3.connect(database,600))
+
+
+def fetchone_sqlite(query,database):
+    conn = configure_sqlite(database)
+    cursor = conn.cursor()
+    cursor.execute(query)
+    res = cursor.fetchone()
+    conn.commit()
+    conn.close()
+    return(res)
+
+
+def fetch_sqlite(query,database):
+    conn = configure_sqlite(database)
+    cursor = conn.cursor()
+    cursor.execute(query)
+    res = cursor.fetchall()
+    conn.commit()
+    conn.close()
+    return(res)
+
+
+
+def insert_sqlite(query,database):
+    conn = configure_sqlite(database)
+    cursor = conn.cursor()
+    cursor.execute(query)
+    conn.commit()
+    conn.close()
+
+
+
+
+
+
+###############
 ### from data.py
 
 ##
