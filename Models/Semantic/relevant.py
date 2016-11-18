@@ -4,6 +4,7 @@
 import math,pymongo,functools
 import data
 
+
 ##
 #  Estimate relevance
 def relevant_full_corpus(years,kwLimit,edge_th):
@@ -11,8 +12,8 @@ def relevant_full_corpus(years,kwLimit,edge_th):
     coldata = 'keywords'
     coldico = 'keywords'
     dbrelevant = 'relevant'
-    corpus = data.get_patent_data(dbdata,coldata,years,"year",-1,full=False)
-    occurence_dicos = data.import_kw_dico(dbdata,coldico,years,"year")
+    corpus = data.get_patent_data(dbdata,coldata,years,"app_year",-1,full=False)
+    occurence_dicos = data.import_kw_dico(dbdata,coldico,years,"app_year")
     print('corpus : '+str(len(corpus))+' ; dico : '+str(len(occurence_dicos[0]))+' , '+str(len(occurence_dicos[1])))
     if len(corpus) > 0 and len(occurence_dicos) > 0 :
         relevant = 'relevant_'+str(years[0])+"-"+str(years[len(years)-1])+'_full_'+str(kwLimit)
@@ -38,7 +39,9 @@ def relevant_full_corpus(years,kwLimit,edge_th):
 def extract_relevant_keywords(corpus,kwLimit,occurence_dicos,edge_th):
     print('Extracting relevant keywords...')
 
-    [p_kw_dico,kw_p_dico] = data.extract_sub_dicos(corpus,occurence_dicos)
+    #[p_kw_dico,kw_p_dico] = data.extract_sub_dicos(corpus,occurence_dicos)
+    p_kw_dico = occurence_dicos[0]
+    kw_p_dico = occurence_dicos[1]
 
     print("subdicos : "+str(len(p_kw_dico.keys()))+" ; "+str(len(kw_p_dico.keys())))
 
