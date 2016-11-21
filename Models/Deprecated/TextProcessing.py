@@ -141,6 +141,55 @@ def data_to_kwtable(sqlitedb,mongodb):
 
 
 
+#
+# NOT NEEDED : use keywords database instead
+#
+#def update_techno_classes():
+#    # for now get classes from fung file, redbook not complete for xml years
+#    mongo = pymongo.MongoClient('mongodb://root:root@127.0.0.1:29019')
+#
+#    # do it dirtily (should be quicker in perf) : get full collection, update, insert_many
+#    data = mongo['patent']['keywords'].find()
+#
+#    techno_dico = get_techno_dico()
+#
+#    # update data adding classes
+#    newdata=[]
+#    for p in data :
+#        p['classes'] = []
+#        if p['id'] in techno_dico : p['classes'] = list(techno_dico[p['id']])
+#        newdata.append(p)
+#
+#    # drop collection
+#    #mongo['patent'].drop_collection('keywords')
+#
+#    # insert everything
+#    # test in tmp ?
+#    mongo['patent']['keywords_tmp'].insert_many(newdata)
+#
+
+
+
+# first update
+#task = sys.argv[1]
+
+#if task=='--kw-consolidation':
+#    # first update year records
+#    update_year_records()
+#    # then compute techno classes
+#    compute_kw_techno()
+
+
+#compute_kw_techno()
+#update_year_records()
+#update_techno_classes()
+
+#data_to_mongo('/mnt/volume1/juste/ComplexSystems/PatentsMining/data','patents_fung')
+#keywords_to_mongo('/mnt/volume1/juste/ComplexSystems/PatentsMining/data/keywords.sqlite3','patents_fung')
+#data_to_kwtable('/mnt/volume1/juste/ComplexSystems/PatentsMining/data/patent.sqlite3','patents_fung')
+
+
+
 
 
 

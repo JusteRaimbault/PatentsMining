@@ -1,5 +1,5 @@
 
-import pymongo,pickle,math
+import pymongo,pickle,math,numpy
 from igraph import *
 import utils
 
@@ -45,11 +45,11 @@ def construct_graph(years,kwLimit,min_edge_th):
     dico = {}
     for currentvertex in vertices:
         dico[currentvertex['keyword']]=currentvertex
-    tfidf = [];docf = [];termhood = []
+    tidf = [];docf = [];termhood = []
     for name in gf.vs['name']:
         attrs = dico[name]
-        tfidf.append(attrs['tidf']);docf.append(attrs['docfrequency']);termhood.append(attrs['cumtermhood'])
-    gf.vs['tfidf']=tfidf
+        tidf.append(attrs['tidf']);docf.append(attrs['docfrequency']);termhood.append(attrs['cumtermhood'])
+    gf.vs['tidf']=tidf
     gf.vs['docfreq']=docf
     gf.vs['termhood']=termhood
 
@@ -58,9 +58,29 @@ def construct_graph(years,kwLimit,min_edge_th):
 
 
 
-def sensitivity(currentyears,kwLimit,edge_th) :
-    
+##
+#  sensitivity analysis
+def sensitivity(years,kwLimit,min_edge_th) :
+    print('Sensitivity analysis for years '+str(years))
+    yearrange = years[0]+"-"+years[len(years)-1]
+    graph=pickle.load(open('pickled/graph_'+yearrange+'_'+str(kwLimit)+'_eth'+str(min_edge_th)+'.pkl','rb'))
 
+    dthvals=numpy.arange(0.01,0.12,0.005)
+    ethvals=numpy.arange(10,200,5)
+    #mincomsizevals=[0,4,10] # remove min com size, additional filtering does not makes really sense
+
+    res = []
+    for dth in dthvals:
+        for eth in ethvals:
+            print('eth = '+str(eth)+' ; dth = '+str(dth))
+            [fgraph,coms]=get_communities(graph,dth,eth)
+            for i in range(len(coms)):
+                comnum = len(coms[i].sizes())
+                vcount = fgraph.vcount()
+                modularity = coms[i].modularity
+                res.append([dth,eth,comnum,vcount,modularity])
+    # export res
+    export_csv(res,'sensitivity/sensitivity_'+yearrange+'_'+str(kwLimit)+'_eth'+str(min_edge_th)+'.csv',";","dispth;eth;comnum;vcount;modularity")
 
 
 
@@ -77,8 +97,8 @@ def dispersion(x):
 ##
 #  construct filtered graph
 #  requires pickled full networks constructed
-def filtered_graph(yearrange,kwLimit,min_edge_th,dispth,eth,mongo):
-    graph=pickle.load(open('pickled/graph_'+yearrange+'_'+str(kwLimit)+'_eth'+str(min_edge_th)+'.pkl','rb'))
+def filtered_graph(graph,dispth,eth):
+    mongo = pymongo.MongoClient(utils.get_parameter('mongopath',True,True))
     kwstechno = list(mongo['keywords']['techno'].find({'keyword':{'$in':graph.vs['name']}}))
     disps = list(map(lambda d:(d['keyword'],len(d.keys())-1,dispersion([float(d[k]) for k in d.keys() if k!='keyword'and k!='_id'])),kwstechno))
     disp_dico={}
@@ -100,11 +120,11 @@ def filtered_graph(yearrange,kwLimit,min_edge_th,dispth,eth,mongo):
 
 ##
 #  get multilevel communities
-def get_communities(yearrange,kwLimit,min_edge_th,dispth,eth,mongo):
+def get_communities(yearrange,kwLimit,min_edge_th,dispth,eth):
     print("Constructing communities : "+yearrange+" ; "+str(dispth)+" ; "+str(eth))
-    graph = filtered_graph(yearrange,kwLimit,min_edge_th,dispth,eth,mongo)
+    graph = filtered_graph(yearrange,kwLimit,min_edge_th,dispth,eth)
     com = graph.community_multilevel(weights="weight",return_levels=True)
-    return([graph,com[len(com)-1]])
+    return([graph,com])
 
 
 ##
@@ -114,5 +134,9 @@ def construct_communities(years,kwLimit,min_edge_th,dispth,ethunit):
     patents = mongo['patent']['keywords'].find({"app_year":{"$in":years}},no_cursor_timeout=True)
     npatents = patents.count()
     yearrange = years[0]+"-"+years[len(years)-1]
-    currentgraphcoms=get_communities(yearrange,kwLimit,min_edge_th,dispth,math.floor(ethunit*npatents),mongo)
+
+    graph=pickle.load(open('pickled/graph_'+yearrange+'_'+str(kwLimit)+'_eth'+str(min_edge_th)+'.pkl','rb'))
+
+    currentgraphcoms=get_communities(graph,dispth,math.floor(ethunit*npatents))
     pickle.dump(currentgraphcoms,open('pickled/filteredgraphcoms_'+yearrange+'_'+str(kwLimit)+'_eth'+str(min_edge_th)+'_dispth'+str(dispth)+'_ethunit'+str(ethunit)+'.pkl','wb'))
+    # TODO add a gml export for convenience

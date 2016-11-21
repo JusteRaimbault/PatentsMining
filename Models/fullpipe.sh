@@ -86,12 +86,15 @@ done
 
 if [ "$TASK" == "raw-network" ]
 then
+  mkdir pickled
+  mkdir sensitivity
   ./parrunnum "python main.py --raw-network relevantyears/runmv" $NRUNS
 fi
 
 
 if [ "$TASK" == "classification" ]
 then
+  mkdir classification
   ./parrunnum "python main.py --classification relevantyears/runmv" $NRUNS
 fi
 

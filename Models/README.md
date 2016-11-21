@@ -2,15 +2,15 @@
 ## Setup
 
  - having a running local `mongod` instance
- - config files : not flexible yet, uses port 29019 and user root (pwd root) - can be changed in code
- - raw data import : use `mongorestore -d redbook -c raw --gzip $FILE`
+ - mongo host, port, user and password to be configured in `conf/parameters.csv`
+ - raw data import from gz file : use `mongorestore -d redbook -c raw --gzip $FILE`
 
 ## Running
 
 The utility `fullpipe.sh` can launch most of the processing pipe.
 
 ## Options :
-  (to be changed in shell script)
+  (to be changed in `conf/parameters.csv`)
   - `$WINDOW` : window size in years
   - `$START` : beginning of first window
   - `$END` : beginning of last window
@@ -20,12 +20,11 @@ The utility `fullpipe.sh` can launch most of the processing pipe.
 
 The tasks to be done in order : keywords extraction, relevance estimation, network construction, semantic probas construction, are launched with the following options :
 
- - `keywords`
- - `relevant`
- - `network`
- - `probas`
+ - `keywords` : extracts keywords
+ - `kw-consolidation` : consolidate keywords database (techno disp measure)
+ - `raw-network` : estimates relevance, constructs raw network and perform sensitivity analysis
+ - `classification` : classify and compute patent probability, keyword measures and patent measures
 
-Custom run of `main.py` in `Semantic` : `custom-python`
 
 **Deprecated** R scripts.
 
@@ -42,4 +41,5 @@ Custom run of `main.py` in `Semantic` : `custom-python`
 
 ### Data Preprocessing
 
- - from csv technological classes to R-formatted sparse Matrix : use `Models/Techno/prepareData.R`
+ - from csv technological classes to R-formatted sparse Matrix : use `Techno/prepareData.R`
+ - from csv citation file to citation network in R-formatted graph and adjacency sparse matrix : use `Citation/constructNW.R`

@@ -26,8 +26,8 @@ def run():
         if task == '--classification' :
             # construct communities
             graph.construct_communities(currentyears,kwLimit,edge_th,dispth,ethunit)
-
-            graph.export_probas_matrices(currentyears,kwLimit,dispth,ethunit)
+            # post processing
+            postprocessing.export_classification(currentyears,kwLimit,dispth,ethunit)
 
         if task == '--custom' :
             print("custom")
