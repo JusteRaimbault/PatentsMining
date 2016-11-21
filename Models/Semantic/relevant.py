@@ -23,7 +23,7 @@ def relevant_full_corpus(years,kwLimit,edge_th):
         # clean the collection first
         database[relevant].delete_many({"cumtermhood":{"$gt":0}})
         database[relevant].create_index('keyword')
-        [rel_kws,dico,frequencies,edge_list] = keywords.extract_relevant_keywords(corpus,kwLimit,occurence_dicos,edge_th)
+        [rel_kws,dico,frequencies,edge_list] = extract_relevant_keywords(corpus,kwLimit,occurence_dicos,edge_th)
         print('insert relevant...')
         for kw in rel_kws.keys():
             update_kw_tm(kw,rel_kws[kw],frequencies[kw],math.log(rel_kws[kw])*math.log(len(corpus)/frequencies[kw]),database,relevant)
@@ -63,9 +63,9 @@ def extract_relevant_keywords(corpus,kwLimit,occurence_dicos,edge_th):
     #selected_kws_indexes = {} # dico index -> kw.  Q : use kw as keys in cooc matrix ?
     #  seems to be even more performant
     print("len(unithoods = "+str(len(unithoods.keys())))
-    sorted_unithoods = sorted(unithoods.items(), key=operator.itemgetter(1),reverse=True)
+    sorted_unithoods = sorted(unithoods.items(), key=lambda entry: entry[1],reverse=True)
     print("len(sorted_unithoods) = "+str(len(sorted_unithoods)))
-    for i in range(4*kwLimit):
+    for i in range(int(4*kwLimit)):
         selected_kws[sorted_unithoods[i][0]] = i
         #selected_kws.append(sorted_unithoods[i][0])
 
@@ -130,11 +130,11 @@ def extract_relevant_keywords(corpus,kwLimit,occurence_dicos,edge_th):
 ##
 # select best keywords given dictionary and computed termhood
 def extract_from_termhood(termhoods,p_kw_dico,frequencies,kwLimit):
-    sorted_termhoods = sorted(termhoods.items(), key=operator.itemgetter(1),reverse=True)
+    sorted_termhoods = sorted(termhoods.items(), key=lambda entry: entry[1],reverse=True)
 
     tselected = {}
     freqselected = {}
-    for i in range(kwLimit):
+    for i in range(int(kwLimit)):
         tselected[sorted_termhoods[i][0]] = sorted_termhoods[i][1]
         freqselected[sorted_termhoods[i][0]] = frequencies[sorted_termhoods[i][0]]
 
