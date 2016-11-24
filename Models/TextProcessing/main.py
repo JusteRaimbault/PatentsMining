@@ -1,14 +1,14 @@
 import time,sys
-import keywords,relevant
+import keywords,dbmanagement
 
 
 def run():
     task = sys.argv[1]
     if task=='--kw-consolidation':
         # first update year records
-        update_year_records()
+        dbmanagement.update_year_records()
         # then compute techno classes
-        compute_kw_techno()
+        dbmanagement.compute_kw_techno()
     else :
         f=open(sys.argv[2])
         # multiple years : csv files
