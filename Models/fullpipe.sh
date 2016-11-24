@@ -50,7 +50,7 @@ fi
 if [ "$TASK" == "kw-consolidation" ]
 then
   echo "Running keywords consolidation"
-  python dbmanagement.py --kw-consolidation
+  python main.py --kw-consolidation
 fi
 
 
