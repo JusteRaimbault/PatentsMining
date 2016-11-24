@@ -6,7 +6,7 @@ import data,keywords,utils
 ##
 # Extract keywords for a given year
 def extract_keywords_year(year):
-    corpus = data.get_patent_data('redbook','raw',[year],"app_year",0,full=True)
+    corpus = data.get_patent_data('redbook','raw',[year],"year",0,full=True)
     print('corpus size : '+str(len(corpus)))
     [p_kw_dico,kw_p_dico,stem_dico] = construct_occurrence_dico(corpus)
     data.export_kw_dico('patent','keywords',p_kw_dico,year)

@@ -4,6 +4,7 @@
  - having a running local `mongod` instance
  - mongo host, port, user and password to be configured in `conf/parameters.csv`
  - raw data import from gz file : use `mongorestore -d redbook -c raw --gzip $FILE`
+ - specific python packages required : `pymongo`, `python-igraph`, `nltk`
 
 ## Running
 
@@ -24,10 +25,6 @@ The tasks to be done in order : keywords extraction, relevance estimation, netwo
  - `kw-consolidation` : consolidate keywords database (techno disp measure)
  - `raw-network` : estimates relevance, constructs raw network and perform sensitivity analysis
  - `classification` : classify and compute patent probability, keyword measures and patent measures
-
-
-**Deprecated** R scripts.
-
 
 ## Analysis
 
