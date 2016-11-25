@@ -39,7 +39,7 @@ def construct_graph(years,kwLimit,min_edge_th):
     gf = gg.subgraph(ids)
 
     # add attributes
-    vertices = mongo['relevant']['relevant_'+yearrange+'_full_'+str(kwLimit)].find()
+    vertices = mongo['relevant']['relevant_'+yearstr+'_full_'+str(kwLimit)].find()
     nvertices = vertices.count()
     # dico kw -> vertex in mongo
     dico = {}
