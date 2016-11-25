@@ -4,7 +4,7 @@
  - having a running local `mongod` instance
  - mongo host, port, user and password to be configured in `conf/parameters.csv`
  - raw data import from gz file : use `mongorestore -d redbook -c raw --gzip $FILE`
- - specific python packages required : `pymongo`, `python-igraph`, `nltk`
+ - specific python packages required : `pymongo`, `python-igraph`, `nltk` (with resources `punkt`, `averaged_perceptron_tagger`,`porter_test`)
 
 ## Running
 

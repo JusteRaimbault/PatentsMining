@@ -120,9 +120,8 @@ def filtered_graph(graph,dispth,eth):
 
 ##
 #  get multilevel communities
-def get_communities(yearrange,kwLimit,min_edge_th,dispth,eth):
-    print("Constructing communities : "+yearrange+" ; "+str(dispth)+" ; "+str(eth))
-    graph = filtered_graph(yearrange,kwLimit,min_edge_th,dispth,eth)
+def get_communities(graph,dispth,eth):
+    graph = filtered_graph(graph,dispth,eth)
     com = graph.community_multilevel(weights="weight",return_levels=True)
     return([graph,com])
 
