@@ -53,6 +53,20 @@ def construct_graph(years,kwLimit,min_edge_th):
     gf.vs['docfreq']=docf
     gf.vs['termhood']=termhood
 
+    mongo = pymongo.MongoClient(utils.get_parameter('mongopath',True,True))
+    kwstechno = list(mongo['keywords']['techno'].find({'keyword':{'$in':graph.vs['name']}}))
+    disps = list(map(lambda d:(d['keyword'],len(d.keys())-1,dispersion([float(d[k]) for k in d.keys() if k!='keyword'and k!='_id'])),kwstechno))
+    disp_dico={}
+    for disp in disps :
+        disp_dico[disp[0]]=disp[2]
+    disp_list=[]
+    for name in graph.vs['name']:
+        disp_list.append(disp_dico[name])
+    graph.vs['disp']=disp_list
+
+
+
+
     # save everything
     pickle.dump(gf,open('pickled/graph_'+yearstr+'_'+str(kwLimit)+'_eth'+str(min_edge_th)+'.pkl','wb'))
 
