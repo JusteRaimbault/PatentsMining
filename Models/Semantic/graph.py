@@ -4,6 +4,17 @@ from igraph import *
 import utils
 
 
+
+##
+#  Dispersion index
+#  d = \sum (k_j / sum k_j) ^ 2
+def dispersion(x):
+    s=sum(x)
+    return(sum(list(map(lambda y:(y/s)*(y/s),x))))
+
+
+
+
 ##
 # construct graph, store in pickle
 def construct_graph(years,kwLimit,min_edge_th):
@@ -53,19 +64,15 @@ def construct_graph(years,kwLimit,min_edge_th):
     gf.vs['docfreq']=docf
     gf.vs['termhood']=termhood
 
-    mongo = pymongo.MongoClient(utils.get_parameter('mongopath',True,True))
-    kwstechno = list(mongo['keywords']['techno'].find({'keyword':{'$in':graph.vs['name']}}))
+    kwstechno = list(mongo['keywords']['techno'].find({'keyword':{'$in':gf.vs['name']}}))
     disps = list(map(lambda d:(d['keyword'],len(d.keys())-1,dispersion([float(d[k]) for k in d.keys() if k!='keyword'and k!='_id'])),kwstechno))
     disp_dico={}
     for disp in disps :
         disp_dico[disp[0]]=disp[2]
     disp_list=[]
-    for name in graph.vs['name']:
+    for name in gf.vs['name']:
         disp_list.append(disp_dico[name])
-    graph.vs['disp']=disp_list
-
-
-
+    gf.vs['disp']=disp_list
 
     # save everything
     pickle.dump(gf,open('pickled/graph_'+yearstr+'_'+str(kwLimit)+'_eth'+str(min_edge_th)+'.pkl','wb'))
@@ -79,8 +86,8 @@ def sensitivity(years,kwLimit,min_edge_th) :
     yearrange = years[0]+"-"+years[len(years)-1]
     graph=pickle.load(open('pickled/graph_'+yearrange+'_'+str(kwLimit)+'_eth'+str(min_edge_th)+'.pkl','rb'))
 
-    dthvals=numpy.arange(0.01,0.12,0.005)
-    ethvals=numpy.arange(10,200,5)
+    dthvals=numpy.arange(0.01,0.125,0.005)
+    ethvals=numpy.arange(10,205,5)
     #mincomsizevals=[0,4,10] # remove min com size, additional filtering does not makes really sense
 
     res = []
@@ -94,34 +101,16 @@ def sensitivity(years,kwLimit,min_edge_th) :
                 modularity = coms[i].modularity
                 res.append([dth,eth,comnum,vcount,modularity])
     # export res
-    export_csv(res,'sensitivity/sensitivity_'+yearrange+'_'+str(kwLimit)+'_eth'+str(min_edge_th)+'.csv',";","dispth;eth;comnum;vcount;modularity")
+    utils.export_csv(res,'sensitivity/sensitivity_'+yearrange+'_'+str(kwLimit)+'_eth'+str(min_edge_th)+'.csv',";","dispth;eth;comnum;vcount;modularity")
 
 
 
-
-
-##
-#  Dispersion index
-#  d = \sum (k_j / sum k_j) ^ 2
-def dispersion(x):
-    s=sum(x)
-    return(sum(list(map(lambda y:(y/s)*(y/s),x))))
 
 
 ##
 #  construct filtered graph
 #  requires pickled full networks constructed
 def filtered_graph(graph,dispth,eth):
-    mongo = pymongo.MongoClient(utils.get_parameter('mongopath',True,True))
-    kwstechno = list(mongo['keywords']['techno'].find({'keyword':{'$in':graph.vs['name']}}))
-    disps = list(map(lambda d:(d['keyword'],len(d.keys())-1,dispersion([float(d[k]) for k in d.keys() if k!='keyword'and k!='_id'])),kwstechno))
-    disp_dico={}
-    for disp in disps :
-        disp_dico[disp[0]]=disp[2]
-    disp_list=[]
-    for name in graph.vs['name']:
-        disp_list.append(disp_dico[name])
-    graph.vs['disp']=disp_list
     graph=graph.subgraph([i for i, d in enumerate(graph.vs['disp']) if d > dispth])
     graph.delete_edges([i for i, w in enumerate(graph.es['weight']) if w<eth])
     dd = graph.degree(range(graph.vcount()))
