@@ -17,13 +17,13 @@ def test_construct_graph() :
 def npatent_years():
     mongo = pymongo.MongoClient(utils.get_parameter('mongopath',True,True))
     data = []
+    window=utils.get_parameter('window-size')
     for year in range(1980,2013):
-        years=range()
+        years=range((year-window+1),(year+1))
         patents = mongo['patent']['keywords'].find({"app_year":{"$in":years}},no_cursor_timeout=True)
         npatents = patents.count()
         yearrange = years[0]+"-"+years[len(years)-1]
         data.append([yearrange,npatents])
-    window=utils.get_parameter('window-size')
     utils.export_csv(data,'data/patentcount_window'+str(window)+'.csv',";","yearrange;count")
 
 npatent_years()
