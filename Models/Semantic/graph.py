@@ -109,6 +109,7 @@ def sensitivity(years,kwLimit,min_edge_th) :
                 vcount = fgraph.vcount()
                 modularity = coms[i].modularity
                 res.append([dth,eth,comnum,vcount,modularity])
+                print(str(i)+" ; "+str(dth)+" ; "+str(eth)+" : "+str(comnum)+" ; "+str(vcount)+" ; "+str(modularity))
     # export res
     utils.export_csv(res,'sensitivity/sensitivity_'+yearrange+'_'+str(kwLimit)+'_eth'+str(min_edge_th)+'.csv',";","dispth;eth;comnum;vcount;modularity")
 
@@ -121,7 +122,7 @@ def sensitivity(years,kwLimit,min_edge_th) :
 #  requires pickled full networks constructed
 def filtered_graph(graph,dispth,eth):
     sgraph=graph.subgraph([i for i, d in enumerate(graph.vs['disp']) if d > dispth])
-    sgraph.delete_edges([i for i, w in enumerate(graph.es['weight']) if w<eth])
+    sgraph.delete_edges([i for i, w in enumerate(sgraph.es['weight']) if w<eth])
     dd = sgraph.degree(range(sgraph.vcount()))
     res=sgraph.subgraph([i for i, d in enumerate(dd) if d > 0])
     return(res)
