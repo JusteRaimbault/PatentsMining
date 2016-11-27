@@ -49,6 +49,8 @@ def construct_graph(years,kwLimit,min_edge_th):
 
     gf = gg.subgraph(ids)
 
+    print('graph edges : raw = '+str(n)+' ; edgelist = '+str(len(edgelist))+' ; graph = '+str(g.vcount())+' ; simpl graph = '+str(gg.vcount())+' ; filtered = '+str(gf.vcount()))
+
     # add attributes
     vertices = mongo['relevant']['relevant_'+yearstr+'_full_'+str(kwLimit)].find()
     nvertices = vertices.count()
@@ -64,8 +66,11 @@ def construct_graph(years,kwLimit,min_edge_th):
     gf.vs['docfreq']=docf
     gf.vs['termhood']=termhood
 
+    print('with attrs : '+str(gf.vcount()))
+
     kwstechno = list(mongo['keywords']['techno'].find({'keyword':{'$in':gf.vs['name']}}))
-    disps = list(map(lambda d:(d['keyword'],len(d.keys())-1,dispersion([float(d[k]) for k in d.keys() if k!='keyword'and k!='_id'])),kwstechno))
+    #disps = list(map(lambda d:(d['keyword'],len(d.keys())-1,dispersion([float(d[k]) for k in d.keys() if k!='keyword'and k!='_id'])),kwstechno))# Python 3
+    disps = map(lambda d:(d['keyword'],len(d.keys())-1,dispersion([float(d[k]) for k in d.keys() if k!='keyword'and k!='_id'])),kwstechno) # Python 2
     disp_dico={}
     for disp in disps :
         disp_dico[disp[0]]=disp[2]
@@ -73,6 +78,8 @@ def construct_graph(years,kwLimit,min_edge_th):
     for name in gf.vs['name']:
         disp_list.append(disp_dico[name])
     gf.vs['disp']=disp_list
+
+    print('with techdisp : '+str(gf.vcount()))
 
     # save everything
     pickle.dump(gf,open('pickled/graph_'+yearstr+'_'+str(kwLimit)+'_eth'+str(min_edge_th)+'.pkl','wb'))
@@ -111,12 +118,11 @@ def sensitivity(years,kwLimit,min_edge_th) :
 #  construct filtered graph
 #  requires pickled full networks constructed
 def filtered_graph(graph,dispth,eth):
-    graph=graph.subgraph([i for i, d in enumerate(graph.vs['disp']) if d > dispth])
-    graph.delete_edges([i for i, w in enumerate(graph.es['weight']) if w<eth])
-    dd = graph.degree(range(graph.vcount()))
-    graph=graph.subgraph([i for i, d in enumerate(dd) if d > 0])
-
-    return(graph)
+    sgraph=graph.subgraph([i for i, d in enumerate(graph.vs['disp']) if d > dispth])
+    sgraph.delete_edges([i for i, w in enumerate(graph.es['weight']) if w<eth])
+    dd = sgraph.degree(range(sgraph.vcount()))
+    res=sgraph.subgraph([i for i, d in enumerate(dd) if d > 0])
+    return(res)
 
 
 
@@ -124,9 +130,9 @@ def filtered_graph(graph,dispth,eth):
 ##
 #  get multilevel communities
 def get_communities(graph,dispth,eth):
-    graph = filtered_graph(graph,dispth,eth)
-    com = graph.community_multilevel(weights="weight",return_levels=True)
-    return([graph,com])
+    fgraph = filtered_graph(graph,dispth,eth)
+    com = fgraph.community_multilevel(weights="weight",return_levels=True)
+    return([fgraph,com])
 
 
 ##
