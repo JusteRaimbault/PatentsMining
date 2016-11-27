@@ -17,8 +17,8 @@ def relevant_full_corpus(years,kwLimit,edge_th):
     print('corpus : '+str(len(corpus))+' ; dico : '+str(len(occurence_dicos[0]))+' , '+str(len(occurence_dicos[1])))
     if len(corpus) > 0 and len(occurence_dicos) > 0 :
         relevant = 'relevant_'+str(years[0])+"-"+str(years[len(years)-1])+'_full_'+str(kwLimit)
-        network = 'network_'+str(years[0])+"-"+str(years[len(years)-1])+'_full_'+str(kwLimit)+'_eth10'
-        mongo = pymongo.MongoClient('mongodb://root:root@127.0.0.1:29019')
+        network = 'network_'+str(years[0])+"-"+str(years[len(years)-1])+'_full_'+str(kwLimit)+'_eth'+str(edge_th)
+        mongo = pymongo.MongoClient(utils.get_parameter('mongopath',True,True))
         database = mongo[dbrelevant]
         # clean the collection first
         database[relevant].delete_many({"cumtermhood":{"$gt":0}})

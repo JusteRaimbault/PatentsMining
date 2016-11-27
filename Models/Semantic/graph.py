@@ -22,8 +22,10 @@ def construct_graph(years,kwLimit,min_edge_th):
     database = mongo['relevant']
     # get edges
     yearstr = str(years[0])+'-'+str(years[len(years)-1])
-    edges = database['network_'+yearstr+'_full_'+str(kwLimit)+'_eth'+str(min_edge_th)].find()
+    #edges = database['network_'+yearstr+'_full_'+str(kwLimit)+'_eth'+str(min_edge_th)].find()
+    edges = database['network_'+yearstr+'_full_'+str(kwLimit)+'_eth10'].find()
     n=edges.count()
+    print(n)
 
     # construct edgelist
     edgelist = [None]*n
@@ -69,8 +71,8 @@ def construct_graph(years,kwLimit,min_edge_th):
     print('with attrs : '+str(gf.vcount()))
 
     kwstechno = list(mongo['keywords']['techno'].find({'keyword':{'$in':gf.vs['name']}}))
-    #disps = list(map(lambda d:(d['keyword'],len(d.keys())-1,dispersion([float(d[k]) for k in d.keys() if k!='keyword'and k!='_id'])),kwstechno))# Python 3
-    disps = map(lambda d:(d['keyword'],len(d.keys())-1,dispersion([float(d[k]) for k in d.keys() if k!='keyword'and k!='_id'])),kwstechno) # Python 2
+    disps = list(map(lambda d:(d['keyword'],len(d.keys())-1,dispersion([float(d[k]) for k in d.keys() if k!='keyword'and k!='_id'])),kwstechno))# Python 3 and 2
+    #disps = map(lambda d:(d['keyword'],len(d.keys())-1,dispersion([float(d[k]) for k in d.keys() if k!='keyword'and k!='_id'])),kwstechno) # Python 2
     disp_dico={}
     for disp in disps :
         disp_dico[disp[0]]=disp[2]

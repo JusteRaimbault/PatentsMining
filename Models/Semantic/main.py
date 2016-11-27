@@ -17,7 +17,7 @@ def run():
         print('--> running '+task+'for'+str(currentyears))
         if task=='--raw-network':
             # keywords relevance
-            relevant.relevant_full_corpus(currentyears,kwLimit,edge_th)
+            #relevant.relevant_full_corpus(currentyears,kwLimit,edge_th)
             # full network
             graph.construct_graph(currentyears,kwLimit,edge_th)
             # sensitivity

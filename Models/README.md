@@ -21,6 +21,8 @@ The utility `fullpipe.sh` can launch most of the processing pipe.
 
 The tasks to be done in order : keywords extraction, relevance estimation, network construction, semantic probas construction, are launched with the following options :
 
+\\!// `keywords` and `kw-consolidation` tested with python3 ; rest with python2 (igraph compatibility issues)
+
  - `keywords` : extracts keywords
  - `kw-consolidation` : consolidate keywords database (techno disp measure)
  - `raw-network` : estimates relevance, constructs raw network and perform sensitivity analysis
