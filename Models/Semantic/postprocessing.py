@@ -24,7 +24,7 @@ def export_classification(years,kwLimit,min_edge_th,dispth,ethunit):
     npatents = patents.count()
     yearrange = years[0]+"-"+years[len(years)-1]
     # load graph and construct communities
-    [graph,coms]=pickle.load(open('pickled/filteredgraphcoms_'+yearrange+'_'+str(kwLimit)+'_eth'+str(min_edge_th)+'_dispth'+str(dispth)+'_ethunit'+str(ethunit)+'.pkl','wb'))
+    [graph,coms]=pickle.load(open('pickled/filteredgraphcoms_'+yearrange+'_'+str(kwLimit)+'_eth'+str(min_edge_th)+'_dispth'+str(dispth)+'_ethunit'+str(ethunit)+'.pkl','rb'))
     # best clustering in com[len(com)-1]
     clustering = coms[len(coms)-1]
 
