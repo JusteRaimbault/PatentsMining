@@ -1,4 +1,4 @@
-import pymongo,pickle
+import pymongo,pickle,os
 from igraph import *
 import graph,utils
 
@@ -10,7 +10,11 @@ import graph,utils
 ##
 #  construct patent probas at a given clustering level
 def export_classification(years,kwLimit,dispth,ethunit):
+    resdir='classification/classification_window'+str(int(utils.get_parameter('window-size')))+'_kwLimit'+str(int(kwLimit))+'_dispth'+str(dispth)+'_ethunit'+str(ethunit)
+    os.makedirs(resdir,exist_ok=True)
+
     print("Constructing patent probas for years "+str(years))
+
     mongo = pymongo.MongoClient(utils.get_parameter('mongopath',True,True))
     # load keywords
     patents = mongo['patent']['keywords'].find({"app_year":{"$in":years}},no_cursor_timeout=True)
@@ -48,7 +52,7 @@ def export_classification(years,kwLimit,dispth,ethunit):
         i=i+1
 
     # export the matrix proba as csv
-    utils.export_matrix_sparse_csv(probas,[rownames,counts],'classification/probas_'+yearrange+'_kwLimit'+str(kwLimit)+'_dispth'+str(dispth)+'_ethunit'+str(ethunit)+'.csv',";")
+    utils.export_matrix_sparse_csv(probas,[rownames,counts],resdir+'/probas_'+yearrange+'_kwLimit'+str(kwLimit)+'_dispth'+str(dispth)+'_ethunit'+str(ethunit)+'.csv',";")
 
 
     # add attributes to keywords
@@ -68,7 +72,7 @@ def export_classification(years,kwLimit,dispth,ethunit):
             kwdata.append([currentkw,dico[currentkw]] + kwattrsdico[currentkw])
 
     # export keywords as csv
-    utils.export_csv(kwdata,'classification/keywords_'+yearrange+'_kwLimit'+str(kwLimit)+'_dispth'+str(dispth)+'_ethunit'+str(ethunit)+'.csv',';','keyword;community;tidf;technodispersion;docfreq;termhood;degree;weighteddegree;betweennesscentrality;closenesscentrality;eigenvectorcentrality')
+    utils.export_csv(kwdata,resdir+'/keywords_'+yearrange+'_kwLimit'+str(kwLimit)+'_dispth'+str(dispth)+'_ethunit'+str(ethunit)+'.csv',';','keyword;community;tidf;technodispersion;docfreq;termhood;degree;weighteddegree;betweennesscentrality;closenesscentrality;eigenvectorcentrality')
 
 
     # Patent measures
@@ -89,4 +93,5 @@ def export_classification(years,kwLimit,dispth,ethunit):
         i=i+1
 
     # export measures
-    utils.export_csv(measures,'classification/patent_'+yearrange+'_kwLimit'+str(kwLimit)+'_dispth'+str(dispth)+'_ethunit'+str(ethunit)+'.csv',';','patent;kws;classkws;tidf;technodispersion;docfreq;termhood;degree;weighteddegree;betweennesscentrality;closenesscentrality;eigenvectorcentrality')
+
+    utils.export_csv(measures,resdir+'/patent_'+yearrange+'_kwLimit'+str(kwLimit)+'_dispth'+str(dispth)+'_ethunit'+str(ethunit)+'.csv',';','patent;kws;classkws;tidf;technodispersion;docfreq;termhood;degree;weighteddegree;betweennesscentrality;closenesscentrality;eigenvectorcentrality')

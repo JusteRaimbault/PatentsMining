@@ -27,4 +27,4 @@ def npatent_years():
         data.append([yearrange,npatents])
     utils.export_csv(data,'data/patentcount_window'+str(window)+'.csv',";","yearrange;count")
 
-npatent_years()
+#npatent_years()

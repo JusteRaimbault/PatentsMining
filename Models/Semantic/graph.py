@@ -22,8 +22,7 @@ def construct_graph(years,kwLimit,min_edge_th):
     database = mongo['relevant']
     # get edges
     yearstr = str(years[0])+'-'+str(years[len(years)-1])
-    #edges = database['network_'+yearstr+'_full_'+str(kwLimit)+'_eth'+str(min_edge_th)].find()
-    edges = database['network_'+yearstr+'_full_'+str(kwLimit)+'_eth10'].find() #TODO remove after run
+    edges = database['network_'+yearstr+'_full_'+str(kwLimit)+'_eth'+str(min_edge_th)].find()
     n=edges.count()
     print(n)
 
