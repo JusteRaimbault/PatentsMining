@@ -59,11 +59,11 @@ def export_classification(years,kwLimit,min_edge_th,dispth,ethunit):
 
 
     # add attributes to keywords
-    degree = graph.degree(range(currentgraph.vcount()))
+    degree = graph.degree(range(graph.vcount()))
     evcentrality = graph.eigenvector_centrality(weights='weight')
     bcentrality = graph.betweenness(weights='weight')
     ccentrality = graph.closeness(weights='weight')
-    weighteddegree = graph.strength(range(currentgraph.vcount()),weights='weight')
+    weighteddegree = graph.strength(range(graph.vcount()),weights='weight')
 
     kwattrsdico={}
     for n in range(graph.vcount()):
