@@ -79,11 +79,13 @@ def export_classification(years,kwLimit,min_edge_th,dispth,ethunit):
 
 
     # Patent measures
+    patents = mongo['patent']['keywords'].find({"app_year":{"$in":years}},no_cursor_timeout=True)
     measures=[]
     nmeasures = len(kwattrsdico[graph.vs['name'][0]])
     i=0
     for currentpatent in patents:
-        if i%10000==0 : print('patent measures : '+str(100*i/npatents))
+        #if i%10000==0 : print('patent measures : '+str(100*i/npatents))
+        print('patent measures : '+str(100*i/npatents))
         currentmeasures = [0.0]*nmeasures
         kwnum=0
         for kw in currentpatent['keywords']:
@@ -91,7 +93,6 @@ def export_classification(years,kwLimit,min_edge_th,dispth,ethunit):
                 currentmeasures = [currentmeasures[i]+kwattrsdico[kw][i] for i in range(len(currentmeasures))]
                 kwnum=kwnum+1
         nk=len(currentpatent['keywords'])
-        #currentmeasures = list(map(lambda x: x /nk,currentmeasures))
         if sum(currentmeasures)!=0 :
             measures.append([currentpatent['id'],nk,kwnum]+currentmeasures)
         i=i+1
