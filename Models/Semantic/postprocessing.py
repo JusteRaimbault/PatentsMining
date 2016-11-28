@@ -79,6 +79,7 @@ def export_classification(years,kwLimit,min_edge_th,dispth,ethunit):
 
 
     # Patent measures
+    measures=[]
     nmeasures = len(kwattrsdico[graph.vs['name'][0]])
     i=0
     for currentpatent in patents:
