@@ -27,7 +27,7 @@ def run():
             # construct communities
             graph.construct_communities(currentyears,kwLimit,edge_th,dispth,ethunit)
             # post processing
-            postprocessing.export_classification(currentyears,kwLimit,dispth,ethunit)
+            postprocessing.export_classification(currentyears,kwLimit,edge_th,dispth,ethunit)
 
         if task == '--custom' :
             print("custom")

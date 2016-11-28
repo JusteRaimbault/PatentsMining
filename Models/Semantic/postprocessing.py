@@ -9,9 +9,12 @@ import graph,utils
 
 ##
 #  construct patent probas at a given clustering level
-def export_classification(years,kwLimit,dispth,ethunit):
-    resdir='classification/classification_window'+str(int(utils.get_parameter('window-size')))+'_kwLimit'+str(int(kwLimit))+'_dispth'+str(dispth)+'_ethunit'+str(ethunit)
-    os.makedirs(resdir,exist_ok=True)
+def export_classification(years,kwLimit,min_edge_th,dispth,ethunit):
+    resdir='classification/classification_window'+str(int(years[len(years)-1])-int(years[0])+1)+'_kwLimit'+str(int(kwLimit))+'_dispth'+str(dispth)+'_ethunit'+str(ethunit)
+    try :
+	os.makedirs(resdir)
+    except :
+	print("res dir exists")
 
     print("Constructing patent probas for years "+str(years))
 
