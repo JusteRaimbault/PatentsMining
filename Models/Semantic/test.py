@@ -19,7 +19,7 @@ def npatent_years():
     data = []
     window=utils.get_parameter('window-size')
     for year in range(1980,2013):
-	    print(year)
+	print(year)
         years=map(lambda y:str(y),range(int(year-window+1),int(year+1)))
         patents = mongo['patent']['keywords'].find({"app_year":{"$in":years}},no_cursor_timeout=True)
         npatents = patents.count()
@@ -36,14 +36,15 @@ def test_patent_measure():
     i=0
     for currentpatent in patents:
         #if i%10000==0 : print('patent measures : '+str(100*i/npatents))
-        print('patent measures : '+currentpatent['id']+' : '+str(100*i/npatents))
+        print('patent measures : '+currentpatent['id'])#+' : '+str(100*i/npatents))
         currentmeasures = [0.0]*nmeasures
         kwnum=0
         for kw in currentpatent['keywords']:
-            if kw in kwattrsdico :
+            print(kw)
+	    #if kw in kwattrsdico :
                 #currentmeasures = [currentmeasures[i]+kwattrsdico[kw][i] for i in range(len(currentmeasures))]
-                kwnum=kwnum+1
-            nk=len(currentpatent['keywords'])
+            #    kwnum=kwnum+1
+        nk=len(currentpatent['keywords'])
         if sum(currentmeasures)!=0 :
             measures.append([currentpatent['id'],nk,kwnum]+currentmeasures)
         i=i+1

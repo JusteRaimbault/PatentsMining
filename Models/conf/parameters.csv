@@ -1,8 +1,8 @@
 # parameter file ; format : parameter name;value;comments
 # runtime params
-window-size;5;-
+window-size;3;-
 start-year;1976;beginning of first window
-end-year;2008;beginning of last window
+end-year;2010;beginning of last window
 nruns;15;-
 # construction parameters
 kwLimit;100000;-
