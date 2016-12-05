@@ -14,6 +14,11 @@ setwd(paste0(Sys.getenv('CS_HOME'),'/PatentsMining/Models/Semantic'))
 wyears = 1980:2007
 windowSize=5
 kwLimit="100000"
+dispth=0.06
+ethunit="4.1e-05"
+
+classifdir = paste0('classification_window',windowSize,'_kwLimit',kwLimit,'_dispth',dispth,'_ethunit',ethunit)
+
 
 # data preprocessing -> preProcessData in semanalfun.R
 
@@ -62,13 +67,14 @@ as.matrix(semprobas[inds,])
 
 #  1.1) Macro-level
 
-
+###############
 # size hierarchy in years
-
+#
+#   (FIG. 4)
 
 sizes=c();nsizes=c();years=c();type=c();ranks=c();sortedsizes=c();sortednsizes=c()
 for(year in wyears){
-  load(paste0('probas/processed_',(year-windowSize+1),"-",year,'.RData'));show(year)
+  load(paste0('processed/',classifdir,'/processed_',(year-windowSize+1),"-",year,'.RData'));show(year)
   technoprobas=currentprobas$technoprobas;semprobas=currentprobas$semprobas;rm(currentprobas);gc()
   techsizes=colSums(technoprobas);semsizes=colSums(semprobas)
   techsizes=techsizes[techsizes>0];semsizes=semsizes[semsizes>0]
@@ -93,16 +99,16 @@ g+geom_line(aes(x=rank,y=size,colour=year,group=year))+
 ggsave(file=paste0(Sys.getenv("CS_HOME"),'/PatentsMining/Results/Semantic/Analysis/window5/sizes/all_raw_counts.pdf'),width=10,height=5)
 
 
-df=data.frame(size=sizes,nsize=nsizes,sortedsize=sortedsizes,sortednsize=sortednsizes,years=as.character(years),type=type)
-g=ggplot(df,aes(x=sizes,color=years))
-g+geom_density()+scale_x_log10()+facet_wrap(~type)
-
-g=ggplot(data.frame(size=sizes,nsize=nsizes,years=as.character(years),type=type)%>%group_by(years,type)%>%summarise(meansize=mean(size),meannsizes=mean(nsize)),
-         aes(x=years,y=meannsizes,color=type))
-g+geom_point()+geom_line()+stat_smooth()+scale_y_log10()+facet_wrap(~type)
-
-g=ggplot(df,aes(x=ranks,y=sortedsizes,colour=years,group=years))
-g+geom_point()+scale_x_log10()+scale_y_log10()+facet_wrap(~type)
+#df=data.frame(size=sizes,nsize=nsizes,sortedsize=sortedsizes,sortednsize=sortednsizes,years=as.character(years),type=type)
+#g=ggplot(df,aes(x=sizes,color=years))
+#g+geom_density()+scale_x_log10()+facet_wrap(~type)
+#
+#g=ggplot(data.frame(size=sizes,nsize=nsizes,years=as.character(years),type=type)%>%group_by(years,type)%>%summarise(meansize=mean(size),meannsizes=mean(nsize)),
+#         aes(x=years,y=meannsizes,color=type))
+#g+geom_point()+geom_line()+stat_smooth()+scale_y_log10()+facet_wrap(~type)
+#
+#g=ggplot(df,aes(x=ranks,y=sortedsizes,colour=years,group=years))
+#g+geom_point()+scale_x_log10()+scale_y_log10()+facet_wrap(~type)
 
 
 ## Classes concentrations
@@ -122,12 +128,18 @@ g+geom_point()+geom_line() + theme(axis.title = element_text(size = 22), axis.te
 
 
 
+#############
+## Overlaps
+##
+## (FIG. 7 and 8)
+##
+
+
 
 overlaps = c();years=c();measures=c();types=c();filters=c();nullovs=c();classnum=c();pcount=c();gc()
 ovsize=c()
 for(year in wyears){
-  #load(paste0('probas_processed/processed_',(year-windowSize+1),"-",year,'.RData'));show(year)
-  load(paste0('probas/processed_',(year-windowSize+1),"-",year,'.RData'));show(year)
+  load(paste0('processed/',classifdir,'/processed_',(year-windowSize+1),"-",year,'.RData'));show(year)
   technoprobas=currentprobas$technoprobas;semprobas=currentprobas$semprobas;rm(currentprobas);gc()
   techov=t(technoprobas)%*%technoprobas;
   diag(techov)<-0
@@ -174,68 +186,70 @@ rm(overlaps,years,types);gc()
 save(df,file="res/full-overlaps.RData")
 #load("res/full-overlaps.RData")
 
-#for(filter in c("all","positive")){
-#  for(measure in c("real","norm-patents","relative")){
-
-measure="norm-patents";xlabel="normalized overlap";file="patentnorm"
-#measure="relative";xlabel="relative overlap";file="relative"
-g=ggplot(df[df$measure==measure,],aes(x=overlap,colour=year))
-g+geom_density(alpha=0.25)+xlab(measure)+ylab("density")+
-  scale_x_log10()+facet_wrap(~type,scales="free_y")+
-  theme(axis.title = element_text(size = 22), axis.text.x = element_text(size = 15),  axis.text.y = element_text(size = 15))
-ggsave(file=paste0(Sys.getenv("CS_HOME"),'/PatentsMining/Results/Semantic/Analysis/window5/overlap/',file,'_all_density_semcounts.pdf'),width=10,height=5)
-
-rm(g);gc()
-
-   
-measure="norm-patents";ylabel="mean normalized overlap";file="patentnorm"
-#measure="relative";ylabel="mean relative overlap";file="relative"
-dsum = df[df$measure==measure,]%>% group_by(year,type) %>% summarise(meanoverlap=mean(overlap,na.rm=TRUE),mi=quantile(overlap,0.1,na.rm=TRUE),ma=quantile(overlap,0.9,na.rm=TRUE))
-gsum=ggplot(dsum,aes(x=year,y=meanoverlap,group=type))#,colour=type,group=type),show.legend = FALSE)
-labs=rep("",length(wyears));labs[seq(from=1,to=length(labs),by=5)]=as.character(wyears[seq(from=1,to=length(labs),by=5)])
-gsum+geom_point()+geom_line()+#geom_errorbar(aes(ymin=mi,ymax=ma))+
+plotsOverlap <-function(measure,xlabel,file){
+  g=ggplot(df[df$measure==measure,],aes(x=overlap,colour=year))
+  g+geom_density(alpha=0.25)+xlab(measure)+ylab("density")+
+    scale_x_log10()+facet_wrap(~type,scales="free_y")+
+    theme(axis.title = element_text(size = 22), axis.text.x = element_text(size = 15),  axis.text.y = element_text(size = 15))
+  ggsave(file=paste0(Sys.getenv("CS_HOME"),'/PatentsMining/Results/Semantic/Analysis/window5/overlap/',file,'_all_density_semcounts.pdf'),width=10,height=5)
+  
+  rm(g);gc()
+  
+  dsum = df[df$measure==measure,]%>% group_by(year,type) %>% summarise(meanoverlap=mean(overlap,na.rm=TRUE),mi=quantile(overlap,0.1,na.rm=TRUE),ma=quantile(overlap,0.9,na.rm=TRUE))
+  gsum=ggplot(dsum,aes(x=year,y=meanoverlap,group=type))#,colour=type,group=type),show.legend = FALSE)
+  labs=rep("",length(wyears));labs[seq(from=1,to=length(labs),by=5)]=as.character(wyears[seq(from=1,to=length(labs),by=5)])
+  gsum+geom_point()+geom_line()+#geom_errorbar(aes(ymin=mi,ymax=ma))+
     facet_wrap(~type,scales ="free_y")+
     scale_x_discrete(breaks=as.character(wyears),labels=labs)+ylab(ylabel)+
-  theme(axis.title = element_text(size = 22), axis.text.x = element_text(size = 15),  axis.text.y = element_text(size = 15))
-ggsave(file=paste0(Sys.getenv("CS_HOME"),'/PatentsMining/Results/Semantic/Analysis/window5/overlap/',file,'_all_ts_semcounts.pdf'),width=10,height=5)
+    theme(axis.title = element_text(size = 22), axis.text.x = element_text(size = 15),  axis.text.y = element_text(size = 15))
+  ggsave(file=paste0(Sys.getenv("CS_HOME"),'/PatentsMining/Results/Semantic/Analysis/window5/overlap/',file,'_all_ts_semcounts.pdf'),width=10,height=5)
+  
+}
 
 
+plotsOverlap("norm-patents","normalized overlap","patentnorm")
+plotsOverlap("relative","relative overlap","relative")
 
+
+#for(filter in c("all","positive")){
+#  for(measure in c("real","norm-patents","relative")){
 #   }
 #}
-
-labs=rep("",length(wyears));labs[seq(from=1,to=length(labs),by=3)]=as.character(wyears[seq(from=1,to=length(labs),by=3)])
-g=ggplot(data.frame(empty=ovsize/(pcount*(classnum*classnum/(classnum[1]*classnum[1]))),year=years,type=types,classes=classnum,pcount=pcount))
-g+geom_point(aes(x=year,y=empty,colour=type))+geom_line(aes(x=year,y=empty,colour=type))+ facet_wrap(~type,scales ="free_y")+
-  geom_line(aes(x=year,y=(pcount - min(pcount))/(max(pcount)-min(pcount))),color='purple',linetype=2)
-  #scale_x_discrete(breaks=as.character(wyears),labels=labs)
-g+geom_point(aes(x=pcount,y=empty,colour=year,shape=type))+ facet_wrap(~type,scales ="free")
-    
-# Techno
-inds=1:length(technoverlaps)#
-#overlaps[overlaps==0]=1e-10
-# distribution of overlaps 
-g=ggplot(data.frame(overlap=technoverlaps[inds],year=as.character(techyears[inds])),aes(x=overlap,colour=year))#aes(x=year,y=overlap))
-g+geom_density(alpha=0.25)+scale_x_log10()+xlab("techno overlap normalized by patent count")+ylab("density")#+scale_y_log10()
-# variation in time
-g=ggplot(data.frame(overlap=technoverlaps[inds],year=techyears[inds]),aes(x=year,y=overlap))
-g+geom_point(pch='.')+scale_y_log10()+stat_smooth()
-
-# Semantic
-inds=semoverlaps>0
-# distribution of overlaps 
-g=ggplot(data.frame(overlap=semoverlaps[inds],year=semyears[inds]),aes(x=overlap,colour=as.character(year)))#aes(x=year,y=overlap))
-g+geom_density(alpha=0.25)+scale_x_log10()+xlab("sem overlap")+ylab("density")#+scale_y_log10()
-# variation in time
-g=ggplot(data.frame(overlap=semoverlaps[inds],year=semyears[inds]),aes(x=year,y=overlap))
-g+geom_point(pch='.')+scale_y_log10()+stat_smooth()
-
+# 
+# labs=rep("",length(wyears));labs[seq(from=1,to=length(labs),by=3)]=as.character(wyears[seq(from=1,to=length(labs),by=3)])
+# g=ggplot(data.frame(empty=ovsize/(pcount*(classnum*classnum/(classnum[1]*classnum[1]))),year=years,type=types,classes=classnum,pcount=pcount))
+# g+geom_point(aes(x=year,y=empty,colour=type))+geom_line(aes(x=year,y=empty,colour=type))+ facet_wrap(~type,scales ="free_y")+
+#   geom_line(aes(x=year,y=(pcount - min(pcount))/(max(pcount)-min(pcount))),color='purple',linetype=2)
+#   #scale_x_discrete(breaks=as.character(wyears),labels=labs)
+# g+geom_point(aes(x=pcount,y=empty,colour=year,shape=type))+ facet_wrap(~type,scales ="free")
+#     
+# # Techno
+# inds=1:length(technoverlaps)#
+# #overlaps[overlaps==0]=1e-10
+# # distribution of overlaps 
+# g=ggplot(data.frame(overlap=technoverlaps[inds],year=as.character(techyears[inds])),aes(x=overlap,colour=year))#aes(x=year,y=overlap))
+# g+geom_density(alpha=0.25)+scale_x_log10()+xlab("techno overlap normalized by patent count")+ylab("density")#+scale_y_log10()
+# # variation in time
+# g=ggplot(data.frame(overlap=technoverlaps[inds],year=techyears[inds]),aes(x=year,y=overlap))
+# g+geom_point(pch='.')+scale_y_log10()+stat_smooth()
+# 
+# # Semantic
+# inds=semoverlaps>0
+# # distribution of overlaps 
+# g=ggplot(data.frame(overlap=semoverlaps[inds],year=semyears[inds]),aes(x=overlap,colour=as.character(year)))#aes(x=year,y=overlap))
+# g+geom_density(alpha=0.25)+scale_x_log10()+xlab("sem overlap")+ylab("density")#+scale_y_log10()
+# # variation in time
+# g=ggplot(data.frame(overlap=semoverlaps[inds],year=semyears[inds]),aes(x=year,y=overlap))
+# g+geom_point(pch='.')+scale_y_log10()+stat_smooth()
+# 
 
 
 
 
 ##################
 # 1.2) Micro-level : patent level interdisciplinarity
+#
+#
 
 origs=c();cyears=c();types=c();
 for(year in wyears){
@@ -252,7 +266,7 @@ for(year in wyears){
 #save(origs,cyears,types,file='res/patentlevel_orig.RData')
 #load('res/patentlevel_orig.RData')
 
-# length(which(origs<1))/length(origs)
+show(paste0('Unclassified : ',length(which(origs<1))/length(origs)))
 # 5.2 % of patent in total are not classified : quite ok
 
 # techno patent origs
@@ -301,20 +315,8 @@ ggsave(file=paste0(Sys.getenv("CS_HOME"),'/PatentsMining/Results/Semantic/Analys
 
 ##
 #  2) Layers macro-structure comparison
-
-overlaps=c();cyears=c()
-for(year in years){
-  res = loadProbas(year);technoprobas=res$technoprobas;semprobas=res$semprobas
-  # all couples (i\in sem, j\in techno)
-  inds = which(colSums(technoprobas)>100)
-  currentovs = rep(0,ncol(technoprobas)*ncol(semprobas))
-  k=1
-  for(i in 1:ncol(semprobas)){show(i);for(j in inds){
-    currentovs[k]=sum(semprobas[,i]*technoprobas[,j])/nrow(technoprobas);k=k+1
-  }}
-  overlaps=append(overlaps,currentovs)
-  cyears=append(cyears,rep(year,ncol(technoprobas)*ncol(semprobas)))
-}
+#
+#  -> done in overlaps
 
 #
 load('res/inter_overlaps.RData')
@@ -425,11 +427,19 @@ df = data.frame(year=sapply(modularities,function(l){l$year}),
                 semundirgraphmod=sapply(modularities,function(l){l$semundirgraphmod})
                 )
 
-g=ggplot(data.frame(year=c(df$year,df$year),mod = c(df$technoovmod,df$semovmod),type=c(rep("techno",nrow(df)),rep("semantic",nrow(df)))),aes(x=year,y=mod,colour=type,group=type))
-g+geom_line()+geom_point()+ylab("overlapping modularity")+scale_y_log10()
+g=ggplot(data.frame(year=c(df$year,df$year),mod = c(df$technoovmod,df$semovmod),type=c(rep("technological",nrow(df)),rep("semantic",nrow(df)))),aes(x=year,y=mod,colour=type,group=type))
+g+geom_line()+geom_point()+ylab("overlapping modularity")+scale_y_log10()+
+  theme(legend.position = "none",axis.title = element_text(size = 22), axis.text.x = element_text(size = 15),  axis.text.y = element_text(size = 15))
+ggsave(file=paste0(Sys.getenv("CS_HOME"),'/PatentsMining/Results/Semantic/Analysis/window5/citation/overlappingmodularity.pdf'),width=10,height=5)
+
+
 
 g=ggplot(data.frame(year=c(df$year,df$year),mod = c(df$technodirmod,df$semdirmod),type=c(rep("techno",nrow(df)),rep("semantic",nrow(df)))),aes(x=year,y=mod,colour=type,group=type))
-g+geom_line()+geom_point()+ylab("modularity")+scale_y_log10()
+g+geom_line()+geom_point()+ylab("modularity")+scale_y_log10()+
+  theme(legend.position = "none",axis.title = element_text(size = 22), axis.text.x = element_text(size = 15),  axis.text.y = element_text(size = 15))
+ggsave(file=paste0(Sys.getenv("CS_HOME"),'/PatentsMining/Results/Semantic/Analysis/window5/citation/simplemodularity.pdf'),width=10,height=5)
+
+
 
 ##
 
