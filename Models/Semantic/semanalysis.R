@@ -160,9 +160,9 @@ for(year in wyears){
   #inds=which(techov>0);overlaps=append(overlaps,techov[inds]);n=length(inds);years=append(years,rep(year,n));types=append(types,rep("techno",n))#;measures=append(measures,rep("real",n));filters=append(filters,rep("positive",n))
   #inds=which(semov>0);overlaps=append(overlaps,semov[inds]);n=length(inds);years=append(years,rep(year,n));types=append(types,rep("semantic",n))#;measures=append(measures,rep("real",n));filters=append(filters,rep("positive",n))
   # # NORMALIZED PATENT COUNT
-  overlaps=append(overlaps,as.numeric(interov)/nrow(technoprobas));n=length(as.numeric(interov));years=append(years,rep(year,n));types=append(types,rep("inter",n));measures=append(measures,rep("norm-patents",n));#filters=append(filters,rep("all",n))
-  overlaps=append(overlaps,as.numeric(techov)/nrow(technoprobas));n=length(as.numeric(techov));years=append(years,rep(year,n));types=append(types,rep("techno",n));measures=append(measures,rep("norm-patents",n));#filters=append(filters,rep("all",n))
-  overlaps=append(overlaps,as.numeric(semov)/nrow(semprobas));n=length(as.numeric(semov));years=append(years,rep(year,n));types=append(types,rep("semantic",n));measures=append(measures,rep("norm-patents",n));#filters=append(filters,rep("all",n))
+  overlaps=append(overlaps,as.numeric(interov)/nrow(technoprobas));n=length(as.numeric(interov));years=append(years,rep(year,n));types=append(types,rep("inter-classifications",n));measures=append(measures,rep("norm-patents",n));#filters=append(filters,rep("all",n))
+  overlaps=append(overlaps,as.numeric(techov)/nrow(technoprobas));n=length(as.numeric(techov));years=append(years,rep(year,n));types=append(types,rep("technological classification",n));measures=append(measures,rep("norm-patents",n));#filters=append(filters,rep("all",n))
+  overlaps=append(overlaps,as.numeric(semov)/nrow(semprobas));n=length(as.numeric(semov));years=append(years,rep(year,n));types=append(types,rep("semantic classification",n));measures=append(measures,rep("norm-patents",n));#filters=append(filters,rep("all",n))
   #inds=which(techov>0);overlaps=append(overlaps,techov[inds]/nrow(technoprobas));n=length(inds);years=append(years,rep(year,n));types=append(types,rep("techno",n));#measures=append(measures,rep("norm-patents",n));filters=append(filters,rep("positive",n))
   #inds=which(semov>0);overlaps=append(overlaps,semov[inds]/nrow(semprobas));n=length(inds);years=append(years,rep(year,n));types=append(types,rep("semantic",n));#measures=append(measures,rep("norm-patents",n));filters=append(filters,rep("positive",n))
   # # RELATIVE OVERLAP
@@ -181,34 +181,34 @@ for(year in wyears){
 }
 
 resdir=paste0(Sys.getenv('CS_HOME'),'/PatentsMining/Results/Semantic/Analysis/window5/overlap/')
-df=data.frame(overlap=overlaps,year=as.character(years),type=types,measure=measures)#,filter=filters)
+df=data.frame(overlap=overlaps,year=as.character(years),type=as.character(types),measure=measures)#,filter=filters)
 rm(overlaps,years,types);gc()
 save(df,file="res/full-overlaps.RData")
 #load("res/full-overlaps.RData")
 
-plotsOverlap <-function(measure,xlabel,file){
-  g=ggplot(df[df$measure==measure,],aes(x=overlap,colour=year))
-  g+geom_density(alpha=0.25)+xlab(measure)+ylab("density")+
+plotsIntraOverlap <-function(measure,xlabel){
+  g=ggplot(df[df$measure==measure&df$type!="inter-classifications",],aes(x=overlap,colour=year))
+  g+geom_density(alpha=0.25)+xlab(xlabel)+ylab("density")+
     scale_x_log10()+facet_wrap(~type,scales="free_y")+
     theme(axis.title = element_text(size = 22), axis.text.x = element_text(size = 15),  axis.text.y = element_text(size = 15))
-  ggsave(file=paste0(Sys.getenv("CS_HOME"),'/PatentsMining/Results/Semantic/Analysis/window5/overlap/',file,'_all_density_semcounts.pdf'),width=10,height=5)
-  
+  ggsave(file=paste0(Sys.getenv("CS_HOME"),'/PatentsMining/Results/Semantic/Analysis/window5/overlap/',measure,'_all_density_semcounts.pdf'),width=10,height=5)
+
   rm(g);gc()
   
-  dsum = df[df$measure==measure,]%>% group_by(year,type) %>% summarise(meanoverlap=mean(overlap,na.rm=TRUE),mi=quantile(overlap,0.1,na.rm=TRUE),ma=quantile(overlap,0.9,na.rm=TRUE))
-  gsum=ggplot(dsum,aes(x=year,y=meanoverlap,group=type))#,colour=type,group=type),show.legend = FALSE)
+  dsum = df[df$measure==measure&df$type!="inter-classifications",]%>% group_by(year,type) %>% summarise(meanoverlap=mean(overlap,na.rm=TRUE),mi=quantile(overlap,0.1,na.rm=TRUE),ma=quantile(overlap,0.9,na.rm=TRUE))
+  gsum=ggplot(dsum,aes(x=year,y=meanoverlap,colour=type,group=type))
   labs=rep("",length(wyears));labs[seq(from=1,to=length(labs),by=5)]=as.character(wyears[seq(from=1,to=length(labs),by=5)])
-  gsum+geom_point()+geom_line()+#geom_errorbar(aes(ymin=mi,ymax=ma))+
+  gsum+geom_point()+geom_line()+
     facet_wrap(~type,scales ="free_y")+
-    scale_x_discrete(breaks=as.character(wyears),labels=labs)+ylab(ylabel)+
-    theme(axis.title = element_text(size = 22), axis.text.x = element_text(size = 15),  axis.text.y = element_text(size = 15))
-  ggsave(file=paste0(Sys.getenv("CS_HOME"),'/PatentsMining/Results/Semantic/Analysis/window5/overlap/',file,'_all_ts_semcounts.pdf'),width=10,height=5)
+    scale_x_discrete(breaks=as.character(wyears),labels=labs)+ylab(paste0("mean ",xlabel))+
+    theme(legend.position="none",axis.title = element_text(size = 22), axis.text.x = element_text(size = 15),  axis.text.y = element_text(size = 15))
+  ggsave(file=paste0(Sys.getenv("CS_HOME"),'/PatentsMining/Results/Semantic/Analysis/window5/overlap/',measure,'_all_ts_semcounts.pdf'),width=10,height=5)
   
 }
 
 
-plotsOverlap("norm-patents","normalized overlap","patentnorm")
-plotsOverlap("relative","relative overlap","relative")
+plotsIntraOverlap("norm-patents","normalized overlap")
+plotsIntraOverlap("relative","relative overlap")
 
 
 #for(filter in c("all","positive")){
@@ -242,6 +242,30 @@ plotsOverlap("relative","relative overlap","relative")
 # g=ggplot(data.frame(overlap=semoverlaps[inds],year=semyears[inds]),aes(x=year,y=overlap))
 # g+geom_point(pch='.')+scale_y_log10()+stat_smooth()
 # 
+
+
+
+plotsInterOverlap <-function(measure,xlabel){
+  g=ggplot(df[df$measure==measure&df$type=="inter-classifications",],aes(x=overlap,colour=year))
+  g+geom_density(alpha=0.25)+xlab(xlabel)+ylab("density")+scale_x_log10()
+    theme(axis.title = element_text(size = 22), axis.text.x = element_text(size = 15),  axis.text.y = element_text(size = 15))
+  ggsave(file=paste0(Sys.getenv("CS_HOME"),'/PatentsMining/Results/Semantic/Analysis/window5/overlap/',measure,'_interclassif_all_density_semcounts.pdf'),width=10,height=5)
+  
+  rm(g);gc()
+  
+  dsum = df[df$measure==measure&df$type=="inter-classifications",]%>% group_by(year,type) %>% summarise(meanoverlap=mean(overlap,na.rm=TRUE),mi=quantile(overlap,0.1,na.rm=TRUE),ma=quantile(overlap,0.9,na.rm=TRUE))
+  gsum=ggplot(dsum,aes(x=year,y=meanoverlap,group=type))
+  labs=rep("",length(wyears));labs[seq(from=1,to=length(labs),by=5)]=as.character(wyears[seq(from=1,to=length(labs),by=5)])
+  gsum+geom_point()+geom_line()+
+    scale_x_discrete(breaks=as.character(wyears),labels=labs)+ylab(paste0("mean ",xlabel))+
+    theme(axis.title = element_text(size = 22), axis.text.x = element_text(size = 15),  axis.text.y = element_text(size = 15))
+  ggsave(file=paste0(Sys.getenv("CS_HOME"),'/PatentsMining/Results/Semantic/Analysis/window5/overlap/',measure,'_interclassif_all_ts_semcounts.pdf'),width=10,height=5)
+  
+}
+
+plotsInterOverlap("norm-patents","normalized overlap")
+plotsInterOverlap("relative","relative overlap")
+
 
 
 
@@ -318,19 +342,6 @@ ggsave(file=paste0(Sys.getenv("CS_HOME"),'/PatentsMining/Results/Semantic/Analys
 #
 #  -> done in overlaps
 
-#
-load('res/inter_overlaps.RData')
-overlaps=unlist(lapply(res,function(l){l$overlap}))
-cyears=unlist(lapply(res,function(l){l$year}))
-
-inds=overlaps>0
-#overlaps[overlaps==0]=1e-10
-g=ggplot(data.frame(overlaps=overlaps[inds],cyears=as.character(cyears[inds])))#,aes(x=cyears,y=overlaps))
-g+geom_density(aes(x=overlaps,colour=cyears),alpha=0.25,adjust=0.75)+scale_x_log10()+xlab("overlap")+ylab("density")#+scale_y_log10()
-
-
-g=ggplot(data.frame(overlaps=overlaps[inds],cyears=as.character(cyears[inds])),aes(x=cyears,y=overlaps))
-g+geom_point(pch='.')+scale_y_log10()+stat_smooth()
 
 
 
