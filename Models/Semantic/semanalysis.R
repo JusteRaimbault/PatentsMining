@@ -279,7 +279,7 @@ origs=c();cyears=c();types=c();
 for(year in wyears){
   show(year)
   #load(paste0('probas_processed/processed_',year,'.RData'))
-  load(paste0('probas/processed_',(year-windowSize+1),"-",year,'.RData'))
+  load(paste0('processed/',classifdir,'/processed_',(year-windowSize+1),"-",year,'.RData'))
   technoprobas=currentprobas$technoprobas;semprobas=currentprobas$semprobas;rm(currentprobas);gc()
   origs = append(origs,1 - rowSums(semprobas^2));types=append(types,rep("semantic classification",nrow(semprobas)))
   origs = append(origs,1 - rowSums(technoprobas^2));types=append(types,rep("technological classification",nrow(technoprobas)))
@@ -301,16 +301,16 @@ rm(origs,cyears,types);gc()
 
 g=ggplot(df)
 g+geom_density(aes(x=originality,colour=year))+facet_wrap(~type) + 
-  xlab("patent diversity")+scale_y_log10()+
+  xlab("patent diversity")+#scale_y_log10()+
   theme(axis.title = element_text(size = 22), axis.text.x = element_text(size = 15),  axis.text.y = element_text(size = 15))
-ggsave(file=paste0(Sys.getenv("CS_HOME"),'/PatentsMining/Results/Semantic/Analysis/window5/diversity/patentlevelorigs_all_semcounts_log10.pdf'),width=10,height=5)
+ggsave(file=paste0(Sys.getenv("CS_HOME"),'/PatentsMining/Results/Semantic/Analysis/window5/diversity/patentlevelorigs_all_semcounts.pdf'),width=10,height=5)
 rm(g);gc()
 
 g=ggplot(df[df$originality>0,])
 g+geom_density(aes(x=originality,colour=year))+facet_wrap(~type) + 
-  xlab("patent diversity")+scale_y_log10()+
+  xlab("patent diversity")+#scale_y_log10()+
   theme(axis.title = element_text(size = 22), axis.text.x = element_text(size = 15),  axis.text.y = element_text(size = 15))
-ggsave(file=paste0(Sys.getenv("CS_HOME"),'/PatentsMining/Results/Semantic/Analysis/window5/diversity/patentlevelorigs_positive_semcounts_log10.pdf'),width=10,height=5)
+ggsave(file=paste0(Sys.getenv("CS_HOME"),'/PatentsMining/Results/Semantic/Analysis/window5/diversity/patentlevelorigs_positive_semcounts.pdf'),width=10,height=5)
 rm(g);gc()
 
 # time series by year
