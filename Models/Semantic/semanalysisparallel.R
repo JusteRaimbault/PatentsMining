@@ -6,18 +6,24 @@ library(dplyr)
 
 setwd(paste0(Sys.getenv('CS_HOME'),'/PatentsMining/Models/Semantic'))
 
-wyears = 1980:2012
+wyears = 1980:2007
 windowSize=5
+kwLimit="100000"
+dispth=0.06
+ethunit="4.1e-05"
+classifdir = paste0('classification_window',windowSize,'_kwLimit',kwLimit,'_dispth',dispth,'_ethunit',ethunit)
+
 
 library(doParallel)
-cl <- makeCluster(17,outfile='log')
+cl <- makeCluster(28,outfile='log')
 registerDoParallel(cl)
 
 startTime = proc.time()[3]
 
 modularities <- foreach(year=wyears) %dopar% {
   library(igraph);library(Matrix);source('semanalfun.R')
-  load(paste0('probas/processed_counts_prim_',(year-windowSize+1),"-",year,'.RData'));load(paste0('probas/citadj_',(year-windowSize+1),"-",year,'.RData'));show(year)
+  load(paste0('processed/',classifdir,'/processed_',(year-windowSize+1),"-",year,'.RData'));
+  load(paste0('probas/citadj_',(year-windowSize+1),"-",year,'.RData'));show(year)
   m=computemodularities(currentprobas,currentadj)
   m$year=year
   return(m)
