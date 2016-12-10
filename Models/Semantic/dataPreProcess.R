@@ -35,3 +35,29 @@ for(year in wyears){
 }
 
 
+
+
+# load citation matrix
+load(paste0(Sys.getenv('CS_HOME'),'/PatentsMining/Data/processed/citation/network/adjacency.RData'))
+
+# preprocess adjacency for memory purposes
+for(year in wyears){
+  load(paste0('processed/',classifdir,'/processed_',(year-windowSize+1),"-",year,'.RData'));show(year)
+  technoprobas=currentprobas$technoprobas;semprobas=currentprobas$semprobas;rm(currentprobas);gc()
+  currentnames=intersect(rownames(technoprobas),rownames(citadjacency))
+  namestoadd=setdiff(rownames(technoprobas),currentnames)
+  currentadj = citadjacency[currentnames,currentnames]
+  currentadj=rbind(currentadj,Matrix(0,length(namestoadd),ncol(currentadj)))
+  rownames(currentadj)[(nrow(currentadj)-length(namestoadd)+1):nrow(currentadj)]=namestoadd
+  currentadj=cbind(currentadj,Matrix(0,nrow(currentadj),length(namestoadd)))
+  colnames(currentadj)[(ncol(currentadj)-length(namestoadd)+1):ncol(currentadj)]=namestoadd
+  save(currentadj,file=paste0('processed/',classifdir,'citadj_',(year-windowSize+1),"-",year,'.RData'))
+  #sizes=append(sizes,sum(citadjacency[currentnames,currentnames]));cyears=append(cyears,year)
+  #fromwindow=append(fromwindow,sum(citadjacency[currentnames,]))
+  rm(technoprobas,semprobas,currentnames,currentadj);gc()
+}
+
+
+
+
+
