@@ -23,7 +23,7 @@ startTime = proc.time()[3]
 modularities <- foreach(year=wyears) %dopar% {
   library(igraph);library(Matrix);source('semanalfun.R')
   load(paste0('processed/',classifdir,'/processed_',(year-windowSize+1),"-",year,'.RData'));
-  load(paste0('probas/citadj_',(year-windowSize+1),"-",year,'.RData'));show(year)
+  load(paste0('processed/',classifdir,'/citadj_',(year-windowSize+1),"-",year,'.RData'));show(year)
   m=computemodularities(currentprobas,currentadj)
   m$year=year
   return(m)

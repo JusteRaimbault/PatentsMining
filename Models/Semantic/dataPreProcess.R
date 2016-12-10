@@ -51,7 +51,7 @@ for(year in wyears){
   rownames(currentadj)[(nrow(currentadj)-length(namestoadd)+1):nrow(currentadj)]=namestoadd
   currentadj=cbind(currentadj,Matrix(0,nrow(currentadj),length(namestoadd)))
   colnames(currentadj)[(ncol(currentadj)-length(namestoadd)+1):ncol(currentadj)]=namestoadd
-  save(currentadj,file=paste0('processed/',classifdir,'citadj_',(year-windowSize+1),"-",year,'.RData'))
+  save(currentadj,file=paste0('processed/',classifdir,'/citadj_',(year-windowSize+1),"-",year,'.RData'))
   #sizes=append(sizes,sum(citadjacency[currentnames,currentnames]));cyears=append(cyears,year)
   #fromwindow=append(fromwindow,sum(citadjacency[currentnames,]))
   rm(technoprobas,semprobas,currentnames,currentadj);gc()
