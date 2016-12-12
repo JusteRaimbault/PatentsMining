@@ -154,7 +154,7 @@ directedmodularity<-function(membership,adjacency){
 }
 
 computemodularities<-function(currentprobas,currentadj){
-  technoprobas=currentprobas$technoprobas;semprobas=currentprobas$semprobas;primtechnoprobas=currentprobas$primarytechnoprobas;
+  technoprobas=currentprobas$technoprobas;semprobas=currentprobas$semprobas;primtechnoprobas=currentprobas$technoprobasprim;
   
   res=list()
   # overlapping modularities
