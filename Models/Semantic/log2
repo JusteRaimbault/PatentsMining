@@ -1,0 +1,27 @@
+starting worker pid=1928 on localhost:11348 at 17:21:03.216
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+[1] 1980
+[1] "Computing overlapping modularity : dim(probas)=284037 868 ; dim(adjacency)=284037 284037"
+[1] 0.1152074
+[1] 0.2304147
+[1] 0.3456221
+[1] 0.4608295
+[1] "Computing overlapping modularity : dim(probas)=284037 560 ; dim(adjacency)=284037 284037"
+[1] 0.1785714
+[1] 0.3571429
+[1] 0.5357143
+[1] 0.7142857
+[1] 0.8928571
+Error in unserialize(node$con) : erreur de lecture de la connexion
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Exécution arrêtée

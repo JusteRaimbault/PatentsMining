@@ -56,11 +56,57 @@ projyear=append(projyear,rep(as.character(year),3*length(projrows)))
 # for each year, plot triobjective, highlight chosen points
 
 # 
-# g=ggplot(sensdata[sensdata$dispth>0.06,] %>% group_by(dispth,eth) %>% summarise(maxmod=max(modularity),comnum=min(comnum),vcount=mean(vcount)))
-# g+geom_line(aes(x=eth,y=maxmod,colour=dispth,group=dispth))
+g=ggplot(sensdata %>% group_by(dispth,eth) %>% summarise(maxmod=max(modularity),comnum=min(comnum),vcount=mean(vcount)))
+g+geom_line(aes(x=eth,y=comnum,colour=dispth,group=dispth))
 # g+geom_point(aes(x=maxmod,y=vcount,colour=dispth))
 # g+geom_point(aes(x=vcount,y=maxmod,colour=dispth))
 # g+geom_point(aes(x=vcount,y=comnum,colour=dispth))
+
+
+##
+# 
+
+# all years, comnum = f(theta_w)
+
+g=ggplot(alldata %>% group_by(dispth,eth,year) %>% summarise(maxmod=max(modularity),comnum=min(comnum),vcount=mean(vcount)))
+g+geom_line(aes(x=eth,y=comnum,colour=dispth,group=dispth))+facet_wrap(~year)+
+    xlab(expression(theta[w]))+ylab("number of communities")+scale_colour_continuous(name=expression(theta[c]))
+
+# all years
+g+geom_point(aes(x=comnum,y=vcount,colour=maxmod),size=1)+facet_wrap(~year)+
+  xlab("number of communities")+ylab("number of vertices")+scale_colour_continuous(name="modularity")
+
+
+###
+## for 2004, argmax = 4.13e-5
+year=2004
+
+# plot comnum = f(theta_w)
+
+argmaxs=alldata[alldata$year==year,]%>% group_by(dispth)%>%summarise(argmaxeth=eth[comnum==max(comnum)][1])
+g=ggplot(alldata[alldata$year==year,] %>% group_by(dispth,eth) %>% summarise(maxmod=max(modularity),comnum=min(comnum),vcount=mean(vcount)))
+g+geom_line(aes(x=eth,y=comnum,colour=dispth,group=dispth))+
+  geom_vline(xintercept=mean(argmaxs$argmaxeth),color='red',linetype=2)+
+  xlab(expression(theta[w]))+ylab("number of communities")+scale_colour_continuous(name=expression(theta[c]))+ theme(axis.title = element_text(size = 22),legend.title = element_text(size = 22), axis.text.x = element_text(size = 15),   axis.text.y = element_text(size = 15))
+
+ggsave(file=paste0(Sys.getenv("CS_HOME"),'/PatentsMining/Results/Semantic/Sensitivity/window5/comnum_thetaw_',year,'.pdf'),width=10,height=7)
+
+
+# pareto plot
+# mean(argmaxs$argmaxeth) -> theta_w = 40 this year
+currentdata=alldata[alldata$year==year,] %>% group_by(dispth,eth) %>% summarise(maxmod=max(modularity),comnum=min(comnum),vcount=mean(vcount))
+g=ggplot(currentdata)
+g+geom_point(aes(x=comnum,y=vcount,colour=maxmod),size=1)+
+  geom_point(mapping=aes(x=comnum,y=vcount),data = currentdata[currentdata$eth==40,],colour='purple',size=2,pch=1)+
+  geom_point(mapping=aes(x=comnum,y=vcount),data = currentdata[currentdata$eth==40&currentdata$dispth==0.06,],colour='red',size=4,pch=22)+
+  xlab("number of communities")+ylab("number of vertices")+scale_colour_continuous(name="modularity")+ theme(axis.title = element_text(size = 22), axis.text.x = element_text(size = 15),   axis.text.y = element_text(size = 15))
+
+
+ggsave(file=paste0(Sys.getenv("CS_HOME"),'/PatentsMining/Results/Semantic/Sensitivity/window5/comnum_vcount_pareto_',year,'.pdf'),width=10,height=7)
+
+
+
+
 
 g=ggplot(alldata)
 g+geom_point(aes(x=comnum,y=vcount,colour=ethunitdist))+facet_wrap(~year)

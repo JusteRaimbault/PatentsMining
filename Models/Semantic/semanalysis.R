@@ -91,12 +91,35 @@ for(year in wyears){
   #ranks=append(ranks,1:length(semsizes));sortedsizes=append(sortedsizes,sort(semsizes,decreasing = TRUE));sortednsizes=append(sortednsizes,sort(semsizes/nrow(semprobas),decreasing = TRUE))
 }
 
+
+## rank size plot 
+
 g=ggplot(data.frame(size=sizes,year=as.character(years),rank=ranks,type=type))
 g+geom_line(aes(x=rank,y=size,colour=year,group=year))+
   scale_x_log10()+scale_y_log10()+facet_wrap(~type,scales="fixed")+ylab("size") + theme(axis.title = element_text(size = 22), 
     axis.text.x = element_text(size = 15), 
     axis.text.y = element_text(size = 15))
 ggsave(file=paste0(Sys.getenv("CS_HOME"),'/PatentsMining/Results/Semantic/Analysis/window5/sizes/all_raw_counts.pdf'),width=10,height=5)
+
+
+# mean and median in time
+g=ggplot(as.tbl(data.frame(size=sizes,year=years,type=type))%>%group_by(type,year)%>%summarise(meansize=mean(size),medsize=quantile(size,0.5)))
+g+geom_point(aes(x=year,y=meansize,color=type))+geom_line(aes(x=year,y=meansize,color=type,group=type))
+
+
+
+## kw sizes in time
+sizes=c();years=c()
+for(year in wyears){
+  yearrange=paste0((year-windowSize+1),"-",year);show(year)
+  currentkws = as.tbl(read.csv(paste0("classification/",classifdir,"/keywords_",yearrange,"_kwLimit",kwLimit,".0_dispth",dispth,"_ethunit",ethunit,".csv"),sep=";",header=TRUE,stringsAsFactors = FALSE))
+  currentkws%>%group_by(community)%>%summarise(size=n())
+  
+  
+  
+}
+
+
 
 
 #df=data.frame(size=sizes,nsize=nsizes,sortedsize=sortedsizes,sortednsize=sortednsizes,years=as.character(years),type=type)

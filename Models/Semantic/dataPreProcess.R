@@ -20,19 +20,19 @@ dir.create(paste0('processed/',classifdir))
 semprefix = paste0('classification/',classifdir,'/probas_')
 semsuffix = '_kwLimit100000.0_dispth0.06_ethunit4.1e-05.csv'
 
-
-# load techno probas
-load(file=paste0(Sys.getenv('CS_HOME'),'/PatentsMining/Data/processed/classes/techno_sparse.RData'))
-load(file=paste0(Sys.getenv('CS_HOME'),'/PatentsMining/Data/processed/classes/techno_sparse_primary.RData'))
-
-# first load all probas
-#probas=list()
-for(year in wyears){
-  currentprobas=loadProbas(year,semprefix,semsuffix)
-  yearrange=paste0((year-windowSize+1),"-",year)
-  save(currentprobas,file=paste0('processed/',classifdir,'/processed_',yearrange,'.RData'))
-  rm(currentprobas);gc()
-}
+# 
+# # load techno probas
+# load(file=paste0(Sys.getenv('CS_HOME'),'/PatentsMining/Data/processed/classes/techno_sparse.RData'))
+# load(file=paste0(Sys.getenv('CS_HOME'),'/PatentsMining/Data/processed/classes/techno_sparse_primary.RData'))
+# 
+# # first load all probas
+# #probas=list()
+# for(year in wyears){
+#   currentprobas=loadProbas(year,semprefix,semsuffix)
+#   yearrange=paste0((year-windowSize+1),"-",year)
+#   save(currentprobas,file=paste0('processed/',classifdir,'/processed_',yearrange,'.RData'))
+#   rm(currentprobas);gc()
+# }
 
 
 
