@@ -995,3 +995,2061 @@ The following object is masked from ‘package:base’:
 [1] 0.9845288
 [1] 0.877193
 [1] 0.9985735
+starting worker pid=35425 on localhost:11712 at 18:23:16.932
+starting worker pid=35434 on localhost:11712 at 18:23:17.160
+starting worker pid=35443 on localhost:11712 at 18:23:17.391
+starting worker pid=35452 on localhost:11712 at 18:23:17.612
+starting worker pid=35461 on localhost:11712 at 18:23:17.843
+starting worker pid=35471 on localhost:11712 at 18:23:18.076
+starting worker pid=35480 on localhost:11712 at 18:23:18.296
+starting worker pid=35490 on localhost:11712 at 18:23:18.525
+starting worker pid=35499 on localhost:11712 at 18:23:18.757
+starting worker pid=35508 on localhost:11712 at 18:23:18.987
+starting worker pid=35517 on localhost:11712 at 18:23:19.221
+starting worker pid=35527 on localhost:11712 at 18:23:19.441
+starting worker pid=35536 on localhost:11712 at 18:23:19.655
+starting worker pid=35545 on localhost:11712 at 18:23:19.878
+starting worker pid=35554 on localhost:11712 at 18:23:20.100
+starting worker pid=35563 on localhost:11712 at 18:23:20.333
+starting worker pid=35572 on localhost:11712 at 18:23:20.563
+starting worker pid=35581 on localhost:11712 at 18:23:20.783
+starting worker pid=35590 on localhost:11712 at 18:23:21.012
+starting worker pid=35599 on localhost:11712 at 18:23:21.245
+starting worker pid=35608 on localhost:11712 at 18:23:21.472
+starting worker pid=35617 on localhost:11712 at 18:23:21.705
+starting worker pid=35626 on localhost:11712 at 18:23:21.935
+starting worker pid=35635 on localhost:11712 at 18:23:22.165
+starting worker pid=35644 on localhost:11712 at 18:23:22.391
+starting worker pid=35653 on localhost:11712 at 18:23:22.624
+starting worker pid=35662 on localhost:11712 at 18:23:22.849
+starting worker pid=35671 on localhost:11712 at 18:23:23.080
+
+Attaching package: ‘igraph’
+
+
+Attaching package: ‘igraph’
+
+
+Attaching package: ‘igraph’
+
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+
+Attaching package: ‘igraph’
+
+The following object is masked from ‘package:base’:
+
+    union
+
+The following object is masked from ‘package:base’:
+
+    union
+
+The following object is masked from ‘package:base’:
+
+    union
+
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+
+Attaching package: ‘igraph’
+
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+
+Attaching package: ‘igraph’
+
+The following object is masked from ‘package:base’:
+
+    union
+
+The following object is masked from ‘package:base’:
+
+    union
+
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+The following object is masked from ‘package:base’:
+
+    union
+
+
+Attaching package: ‘igraph’
+
+The following object is masked from ‘package:base’:
+
+    union
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+
+Attaching package: ‘igraph’
+
+
+Attaching package: ‘igraph’
+
+
+Attaching package: ‘igraph’
+
+The following object is masked from ‘package:base’:
+
+    union
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+The following object is masked from ‘package:base’:
+
+    union
+
+The following object is masked from ‘package:base’:
+
+    union
+
+The following object is masked from ‘package:base’:
+
+    union
+
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+
+Attaching package: ‘igraph’
+
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+
+Attaching package: ‘igraph’
+
+The following object is masked from ‘package:base’:
+
+    union
+
+The following object is masked from ‘package:base’:
+
+    union
+
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+
+Attaching package: ‘igraph’
+
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+
+Attaching package: ‘igraph’
+
+The following object is masked from ‘package:base’:
+
+    union
+
+The following object is masked from ‘package:base’:
+
+    union
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+
+Attaching package: ‘igraph’
+
+The following object is masked from ‘package:base’:
+
+    union
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+The following object is masked from ‘package:base’:
+
+    union
+
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+In addition: Warning message:
+In readChar(con, 5L, useBytes = TRUE) :
+  cannot open compressed file 'probas/citadj_2003-2007.RData', probable reason 'No such file or directory'
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+In addition: Warning message:
+In readChar(con, 5L, useBytes = TRUE) :
+  cannot open compressed file 'probas/citadj_2002-2006.RData', probable reason 'No such file or directory'
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+In addition: Warning message:
+In readChar(con, 5L, useBytes = TRUE) :
+  cannot open compressed file 'probas/citadj_2001-2005.RData', probable reason 'No such file or directory'
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+In addition: Warning message:
+In readChar(con, 5L, useBytes = TRUE) :
+  cannot open compressed file 'probas/citadj_2000-2004.RData', probable reason 'No such file or directory'
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+In addition: Warning message:
+In readChar(con, 5L, useBytes = TRUE) :
+  cannot open compressed file 'probas/citadj_1999-2003.RData', probable reason 'No such file or directory'
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+In addition: Warning message:
+In readChar(con, 5L, useBytes = TRUE) :
+  cannot open compressed file 'probas/citadj_1998-2002.RData', probable reason 'No such file or directory'
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+In addition: Warning message:
+In readChar(con, 5L, useBytes = TRUE) :
+  cannot open compressed file 'probas/citadj_1997-2001.RData', probable reason 'No such file or directory'
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+In addition: Warning message:
+In readChar(con, 5L, useBytes = TRUE) :
+  cannot open compressed file 'probas/citadj_1996-2000.RData', probable reason 'No such file or directory'
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+In addition: Warning message:
+In readChar(con, 5L, useBytes = TRUE) :
+  cannot open compressed file 'probas/citadj_1995-1999.RData', probable reason 'No such file or directory'
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+In addition: Warning message:
+In readChar(con, 5L, useBytes = TRUE) :
+  cannot open compressed file 'probas/citadj_1994-1998.RData', probable reason 'No such file or directory'
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+In addition: Warning message:
+In readChar(con, 5L, useBytes = TRUE) :
+  cannot open compressed file 'probas/citadj_1993-1997.RData', probable reason 'No such file or directory'
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+In addition: Warning message:
+In readChar(con, 5L, useBytes = TRUE) :
+  cannot open compressed file 'probas/citadj_1992-1996.RData', probable reason 'No such file or directory'
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+In addition: Warning message:
+In readChar(con, 5L, useBytes = TRUE) :
+  cannot open compressed file 'probas/citadj_1991-1995.RData', probable reason 'No such file or directory'
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+In addition: Warning message:
+In readChar(con, 5L, useBytes = TRUE) :
+  cannot open compressed file 'probas/citadj_1990-1994.RData', probable reason 'No such file or directory'
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+In addition: Warning message:
+In readChar(con, 5L, useBytes = TRUE) :
+  cannot open compressed file 'probas/citadj_1989-1993.RData', probable reason 'No such file or directory'
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+In addition: Warning message:
+In readChar(con, 5L, useBytes = TRUE) :
+  cannot open compressed file 'probas/citadj_1988-1992.RData', probable reason 'No such file or directory'
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+In addition: Warning message:
+In readChar(con, 5L, useBytes = TRUE) :
+  cannot open compressed file 'probas/citadj_1987-1991.RData', probable reason 'No such file or directory'
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+In addition: Warning message:
+In readChar(con, 5L, useBytes = TRUE) :
+  cannot open compressed file 'probas/citadj_1986-1990.RData', probable reason 'No such file or directory'
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+In addition: Warning message:
+In readChar(con, 5L, useBytes = TRUE) :
+  cannot open compressed file 'probas/citadj_1985-1989.RData', probable reason 'No such file or directory'
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+In addition: Warning message:
+In readChar(con, 5L, useBytes = TRUE) :
+  cannot open compressed file 'probas/citadj_1984-1988.RData', probable reason 'No such file or directory'
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+In addition: Warning message:
+In readChar(con, 5L, useBytes = TRUE) :
+  cannot open compressed file 'probas/citadj_1983-1987.RData', probable reason 'No such file or directory'
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+In addition: Warning message:
+In readChar(con, 5L, useBytes = TRUE) :
+  cannot open compressed file 'probas/citadj_1982-1986.RData', probable reason 'No such file or directory'
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+In addition: Warning message:
+In readChar(con, 5L, useBytes = TRUE) :
+  cannot open compressed file 'probas/citadj_1981-1985.RData', probable reason 'No such file or directory'
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+In addition: Warning message:
+In readChar(con, 5L, useBytes = TRUE) :
+  cannot open compressed file 'probas/citadj_1980-1984.RData', probable reason 'No such file or directory'
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+In addition: Warning message:
+In readChar(con, 5L, useBytes = TRUE) :
+  cannot open compressed file 'probas/citadj_1979-1983.RData', probable reason 'No such file or directory'
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+In addition: Warning message:
+In readChar(con, 5L, useBytes = TRUE) :
+  cannot open compressed file 'probas/citadj_1978-1982.RData', probable reason 'No such file or directory'
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+In addition: Warning message:
+In readChar(con, 5L, useBytes = TRUE) :
+  cannot open compressed file 'probas/citadj_1977-1981.RData', probable reason 'No such file or directory'
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+In addition: Warning message:
+In readChar(con, 5L, useBytes = TRUE) :
+  cannot open compressed file 'probas/citadj_1976-1980.RData', probable reason 'No such file or directory'
+Execution halted
+starting worker pid=43914 on localhost:11723 at 04:55:23.826
+starting worker pid=43923 on localhost:11723 at 04:55:24.050
+starting worker pid=43932 on localhost:11723 at 04:55:24.273
+starting worker pid=43941 on localhost:11723 at 04:55:24.499
+starting worker pid=43950 on localhost:11723 at 04:55:24.730
+starting worker pid=43959 on localhost:11723 at 04:55:24.953
+starting worker pid=43968 on localhost:11723 at 04:55:25.178
+starting worker pid=43977 on localhost:11723 at 04:55:25.399
+starting worker pid=43986 on localhost:11723 at 04:55:25.621
+starting worker pid=43995 on localhost:11723 at 04:55:25.847
+starting worker pid=44004 on localhost:11723 at 04:55:26.076
+starting worker pid=44013 on localhost:11723 at 04:55:26.303
+starting worker pid=44022 on localhost:11723 at 04:55:26.536
+starting worker pid=44031 on localhost:11723 at 04:55:26.763
+starting worker pid=44040 on localhost:11723 at 04:55:26.991
+starting worker pid=44049 on localhost:11723 at 04:55:27.221
+starting worker pid=44058 on localhost:11723 at 04:55:27.449
+starting worker pid=44067 on localhost:11723 at 04:55:27.674
+starting worker pid=44076 on localhost:11723 at 04:55:27.903
+starting worker pid=44085 on localhost:11723 at 04:55:28.126
+starting worker pid=44094 on localhost:11723 at 04:55:28.354
+starting worker pid=44103 on localhost:11723 at 04:55:28.583
+starting worker pid=44112 on localhost:11723 at 04:55:28.812
+starting worker pid=44121 on localhost:11723 at 04:55:29.039
+starting worker pid=44130 on localhost:11723 at 04:55:29.270
+starting worker pid=44139 on localhost:11723 at 04:55:29.499
+starting worker pid=44148 on localhost:11723 at 04:55:29.725
+starting worker pid=44157 on localhost:11723 at 04:55:29.953
+
+Attaching package: ‘igraph’
+
+
+Attaching package: ‘igraph’
+
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+
+Attaching package: ‘igraph’
+
+The following object is masked from ‘package:base’:
+
+    union
+
+
+Attaching package: ‘igraph’
+
+The following object is masked from ‘package:base’:
+
+    union
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+
+Attaching package: ‘igraph’
+
+The following object is masked from ‘package:base’:
+
+    union
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+
+Attaching package: ‘igraph’
+
+
+Attaching package: ‘igraph’
+
+The following object is masked from ‘package:base’:
+
+    union
+
+The following object is masked from ‘package:base’:
+
+    union
+
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+
+Attaching package: ‘igraph’
+
+
+Attaching package: ‘igraph’
+
+The following object is masked from ‘package:base’:
+
+    union
+
+
+Attaching package: ‘igraph’
+
+
+Attaching package: ‘igraph’
+
+
+Attaching package: ‘igraph’
+
+
+Attaching package: ‘igraph’
+
+
+Attaching package: ‘igraph’
+
+The following object is masked from ‘package:base’:
+
+    union
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+The following object is masked from ‘package:base’:
+
+    union
+
+The following object is masked from ‘package:base’:
+
+    union
+
+The following object is masked from ‘package:base’:
+
+    union
+
+The following object is masked from ‘package:base’:
+
+    union
+
+The following object is masked from ‘package:base’:
+
+    union
+
+The following object is masked from ‘package:base’:
+
+    union
+
+
+Attaching package: ‘igraph’
+
+
+Attaching package: ‘igraph’
+
+
+Attaching package: ‘igraph’
+
+
+Attaching package: ‘igraph’
+
+
+Attaching package: ‘igraph’
+
+
+Attaching package: ‘igraph’
+
+
+Attaching package: ‘igraph’
+
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+
+Attaching package: ‘igraph’
+
+The following object is masked from ‘package:base’:
+
+    union
+
+The following object is masked from ‘package:base’:
+
+    union
+
+The following object is masked from ‘package:base’:
+
+    union
+
+The following object is masked from ‘package:base’:
+
+    union
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+The following object is masked from ‘package:base’:
+
+    union
+
+The following object is masked from ‘package:base’:
+
+    union
+
+The following object is masked from ‘package:base’:
+
+    union
+
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+The following object is masked from ‘package:base’:
+
+    union
+
+[1] 1980
+[1] "Computing overlapping modularity : dim(probas)=284037 868 ; dim(adjacency)=284037 284037"
+[1] 1985
+[1] "Computing overlapping modularity : dim(probas)=288192 868 ; dim(adjacency)=288192 288192"
+[1] 1984
+[1] "Computing overlapping modularity : dim(probas)=282777 868 ; dim(adjacency)=282777 282777"
+[1] 1983
+[1] "Computing overlapping modularity : dim(probas)=280767 868 ; dim(adjacency)=280767 280767"
+[1] 1982
+[1] "Computing overlapping modularity : dim(probas)=283856 868 ; dim(adjacency)=283856 283856"
+[1] 1987
+[1] "Computing overlapping modularity : dim(probas)=312396 868 ; dim(adjacency)=312396 312396"
+[1] 1981
+[1] "Computing overlapping modularity : dim(probas)=283945 868 ; dim(adjacency)=283945 283945"
+[1] 1986
+[1] "Computing overlapping modularity : dim(probas)=298917 868 ; dim(adjacency)=298917 298917"
+[1] 1990
+[1] "Computing overlapping modularity : dim(probas)=387302 868 ; dim(adjacency)=387302 387302"
+[1] 1988
+[1] "Computing overlapping modularity : dim(probas)=337491 868 ; dim(adjacency)=337491 337491"
+[1] 1991
+[1] "Computing overlapping modularity : dim(probas)=410910 868 ; dim(adjacency)=410910 410910"
+[1] 1993
+[1] "Computing overlapping modularity : dim(probas)=450871 868 ; dim(adjacency)=450871 450871"
+[1] 1989
+[1] "Computing overlapping modularity : dim(probas)=363917 868 ; dim(adjacency)=363917 363917"
+[1] 1992
+[1] "Computing overlapping modularity : dim(probas)=432198 868 ; dim(adjacency)=432198 432198"
+[1] 1995
+[1] "Computing overlapping modularity : dim(probas)=522040 868 ; dim(adjacency)=522040 522040"
+[1] 1996
+[1] "Computing overlapping modularity : dim(probas)=563980 868 ; dim(adjacency)=563980 563980"
+[1] 1994
+[1] "Computing overlapping modularity : dim(probas)=478340 868 ; dim(adjacency)=478340 478340"
+[1] 1999
+[1] "Computing overlapping modularity : dim(probas)=731398 868 ; dim(adjacency)=731398 731398"
+[1] 1998
+[1] "Computing overlapping modularity : dim(probas)=680616 868 ; dim(adjacency)=680616 680616"
+[1] 2000
+[1] "Computing overlapping modularity : dim(probas)=777782 868 ; dim(adjacency)=777782 777782"
+[1] 1997
+[1] "Computing overlapping modularity : dim(probas)=624856 868 ; dim(adjacency)=624856 624856"
+[1] 2006
+[1] "Computing overlapping modularity : dim(probas)=864778 868 ; dim(adjacency)=864778 864778"
+[1] 2002
+[1] "Computing overlapping modularity : dim(probas)=867480 868 ; dim(adjacency)=867480 867480"
+[1] 2005
+[1] "Computing overlapping modularity : dim(probas)=885891 868 ; dim(adjacency)=885891 885891"
+[1] 2004
+[1] "Computing overlapping modularity : dim(probas)=895211 868 ; dim(adjacency)=895211 895211"
+[1] 2003
+[1] "Computing overlapping modularity : dim(probas)=888399 868 ; dim(adjacency)=888399 888399"
+[1] 2001
+[1] "Computing overlapping modularity : dim(probas)=836261 868 ; dim(adjacency)=836261 836261"
+[1] 2007
+[1] "Computing overlapping modularity : dim(probas)=837968 868 ; dim(adjacency)=837968 837968"
+[1] 0.1152074
+[1] 0.1152074
+[1] 0.1152074
+[1] 0.1152074
+[1] 0.1152074
+[1] 0.1152074
+[1] 0.1152074
+[1] 0.1152074
+[1] 0.1152074
+[1] 0.1152074
+[1] 0.1152074
+[1] 0.1152074
+[1] 0.1152074
+[1] 0.1152074
+[1] 0.1152074
+[1] 0.2304147
+[1] 0.2304147
+[1] 0.2304147
+[1] 0.2304147
+[1] 0.1152074
+[1] 0.2304147
+[1] 0.1152074
+[1] 0.2304147
+[1] 0.1152074
+[1] 0.2304147
+[1] 0.2304147
+[1] 0.2304147
+[1] 0.1152074
+[1] 0.1152074
+[1] 0.2304147
+[1] 0.1152074
+[1] 0.2304147
+[1] 0.1152074
+[1] 0.2304147
+[1] 0.2304147
+[1] 0.1152074
+[1] 0.2304147
+[1] 0.1152074
+[1] 0.1152074
+[1] 0.1152074
+[1] 0.3456221
+[1] 0.3456221
+[1] 0.1152074
+[1] 0.3456221
+[1] 0.3456221
+[1] 0.1152074
+[1] 0.3456221
+[1] 0.3456221
+[1] 0.3456221
+[1] 0.3456221
+[1] 0.3456221
+[1] 0.3456221
+[1] 0.4608295
+[1] 0.4608295
+[1] 0.3456221
+[1] 0.4608295
+[1] 0.4608295
+[1] 0.2304147
+[1] 0.3456221
+[1] 0.2304147
+[1] 0.3456221
+[1] 0.3456221
+[1] 0.2304147
+[1] 0.2304147
+[1] 0.4608295
+[1] 0.4608295
+[1] 0.4608295
+[1] "Computing overlapping modularity : dim(probas)=283856 569 ; dim(adjacency)=283856 283856"
+[1] "Computing overlapping modularity : dim(probas)=282777 595 ; dim(adjacency)=282777 282777"
+[1] 0.2304147
+[1] "Computing overlapping modularity : dim(probas)=280767 581 ; dim(adjacency)=280767 280767"
+[1] 0.4608295
+[1] 0.4608295
+[1] 0.4608295
+[1] "Computing overlapping modularity : dim(probas)=283945 565 ; dim(adjacency)=283945 283945"
+[1] 0.2304147
+[1] 0.4608295
+[1] 0.2304147
+[1] 0.2304147
+[1] 0.2304147
+[1] 0.4608295
+[1] 0.4608295
+[1] 0.2304147
+[1] 0.2304147
+[1] "Computing overlapping modularity : dim(probas)=284037 560 ; dim(adjacency)=284037 284037"
+[1] 0.4608295
+[1] 0.2304147
+[1] 0.1757469
+[1] 0.1680672
+[1] 0.172117
+[1] 0.3456221
+[1] "Computing overlapping modularity : dim(probas)=298917 579 ; dim(adjacency)=298917 298917"
+[1] 0.1769912
+[1] 0.3456221
+[1] 0.2304147
+[1] "Computing overlapping modularity : dim(probas)=387302 578 ; dim(adjacency)=387302 387302"
+[1] "Computing overlapping modularity : dim(probas)=288192 565 ; dim(adjacency)=288192 288192"
+[1] 0.2304147
+[1] "Computing overlapping modularity : dim(probas)=363917 590 ; dim(adjacency)=363917 363917"
+[1] "Computing overlapping modularity : dim(probas)=312396 602 ; dim(adjacency)=312396 312396"
+[1] 0.3456221
+[1] "Computing overlapping modularity : dim(probas)=432198 591 ; dim(adjacency)=432198 432198"
+[1] 0.3456221
+[1] 0.3514938
+[1] 0.1785714
+[1] 0.3361345
+[1] 0.3442341
+[1] 0.1727116
+[1] 0.3539823
+[1] "Computing overlapping modularity : dim(probas)=337491 595 ; dim(adjacency)=337491 337491"
+[1] "Computing overlapping modularity : dim(probas)=410910 579 ; dim(adjacency)=410910 410910"
+[1] 0.1769912
+[1] 0.1730104
+[1] "Computing overlapping modularity : dim(probas)=450871 584 ; dim(adjacency)=450871 450871"
+[1] 0.1694915
+[1] 0.3456221
+[1] 0.166113
+[1] 0.4608295
+[1] 0.1692047
+[1] 0.3456221
+[1] 0.5042017
+[1] 0.5272408
+[1] 0.3454231
+[1] 0.5163511
+[1] 0.3571429
+[1] 0.3539823
+[1] 0.4608295
+[1] 0.3456221
+[1] 0.5309735
+[1] 0.3456221
+[1] 0.3460208
+[1] 0.1680672
+[1] 0.1727116
+[1] 0.3456221
+[1] 0.3456221
+[1] 0.1712329
+[1] 0.3389831
+[1] 0.3322259
+[1] 0.5181347
+[1] 0.3456221
+[1] 0.6722689
+[1] 0.7029877
+[1] 0.6884682
+[1] 0.3384095
+[1] 0.4608295
+[1] 0.5309735
+[1] 0.3456221
+[1] 0.4608295
+[1] 0.5357143
+[1] 0.3456221
+[1] 0.7079646
+[1] 0.5190311
+[1] 0.3456221
+[1] 0.3361345
+[1] 0.3454231
+[1] "Computing overlapping modularity : dim(probas)=478340 537 ; dim(adjacency)=478340 478340"
+[1] 0.6908463
+[1] 0.3424658
+[1] 0.5084746
+[1] 0.8403361
+[1] 0.8787346
+[1] 0.8605852
+[1] 0.7079646
+[1] 0.5076142
+[1] 0.4983389
+[1] 0.8849558
+[1] "Computing overlapping modularity : dim(probas)=522040 529 ; dim(adjacency)=522040 522040"
+[1] 0.7142857
+[1] 0.4608295
+[1] 0.6920415
+[1] 0.4608295
+[1] 0.4608295
+[1] 0.8635579
+[1] 0.8849558
+[1] 0.6779661
+[1] 0.5042017
+[1] 0.5136986
+[1] 0.5181347
+[1] 0.4608295
+[1] 0.676819
+[1] 0.1862197
+[1] "Computing overlapping modularity : dim(probas)=563980 527 ; dim(adjacency)=563980 563980"
+[1] 0.8928571
+[1] 0.6644518
+[1] 0.4608295
+[1] 0.4608295
+[1] 0.8650519
+[1] 0.1890359
+[1] "Computing overlapping modularity : dim(probas)=624856 538 ; dim(adjacency)=624856 624856"
+[1] 0.4608295
+[1] 0.8474576
+[1] 0.4608295
+[1] 0.8460237
+[1] 0.6908463
+[1] 0.6849315
+[1] 0.6722689
+[1] 0.8305648
+[1] 0.3724395
+[1] 0.4608295
+[1] 0.4608295
+[1] 0.1897533
+[1] 0.3780718
+[1] 0.8635579
+[1] 0.9966777
+[1] 0.8561644
+[1] 0.1858736
+[1] 0.8403361
+[1] 0.5586592
+[1] "Computing overlapping modularity : dim(probas)=731398 543 ; dim(adjacency)=731398 731398"
+[1] 0.6912442
+[1] 0.3795066
+[1] 0.5671078
+[1] "Computing overlapping modularity : dim(probas)=680616 533 ; dim(adjacency)=680616 680616"
+[1] "Computing overlapping modularity : dim(probas)=777782 561 ; dim(adjacency)=777782 777782"
+[1] 0.744879
+[1] 0.3717472
+[1] 0.6912442
+[1] 0.1841621
+[1] 0.7561437
+[1] 0.56926
+[1] 0.9310987
+[1] 0.6912442
+[1] 0.5576208
+[1] 0.3683241
+[1] 0.1782531
+[1] 0.6912442
+[1] 0.6912442
+[1] 0.6912442
+[1] 0.9451796
+[1] 0.1876173
+[1] 0.7590133
+[1] 0.8064516
+[1] 0.6912442
+[1] "Computing overlapping modularity : dim(probas)=836261 596 ; dim(adjacency)=836261 836261"
+[1] 0.7434944
+[1] 0.5524862
+[1] 0.9487666
+[1] 0.6912442
+[1] 0.8064516
+[1] 0.3565062
+[1] 0.8064516
+[1] 0.8064516
+[1] 0.3752345
+[1] "Computing overlapping modularity : dim(probas)=867480 630 ; dim(adjacency)=867480 867480"
+[1] "Computing overlapping modularity : dim(probas)=837968 692 ; dim(adjacency)=837968 837968"
+[1] 0.929368
+[1] 0.7366483
+[1] 0.1677852
+[1] 0.8064516
+[1] 0.5347594
+[1] "Computing overlapping modularity : dim(probas)=888399 644 ; dim(adjacency)=888399 888399"
+[1] 0.5628518
+[1] 0.8064516
+[1] "Computing overlapping modularity : dim(probas)=864778 673 ; dim(adjacency)=864778 864778"
+[1] 0.1587302
+[1] 0.1445087
+[1] 0.9208103
+[1] 0.7130125
+[1] "Computing overlapping modularity : dim(probas)=895211 670 ; dim(adjacency)=895211 895211"
+[1] 0.3355705
+[1] 0.1552795
+[1] 0.750469
+[1] 0.1485884
+[1] 0.3174603
+[1] 0.8912656
+[1] 0.2890173
+[1] "Computing overlapping modularity : dim(probas)=885891 687 ; dim(adjacency)=885891 885891"
+[1] 0.1492537
+[1] 0.9380863
+[1] 0.310559
+[1] 0.2971768
+[1] 0.5033557
+[1] 0.4761905
+[1] 0.2985075
+[1] 0.1455604
+[1] 0.433526
+[1] 0.4658385
+[1] 0.4457652
+[1] 0.6711409
+[1] 0.6349206
+[1] 0.4477612
+[1] 0.2911208
+[1] 0.621118
+[1] 0.5943536
+[1] 0.5780347
+[1] 0.8389262
+[1] 0.7936508
+[1] 0.5970149
+[1] 0.7763975
+[1] 0.7429421
+[1] 0.4366812
+[1] 0.7462687
+[1] 0.952381
+[1] 0.7225434
+[1] 0.8915305
+[1] 0.931677
+[1] 0.5822416
+[1] 0.8955224
+[1] 0.867052
+[1] 0.727802
+[1] 0.8733624
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+starting worker pid=16838 on localhost:11051 at 10:19:19.731
+starting worker pid=16847 on localhost:11051 at 10:19:19.960
+starting worker pid=16856 on localhost:11051 at 10:19:20.188
+starting worker pid=16865 on localhost:11051 at 10:19:20.413
+starting worker pid=16876 on localhost:11051 at 10:19:20.642
+starting worker pid=16885 on localhost:11051 at 10:19:20.880
+starting worker pid=16894 on localhost:11051 at 10:19:21.113
+starting worker pid=16903 on localhost:11051 at 10:19:21.337
+starting worker pid=16912 on localhost:11051 at 10:19:21.564
+starting worker pid=16921 on localhost:11051 at 10:19:21.789
+starting worker pid=16930 on localhost:11051 at 10:19:22.016
+starting worker pid=16940 on localhost:11051 at 10:19:22.246
+starting worker pid=16951 on localhost:11051 at 10:19:22.475
+starting worker pid=16960 on localhost:11051 at 10:19:22.701
+starting worker pid=16969 on localhost:11051 at 10:19:22.931
+starting worker pid=16978 on localhost:11051 at 10:19:23.159
+starting worker pid=16987 on localhost:11051 at 10:19:23.398
+starting worker pid=16996 on localhost:11051 at 10:19:23.628
+starting worker pid=17005 on localhost:11051 at 10:19:23.853
+starting worker pid=17014 on localhost:11051 at 10:19:24.088
+starting worker pid=17023 on localhost:11051 at 10:19:24.316
+starting worker pid=17032 on localhost:11051 at 10:19:24.543
+starting worker pid=17041 on localhost:11051 at 10:19:24.774
+starting worker pid=17050 on localhost:11051 at 10:19:24.998
+starting worker pid=17059 on localhost:11051 at 10:19:25.234
+starting worker pid=17068 on localhost:11051 at 10:19:25.464
+starting worker pid=17077 on localhost:11051 at 10:19:25.694
+starting worker pid=17086 on localhost:11051 at 10:19:25.922
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+
+Attaching package: ‘igraph’
+
+
+Attaching package: ‘igraph’
+
+
+Attaching package: ‘igraph’
+
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+
+Attaching package: ‘igraph’
+
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+
+Attaching package: ‘igraph’
+
+
+Attaching package: ‘igraph’
+
+
+Attaching package: ‘igraph’
+
+
+Attaching package: ‘igraph’
+
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+
+Attaching package: ‘igraph’
+
+
+Attaching package: ‘igraph’
+
+The following object is masked from ‘package:base’:
+
+    union
+
+
+Attaching package: ‘igraph’
+
+The following object is masked from ‘package:base’:
+
+    union
+
+
+Attaching package: ‘igraph’
+
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+
+Attaching package: ‘igraph’
+
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+
+Attaching package: ‘igraph’
+
+The following object is masked from ‘package:base’:
+
+    union
+
+
+Attaching package: ‘igraph’
+
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+
+Attaching package: ‘igraph’
+
+The following object is masked from ‘package:base’:
+
+    union
+
+The following object is masked from ‘package:base’:
+
+    union
+
+The following object is masked from ‘package:base’:
+
+    union
+
+The following object is masked from ‘package:base’:
+
+    union
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+The following object is masked from ‘package:base’:
+
+    union
+
+The following object is masked from ‘package:base’:
+
+    union
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+The following object is masked from ‘package:base’:
+
+    union
+
+
+Attaching package: ‘igraph’
+
+
+Attaching package: ‘igraph’
+
+
+Attaching package: ‘igraph’
+
+
+Attaching package: ‘igraph’
+
+The following object is masked from ‘package:base’:
+
+    union
+
+The following object is masked from ‘package:base’:
+
+    union
+
+The following object is masked from ‘package:base’:
+
+    union
+
+The following object is masked from ‘package:base’:
+
+    union
+
+The following object is masked from ‘package:base’:
+
+    union
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+The following object is masked from ‘package:base’:
+
+    union
+
+The following object is masked from ‘package:base’:
+
+    union
+
+The following object is masked from ‘package:base’:
+
+    union
+
+The following object is masked from ‘package:base’:
+
+    union
+
+[1] 1982
+[1] "Computing overlapping modularity : dim(probas)=283856 868 ; dim(adjacency)=283856 283856"
+[1] 1984
+[1] "Computing overlapping modularity : dim(probas)=282777 868 ; dim(adjacency)=282777 282777"
+[1] 1981
+[1] "Computing overlapping modularity : dim(probas)=283945 868 ; dim(adjacency)=283945 283945"
+[1] 1983
+[1] "Computing overlapping modularity : dim(probas)=280767 868 ; dim(adjacency)=280767 280767"
+[1] 1980
+[1] "Computing overlapping modularity : dim(probas)=284037 868 ; dim(adjacency)=284037 284037"
+[1] 1987
+[1] "Computing overlapping modularity : dim(probas)=312396 868 ; dim(adjacency)=312396 312396"
+[1] 1985
+[1] "Computing overlapping modularity : dim(probas)=288192 868 ; dim(adjacency)=288192 288192"
+[1] 1988
+[1] "Computing overlapping modularity : dim(probas)=337491 868 ; dim(adjacency)=337491 337491"
+[1] 1991
+[1] "Computing overlapping modularity : dim(probas)=410910 868 ; dim(adjacency)=410910 410910"
+[1] 1990
+[1] "Computing overlapping modularity : dim(probas)=387302 868 ; dim(adjacency)=387302 387302"
+[1] 1986
+[1] "Computing overlapping modularity : dim(probas)=298917 868 ; dim(adjacency)=298917 298917"
+[1] 1992
+[1] "Computing overlapping modularity : dim(probas)=432198 868 ; dim(adjacency)=432198 432198"
+[1] 1993
+[1] "Computing overlapping modularity : dim(probas)=450871 868 ; dim(adjacency)=450871 450871"
+[1] 1994
+[1] "Computing overlapping modularity : dim(probas)=478340 868 ; dim(adjacency)=478340 478340"
+[1] 1989
+[1] "Computing overlapping modularity : dim(probas)=363917 868 ; dim(adjacency)=363917 363917"
+[1] 1995
+[1] "Computing overlapping modularity : dim(probas)=522040 868 ; dim(adjacency)=522040 522040"
+[1] 1996
+[1] "Computing overlapping modularity : dim(probas)=563980 868 ; dim(adjacency)=563980 563980"
+[1] 1997
+[1] "Computing overlapping modularity : dim(probas)=624856 868 ; dim(adjacency)=624856 624856"
+[1] 1998
+[1] "Computing overlapping modularity : dim(probas)=680616 868 ; dim(adjacency)=680616 680616"
+[1] 1999
+[1] "Computing overlapping modularity : dim(probas)=731398 868 ; dim(adjacency)=731398 731398"
+[1] 2000
+[1] "Computing overlapping modularity : dim(probas)=777782 868 ; dim(adjacency)=777782 777782"
+[1] 2001
+[1] "Computing overlapping modularity : dim(probas)=836261 868 ; dim(adjacency)=836261 836261"
+[1] 2002
+[1] "Computing overlapping modularity : dim(probas)=867480 868 ; dim(adjacency)=867480 867480"
+[1] 2003
+[1] "Computing overlapping modularity : dim(probas)=888399 868 ; dim(adjacency)=888399 888399"
+[1] 2005
+[1] "Computing overlapping modularity : dim(probas)=885891 868 ; dim(adjacency)=885891 885891"
+[1] 2007
+[1] "Computing overlapping modularity : dim(probas)=837968 868 ; dim(adjacency)=837968 837968"
+[1] 2006
+[1] "Computing overlapping modularity : dim(probas)=864778 868 ; dim(adjacency)=864778 864778"
+[1] 2004
+[1] "Computing overlapping modularity : dim(probas)=895211 868 ; dim(adjacency)=895211 895211"
+[1] 0.1152074
+[1] 0.1152074
+[1] 0.1152074
+[1] 0.1152074
+[1] 0.1152074
+[1] 0.1152074
+[1] 0.1152074
+[1] 0.1152074
+[1] 0.1152074
+[1] 0.1152074
+[1] 0.1152074
+[1] 0.1152074
+[1] 0.1152074
+[1] 0.1152074
+[1] 0.1152074
+[1] 0.1152074
+[1] 0.2304147
+[1] 0.2304147
+[1] 0.2304147
+[1] 0.2304147
+[1] 0.2304147
+[1] 0.2304147
+[1] 0.1152074
+[1] 0.1152074
+[1] 0.1152074
+[1] 0.1152074
+[1] 0.2304147
+[1] 0.2304147
+[1] 0.1152074
+[1] 0.2304147
+[1] 0.2304147
+[1] 0.2304147
+[1] 0.2304147
+[1] 0.2304147
+[1] 0.1152074
+[1] 0.1152074
+[1] 0.1152074
+[1] 0.1152074
+[1] 0.1152074
+[1] 0.3456221
+[1] 0.3456221
+[1] 0.3456221
+[1] 0.3456221
+[1] 0.3456221
+[1] 0.3456221
+[1] 0.1152074
+[1] 0.2304147
+[1] 0.1152074
+[1] 0.2304147
+[1] 0.3456221
+[1] 0.2304147
+[1] 0.3456221
+[1] 0.4608295
+[1] 0.4608295
+[1] 0.4608295
+[1] 0.3456221
+[1] 0.4608295
+[1] 0.3456221
+[1] 0.4608295
+[1] 0.4608295
+[1] 0.3456221
+[1] 0.3456221
+[1] 0.3456221
+[1] 0.2304147
+[1] 0.2304147
+[1] 0.2304147
+[1] "Computing overlapping modularity : dim(probas)=280767 581 ; dim(adjacency)=280767 280767"
+[1] "Computing overlapping modularity : dim(probas)=283945 565 ; dim(adjacency)=283945 283945"
+[1] "Computing overlapping modularity : dim(probas)=283856 569 ; dim(adjacency)=283856 283856"
+[1] "Computing overlapping modularity : dim(probas)=282777 595 ; dim(adjacency)=282777 282777"
+[1] 0.2304147
+[1] "Computing overlapping modularity : dim(probas)=312396 602 ; dim(adjacency)=312396 312396"
+[1] 0.2304147
+[1] "Computing overlapping modularity : dim(probas)=284037 560 ; dim(adjacency)=284037 284037"
+[1] 0.3456221
+[1] 0.4608295
+[1] 0.4608295
+[1] 0.4608295
+[1] 0.3456221
+[1] 0.2304147
+[1] 0.4608295
+[1] 0.2304147
+[1] 0.2304147
+[1] 0.4608295
+[1] 0.4608295
+[1] 0.2304147
+[1] 0.4608295
+[1] 0.3456221
+[1] 0.2304147
+[1] 0.172117
+[1] 0.1769912
+[1] 0.1757469
+[1] 0.1680672
+[1] 0.166113
+[1] 0.1785714
+[1] "Computing overlapping modularity : dim(probas)=337491 595 ; dim(adjacency)=337491 337491"
+[1] 0.3456221
+[1] "Computing overlapping modularity : dim(probas)=298917 579 ; dim(adjacency)=298917 298917"
+[1] "Computing overlapping modularity : dim(probas)=387302 578 ; dim(adjacency)=387302 387302"
+[1] 0.2304147
+[1] 0.3442341
+[1] 0.3539823
+[1] 0.3514938
+[1] 0.4608295
+[1] "Computing overlapping modularity : dim(probas)=288192 565 ; dim(adjacency)=288192 288192"
+[1] 0.3361345
+[1] 0.3322259
+[1] 0.3456221
+[1] 0.3571429
+[1] 0.4608295
+[1] "Computing overlapping modularity : dim(probas)=410910 579 ; dim(adjacency)=410910 410910"
+[1] "Computing overlapping modularity : dim(probas)=432198 591 ; dim(adjacency)=432198 432198"
+[1] "Computing overlapping modularity : dim(probas)=363917 590 ; dim(adjacency)=363917 363917"
+[1] 0.2304147
+[1] 0.3456221
+[1] 0.1680672
+[1] 0.1727116
+[1] 0.1730104
+[1] 0.3456221
+[1] 0.5163511
+[1] 0.3456221
+[1] 0.5309735
+[1] 0.5272408
+[1] 0.1769912
+[1] 0.4608295
+[1] 0.5042017
+[1] 0.4983389
+[1] 0.3456221
+[1] 0.5357143
+[1] 0.1727116
+[1] 0.1692047
+[1] 0.3456221
+[1] 0.1694915
+[1] 0.3456221
+[1] 0.3456221
+[1] "Computing overlapping modularity : dim(probas)=450871 584 ; dim(adjacency)=450871 450871"
+[1] 0.3361345
+[1] 0.6884682
+[1] 0.3454231
+[1] 0.7079646
+[1] 0.3456221
+[1] 0.7029877
+[1] 0.3460208
+[1] 0.4608295
+[1] 0.3539823
+[1] 0.6722689
+[1] 0.6644518
+[1] "Computing overlapping modularity : dim(probas)=478340 537 ; dim(adjacency)=478340 478340"
+[1] 0.7142857
+[1] 0.3454231
+[1] 0.3384095
+[1] 0.4608295
+[1] 0.8605852
+[1] 0.8849558
+[1] 0.8787346
+[1] 0.5309735
+[1] 0.5042017
+[1] 0.8305648
+[1] 0.5181347
+[1] "Computing overlapping modularity : dim(probas)=522040 529 ; dim(adjacency)=522040 522040"
+[1] 0.8403361
+[1] 0.5190311
+[1] 0.4608295
+[1] 0.1712329
+[1] 0.3389831
+[1] 0.3456221
+[1] 0.8928571
+[1] 0.1862197
+[1] 0.4608295
+[1] 0.4608295
+[1] 0.5181347
+[1] 0.5076142
+[1] 0.4608295
+[1] 0.9966777
+[1] 0.7079646
+[1] 0.6908463
+[1] 0.6722689
+[1] 0.3456221
+[1] 0.1890359
+[1] 0.6920415
+[1] 0.3424658
+[1] "Computing overlapping modularity : dim(probas)=624856 538 ; dim(adjacency)=624856 624856"
+[1] 0.5084746
+[1] 0.4608295
+[1] 0.4608295
+[1] 0.4608295
+[1] 0.4608295
+[1] 0.676819
+[1] 0.6908463
+[1] 0.8635579
+[1] 0.8849558
+[1] 0.3724395
+[1] 0.8403361
+[1] "Computing overlapping modularity : dim(probas)=563980 527 ; dim(adjacency)=563980 563980"
+[1] 0.8650519
+[1] 0.5136986
+[1] 0.3780718
+[1] 0.6779661
+[1] 0.8635579
+[1] 0.8460237
+[1] "Computing overlapping modularity : dim(probas)=731398 543 ; dim(adjacency)=731398 731398"
+[1] 0.5586592
+[1] 0.1858736
+[1] 0.4608295
+[1] 0.6912442
+[1] "Computing overlapping modularity : dim(probas)=680616 533 ; dim(adjacency)=680616 680616"
+[1] 0.1897533
+[1] 0.6849315
+[1] 0.8474576
+[1] 0.5671078
+[1] 0.4608295
+[1] 0.744879
+[1] "Computing overlapping modularity : dim(probas)=777782 561 ; dim(adjacency)=777782 777782"
+[1] 0.1841621
+[1] 0.3717472
+[1] 0.8561644
+[1] 0.3795066
+[1] 0.7561437
+[1] 0.1876173
+[1] 0.6912442
+[1] 0.9310987
+[1] 0.6912442
+[1] 0.3683241
+[1] 0.9451796
+[1] 0.1782531
+[1] 0.6912442
+[1] 0.56926
+[1] 0.5576208
+[1] 0.6912442
+[1] 0.6912442
+[1] "Computing overlapping modularity : dim(probas)=836261 596 ; dim(adjacency)=836261 836261"
+[1] 0.3752345
+[1] 0.5524862
+[1] 0.7590133
+[1] 0.8064516
+[1] 0.8064516
+[1] 0.7434944
+[1] 0.3565062
+[1] 0.8064516
+[1] "Computing overlapping modularity : dim(probas)=867480 630 ; dim(adjacency)=867480 867480"
+[1] 0.8064516
+[1] 0.9487666
+[1] 0.6912442
+[1] 0.5628518
+[1] 0.6912442
+[1] 0.7366483
+[1] 0.1677852
+[1] 0.929368
+[1] 0.5347594
+[1] "Computing overlapping modularity : dim(probas)=864778 673 ; dim(adjacency)=864778 864778"
+[1] "Computing overlapping modularity : dim(probas)=888399 644 ; dim(adjacency)=888399 888399"
+[1] "Computing overlapping modularity : dim(probas)=837968 692 ; dim(adjacency)=837968 837968"
+[1] 0.9208103
+[1] 0.1587302
+[1] 0.750469
+[1] 0.7130125
+[1] 0.8064516
+[1] 0.3355705
+[1] 0.1485884
+[1] 0.8064516
+[1] 0.1552795
+[1] 0.1445087
+[1] 0.9380863
+[1] 0.3174603
+[1] "Computing overlapping modularity : dim(probas)=895211 670 ; dim(adjacency)=895211 895211"
+[1] 0.8912656
+[1] 0.2971768
+[1] 0.5033557
+[1] 0.2890173
+[1] 0.310559
+[1] 0.1492537
+[1] 0.4761905
+[1] "Computing overlapping modularity : dim(probas)=885891 687 ; dim(adjacency)=885891 885891"
+[1] 0.4457652
+[1] 0.6711409
+[1] 0.433526
+[1] 0.4658385
+[1] 0.2985075
+[1] 0.6349206
+[1] 0.5943536
+[1] 0.8389262
+[1] 0.1455604
+[1] 0.5780347
+[1] 0.4477612
+[1] 0.621118
+[1] 0.7936508
+[1] 0.7429421
+[1] 0.5970149
+[1] 0.7225434
+[1] 0.7763975
+[1] 0.2911208
+[1] 0.952381
+[1] 0.8915305
+[1] 0.7462687
+[1] 0.867052
+[1] 0.931677
+[1] 0.4366812
+[1] 0.8955224
+[1] 0.5822416
+[1] 0.727802
+[1] 0.8733624
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
