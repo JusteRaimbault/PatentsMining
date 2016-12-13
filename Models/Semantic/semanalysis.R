@@ -462,15 +462,15 @@ df = data.frame(year=sapply(modularities,function(l){l$year}),
                 )
 
 g=ggplot(data.frame(year=c(df$year,df$year),mod = c(df$technoovmod,df$semovmod),type=c(rep("technological",nrow(df)),rep("semantic",nrow(df)))),aes(x=year,y=mod,colour=type,group=type))
-g+geom_line()+geom_point()+ylab("overlapping modularity")+scale_y_log10()+
-  theme(legend.position = "none",axis.title = element_text(size = 22), axis.text.x = element_text(size = 15),  axis.text.y = element_text(size = 15))
+g+geom_line()+geom_point()+ylab("overlapping modularity")+#scale_y_log10()+
+  theme(axis.title = element_text(size = 22), axis.text.x = element_text(size = 15),  axis.text.y = element_text(size = 15))
 ggsave(file=paste0(Sys.getenv("CS_HOME"),'/PatentsMining/Results/Semantic/Analysis/window5/citation/overlappingmodularity.pdf'),width=10,height=5)
 
 
 
-g=ggplot(data.frame(year=c(df$year,df$year),mod = c(df$technodirmod,df$semdirmod),type=c(rep("techno",nrow(df)),rep("semantic",nrow(df)))),aes(x=year,y=mod,colour=type,group=type))
-g+geom_line()+geom_point()+ylab("modularity")+scale_y_log10()+
-  theme(legend.position = "none",axis.title = element_text(size = 22), axis.text.x = element_text(size = 15),  axis.text.y = element_text(size = 15))
+g=ggplot(data.frame(year=c(df$year,df$year),mod = c(df$technodirmod,df$semdirmod),type=c(rep("technological",nrow(df)),rep("semantic",nrow(df)))),aes(x=year,y=mod,colour=type,group=type))
+g+geom_line()+geom_point()+ylab("modularity")+#scale_y_log10()+
+  theme(axis.title = element_text(size = 22), axis.text.x = element_text(size = 15),  axis.text.y = element_text(size = 15))
 ggsave(file=paste0(Sys.getenv("CS_HOME"),'/PatentsMining/Results/Semantic/Analysis/window5/citation/simplemodularity.pdf'),width=10,height=5)
 
 
