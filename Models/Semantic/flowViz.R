@@ -7,18 +7,16 @@ library(networkD3)
 library(dplyr)
 library(igraph)
 
-# TODO : single date overlaps -> use ?
-#  http://jokergoo.github.io/circlize/example/grouped_chordDiagram.html
 
-# TODO : inclusion in a shiny app : idem see
-#  https://christophergandrud.github.io/networkD3/
-
-wyears = 1980:2012
+wyears = 1980:2007
 windowSize=5
+kwLimitNum="100000.0"
 kwLimit="100000"
 dispth=0.06
-ethunit=4.5e-05
-
+ethunit="4.1e-05"
+classifdir = paste0('classification_window',windowSize,'_kwLimit',kwLimit,'_dispth',dispth,'_ethunit',ethunit)
+semprefix = paste0('classification/',classifdir,'/keywords_')
+semsuffix = paste0('_kwLimit',kwLimitNum,'_dispth',dispth,'_ethunit',ethunit,'.csv')
 
 # communities as list in time of list of kws
 #   list(year1 = list(com1 = c(...), com2 = c(...)))
@@ -28,13 +26,12 @@ coms=list()
 
 for(year in wyears){
   yearrange=paste0((year-windowSize+1),"-",year);show(year)
-  currentkws = as.tbl(read.csv(paste0("probas_count_extended/keywords-count-extended_",yearrange,"_kwLimit",kwLimit,'_dispth',dispth,"_ethunit",ethunit,".csv"),sep=";",header=TRUE,stringsAsFactors = FALSE))
-  #currentkws %>% group_by(V2)
+  currentkws = as.tbl(read.csv(file=paste0(semprefix,yearrange,semsuffix),sep=";",stringsAsFactors = FALSE))
   currentcoms = list()
-  for(i in unlist(unique(currentkws[,2]))){
+  for(i in unlist(unique(currentkws$community))){
     rows = currentkws[currentkws$community==i,]
     # try to name by best techno disp
-    name = unlist(rows[rows$technodispersion==max(rows$technodispersion),1])[1]
+    name =unlist(rows[rows$technodispersion==max(rows$technodispersion),1])[1] #Reduce(function(s1,s2){return(paste0(s1," ; ",s2))},unlist(rows[rows$technodispersion==max(rows$technodispersion),1])[1:2])
     currentcoms[[name]]=unlist(rows[,1])
   }
   coms[[as.character(year)]]=currentcoms
@@ -53,6 +50,7 @@ for(year in wyears){
 # }
 
 # -> 100 seems ok
+
 
 
 
@@ -176,9 +174,58 @@ optim <- ga(type="real-valued",fitness=penalty,min=rep(0,vcount(g)),max=rep(1,vc
   
 
 
+
+
+
+
+
+
+
+
+##########
+## Plot on communities sizes
+
+meansizes=c();medsizes=c();years=c()
+for(year in wyears){
+  currentcoms = coms[[as.character(year)]]
+  currentlengths=sapply(currentcoms,length)
+  meansizes=append(meansizes,mean(currentlengths));medsizes=append(medsizes,quantile(currentlengths,0.5));years=append(years,year)
+}
+
+ylabel = "community size"
+gsum=ggplot(data.frame(meansizes,years),aes(x=years,y=meansizes))
+labs=rep("",length(wyears));labs[seq(from=1,to=length(labs),by=5)]=as.character(wyears[seq(from=1,to=length(labs),by=5)])
+gsum+geom_point()+geom_line()+
+  #scale_x_discrete(breaks=as.character(wyears),labels=labs)+
+  ylab(paste0("mean ",ylabel))+xlab("year")+
+  theme(axis.title = element_text(size = 22), axis.text.x = element_text(size = 15),  axis.text.y = element_text(size = 15))
+ggsave(file=paste0(Sys.getenv("CS_HOME"),'/PatentsMining/Results/Semantic/Analysis/window5/sizes/meancomsize.pdf'),width=10,height=5)
+
+
+
+
+
+
+
+
+##########
+# old plots with 3djs
+
 # plot the graph
 #sankeyNetwork(Links = mlinks, Nodes = mnodes, Source = "from",
 #              Target = "to", Value = "weight", NodeID = "name",
 #              fontSize = 12, nodeWidth = 20)
+
+
+
+# TODO : single date overlaps -> use ?
+#  http://jokergoo.github.io/circlize/example/grouped_chordDiagram.html
+
+# TODO : inclusion in a shiny app : idem see
+#  https://christophergandrud.github.io/networkD3/
+
+
+
+
 
 
