@@ -2,7 +2,7 @@
 library(Matrix)
 setwd(paste0(Sys.getenv('CS_HOME'),'/PatentsMining/Models/Semantic'))
 
-load('semanalfun.R')
+source('semanalfun.R')
 
 wyears = 1980:2012
 windowSize=5
