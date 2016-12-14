@@ -17,8 +17,8 @@ def test_construct_graph() :
 def npatent_years():
     mongo = pymongo.MongoClient(utils.get_parameter('mongopath',True,True))
     data = []
-    window=utils.get_parameter('window-size')
-    for year in range(1980,2013):
+    window=int(utils.get_parameter('window-size'))
+    for year in range(1976+window-1,2013):
 	print(year)
         years=map(lambda y:str(y),range(int(year-window+1),int(year+1)))
         patents = mongo['patent']['keywords'].find({"app_year":{"$in":years}},no_cursor_timeout=True)
@@ -50,5 +50,5 @@ def test_patent_measure():
         i=i+1
 
 
-#npatent_years()
-test_patent_measure()
+npatent_years()
+#test_patent_measure()
