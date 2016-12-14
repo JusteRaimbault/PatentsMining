@@ -128,6 +128,7 @@ mnodes = data.frame(id=0:(length(nodes)-1),name=names(nodes))
 #plot(graph_from_data_frame(mlinks,vertices=mnodes))
 g = graph_from_data_frame(mlinks,vertices=mnodes)
 V(g)$year=as.numeric(sapply(V(g)$name,function(x){substring(text=x,first=nchar(x)-3)}))
+V(g)$comname = sapply(V(g)$name,function(x){substring(text=x,first=1,last=nchar(x)-5)})
 
 # Tests for layout
 #V(g)$x = V(g)$year;V(g)$y=runif(vcount(g))
@@ -140,20 +141,35 @@ V(g)$year=as.numeric(sapply(V(g)$name,function(x){substring(text=x,first=nchar(x
 # specific algo for layout, using weight proximity
 V(g)$x=V(g)$year
 
+# 
+# V(g)$y[V(g)$year==wyears[1]]=(1:length(which(V(g)$year==wyears[1])))/length(which(V(g)$year==wyears[1])) # random layout for first row
+# for(currentyear in wyears[2:length(wyears)]){
+#   V(g)$y[V(g)$year==currentyear]=1:length(which(V(g)$year==currentyear))
+#   currentvertices = V(g)[V(g)$year==currentyear]
+#   for(v in currentvertices){
+#     currentedges = E(g)[V(g)%->%v]
+#     if(length(currentedges)>0){
+#       V(g)$y[V(g)==v] = sum(currentedges$weight/sum(currentedges$weight)*head_of(g,currentedges)$y)
+#     }
+#   }
+#   # put rank for more visibility
+#   #V(g)$y[V(g)$year==currentyear] = rank(V(g)$y[V(g)$year==currentyear],ties.method = "random")/length(which(V(g)$year==currentyear))
+#   #V(g)$y[V(g)$year==currentyear] = (V(g)$y[V(g)$year==currentyear] - min(V(g)$y[V(g)$year==currentyear]))/(max(V(g)$y[V(g)$year==currentyear])-min(V(g)$y[V(g)$year==currentyear]))
+# }
 
-V(g)$y[V(g)$year==wyears[1]]=(1:length(which(V(g)$year==wyears[1])))#/length(which(V(g)$year==wyears[1])) # random layout for first row
+# greedy algo optimisation ?
+
+# uniform init
+V(g)$y = runif(vcount(g))
+
+nruns = 20
 for(currentyear in wyears[2:length(wyears)]){
-  V(g)$y[V(g)$year==currentyear]=1:length(which(V(g)$year==currentyear))
-  currentvertices = V(g)[V(g)$year==currentyear]
-  for(v in currentvertices){
-    currentedges = E(g)[V(g)%->%v]
-    if(length(currentedges)>0){
-      V(g)$y[V(g)==v] = sum(currentedges$weight/sum(currentedges$weight)*head_of(g,currentedges)$y)
-    }
-  }
-  # put rank for more visibility
-  #V(g)$y[V(g)$year==currentyear] = rank(V(g)$y[V(g)$year==currentyear],ties.method = "random")/length(which(V(g)$year==currentyear))
+  incoming = E(g)[which(V(g)$year==(currentyear-1))%->%which(V(g)$year==currentyear)]
+  diff = abs(head_of(g,incoming)$y - tail_of(g,incoming)$y)*incoming$weight
+  # move vertex with largest angle <- move prevs ? ; need to aggregate on dest vertices.
+  
 }
+
 
 
 
