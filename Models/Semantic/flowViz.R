@@ -43,7 +43,7 @@ for(year in wyears){
 g=ggplot(plotdata)
 g+geom_density(aes(x=technodisp,colour=as.character(year)))
 gsum=ggplot(plotdata%>%group_by(year)%>%summarise(meantechdisp=mean(technodisp)),aes(x=year,y=meantechdisp))
-
+gsum+geom_point()+geom_line()
 
 # test independance measures for naming
 #pcaname = prcomp(apply(currentkws[,3:11],2,function(col){return((col - min(col))/(max(col)-min(col)))}))
