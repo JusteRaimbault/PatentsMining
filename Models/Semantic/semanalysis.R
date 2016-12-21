@@ -484,10 +484,23 @@ g+geom_line(aes(x=year,y=semdirgraphmod))
 
 
 
+##############
+## Originalities and Generalities
+
+origgens = read.csv('data/origgen.csv',sep=";")
 
 
 
+g=ggplot(data.frame(year=c(origgens$year,origgens$year),originality=c(origgens$orig.tech,origgens$orig.sem),type=c(rep("technological",nrow(origgens)),rep("semantic",nrow(origgens)))),aes(x=year,y=originality,group=type,colour=type))
+g+geom_line(na.rm=TRUE)+geom_point(na.rm=TRUE)+
+  theme(axis.title = element_text(size = 22), axis.text.x = element_text(size = 15),  axis.text.y = element_text(size = 15))
+ggsave(file=paste0(Sys.getenv("CS_HOME"),'/PatentsMining/Results/Semantic/Analysis/window5/originality/originality.pdf'),width=10,height=5)
 
+
+g=ggplot(data.frame(year=c(origgens$year,origgens$year),generality=c(origgens$gen.tech,origgens$gen.sem),type=c(rep("technological",nrow(origgens)),rep("semantic",nrow(origgens)))),aes(x=year,y=generality,group=type,colour=type))
+g+geom_line(na.rm=TRUE)+geom_point(na.rm=TRUE)+
+  theme(axis.title = element_text(size = 22), axis.text.x = element_text(size = 15),  axis.text.y = element_text(size = 15))
+ggsave(file=paste0(Sys.getenv("CS_HOME"),'/PatentsMining/Results/Semantic/Analysis/window5/generality/generality.pdf'),width=10,height=5)
 
 
 
