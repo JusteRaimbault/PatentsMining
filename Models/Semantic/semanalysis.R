@@ -206,7 +206,7 @@ for(year in wyears){
 resdir=paste0(Sys.getenv('CS_HOME'),'/PatentsMining/Results/Semantic/Analysis/window5/overlap/')
 df=data.frame(overlap=overlaps,year=as.character(years),type=as.character(types),measure=measures)#,filter=filters)
 rm(overlaps,years,types);gc()
-save(df,file="res/full-overlaps.RData")
+#save(df,file="res/full-overlaps.RData")
 #load("res/full-overlaps.RData")
 
 plotsIntraOverlap <-function(measure,xlabel){
@@ -270,7 +270,7 @@ plotsIntraOverlap("relative","relative overlap")
 
 plotsInterOverlap <-function(measure,xlabel){
   g=ggplot(df[df$measure==measure&df$type=="inter-classifications",],aes(x=overlap,colour=year))
-  g+geom_density(alpha=0.25)+xlab(xlabel)+ylab("density")+scale_x_log10()
+  g+geom_density(alpha=0.25)+xlab(xlabel)+ylab("density")+scale_x_log10()+
     theme(axis.title = element_text(size = 22), axis.text.x = element_text(size = 15),  axis.text.y = element_text(size = 15))
   ggsave(file=paste0(Sys.getenv("CS_HOME"),'/PatentsMining/Results/Semantic/Analysis/window5/overlap/',measure,'_interclassif_all_density_semcounts.pdf'),width=10,height=5)
   
