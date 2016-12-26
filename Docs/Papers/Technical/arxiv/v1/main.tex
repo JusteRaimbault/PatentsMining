@@ -209,8 +209,8 @@ where $k_j(s)$ is the number of occurrences of the $s$th keyword in each of the 
 \begin{figure}
 \centering
 %\hspace{-2.5cm}
-\includegraphics[width=0.45\textwidth,height=0.25\textheight]{comnum_thetaw_2004.png}
-\includegraphics[width=0.45\textwidth,height=0.25\textheight]{comnum_vcount_pareto_2004.png}
+\includegraphics[width=0.45\textwidth,height=0.25\textheight]{comnum_thetaw_2004.jpg}
+\includegraphics[width=0.45\textwidth,height=0.25\textheight]{comnum_vcount_pareto_2004.jpg}
 %\includegraphics[width=\textwidth]{tiff/Fig1.tif}
 \caption{\textbf{Sensitivity analysis of network community structure to filtering parameters.} We consider a specific window 2000-2004 and the obtained plots are typical. \textit{(Left panel)} We plot the number of communities as a function of $\theta_w$ for different $\theta_c$ values. The maximum is roughly stable across $\theta_c$ (dashed red line). \textit{(Right panel)} To choose $\theta_c$, we do a Pareto optimization on communities and network size: the compromise point (red overline) on the Pareto front (purple overline: possible choices after having fixed $\theta_w^{(0)}$; blue level gives modularity) corresponds to $\theta_c = 0.06$.}
 \label{fig:networksensitivity}
@@ -220,7 +220,7 @@ where $k_j(s)$ is the number of occurrences of the $s$th keyword in each of the 
 %%%%%%%%%%%%%%%%%%%%%%
 \begin{figure}
 \centering
-\includegraphics[width=\textwidth]{striking}
+\includegraphics[width=\textwidth]{striking.jpg}
 %\includegraphics[width=\textwidth]{tiff/Fig2.tif}
 \caption{\textbf{An example of semantic network visualization.} We show the network obtained for the window 2000-2004, with parameters $\theta_c = 0.06$ and $\theta_w = \theta_w^{(0)}\cdot N_P = 4.5e^{-5} \cdot 9.1e^{5}$. The corresponding file in a vector format (\texttt{.svg}), that can be zoomed and explored, is available at \texttt{http://37.187.242.99/files/public/network.svg}.}
 \label{fig:rawnetwork}
@@ -238,7 +238,7 @@ For each year $t$, we define as $N^{(sem)}_t$ the number of semantic classes whi
 %%%%%%%%%%%%%%%%%%%%%%
 \begin{figure}
 \centering
-\includegraphics[width=0.9\textwidth]{meancomsize}
+\includegraphics[width=0.9\textwidth]{meancomsize.jpg}
 %\includegraphics[width=\textwidth]{tiff/Fig3.tif}
 \caption{\textbf{This figure plots the average number of keywords by semantic class for each time window $\left[t-4; t\right]$} from $t=1980$ to $t=2007$.}
 \label{fig:mean_K}
@@ -264,7 +264,7 @@ where  $B_{ij}$ equals $1$ if the $i$th patent belongs to the $j$th technologica
 \begin{figure}
 \centering
 \hspace*{-2.5cm}
-\includegraphics[width=1.2\textwidth]{all_raw_counts.png}
+\includegraphics[width=1.2\textwidth]{all_raw_counts.jpg}
 %\includegraphics[width=\textwidth]{tiff/Fig4.tif}
 \caption{\textbf{Sizes of classes.} Yearly from $t = 1980$ to $t =2007$, we plot the size of semantic classes (left-side) and technological classes (right-side) for the corresponding time window $[t-4, t]$, 
 from the biggest to the smallest. The formal definition of size can be found in Section \ref{characteristics}. Each color corresponds to one specific year. Yearly semantic classes and technological classes present a similar hierarchical structure which confirms the comparability of the two classifications. This feature is crucial for the statistical analysis in Section \ref{statisticalmodel}. Over time, curves are translated and levels of hierarchy stays roughly constant.}
@@ -310,11 +310,11 @@ where $z \in \{tec, sem\}$, $I_i$ denotes the set of patents that are cited by t
 %%%%%%%%%%%%%%%%%%%%%%
 \begin{figure}
 %First row : semantic with relevant keywords only - all patents 
-\includegraphics[width=0.49\textwidth]{patentlevelorigs_all_semcounts}
-\includegraphics[width=0.49\textwidth]{patentlevelorigs_all_ts_semcounts}\\
+\includegraphics[width=0.49\textwidth]{patentlevelorigs_all_semcounts.jpg}
+\includegraphics[width=0.49\textwidth]{patentlevelorigs_all_ts_semcounts.jpg}\\
 %Second row : patents with diversity $> 0$ (more than one class)}
-\includegraphics[width=0.49\textwidth]{patentlevelorigs_positive_semcounts}
-\includegraphics[width=0.49\textwidth]{patentlevelorigs_positive_ts_semcounts}
+\includegraphics[width=0.49\textwidth]{patentlevelorigs_positive_semcounts.jpg}
+\includegraphics[width=0.49\textwidth]{patentlevelorigs_positive_ts_semcounts.jpg}
 %\includegraphics[width=\textwidth]{tiff/Fig5.tif}
 \caption{
 \textbf{Patent level diversities.} Distributions of diversities (Left column) and corresponding mean time-series (Right column) for $t=1980$ to $t=2007$ (with the corresponding time window $[t-4,t]$). The first row includes all classified patents, whereas the second row includes only patents with more than one class (i.e. patents with diversity greater than 0).
@@ -324,8 +324,8 @@ where $z \in \{tec, sem\}$, $I_i$ denotes the set of patents that are cited by t
 %%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%
 \begin{figure}
-\includegraphics[width=0.49\textwidth]{originality.png}
-\includegraphics[width=0.49\textwidth]{generality.png}\\
+\includegraphics[width=0.49\textwidth]{originality.jpg}
+\includegraphics[width=0.49\textwidth]{generality.jpg}\\
 %\includegraphics[width=\textwidth]{tiff/Fig6.tif}
 \caption{\textbf{Patent level originality} (left hand side) and \textbf{generality} (right hand side)  for $t=1980$ to $t=2007$ (with the corresponding time window $[t-4,t]$) as defined in subsection \ref{subsec:orig-gene}. }
 \label{fig:orig-gene}
@@ -353,10 +353,10 @@ The study of distributions of overlaps inside each classification, i.e. between 
 %%%%%%%%%%%%%%%%%%%%%%
 \begin{figure}[!ht]
 \centering
-\includegraphics[width=0.49\textwidth]{norm-patents_all_density_semcounts.png}
-\includegraphics[width=0.49\textwidth]{norm-patents_all_ts_semcounts.png} \\
-\includegraphics[width=0.49\textwidth]{relative_all_density_semcounts.png}
-\includegraphics[width=0.49\textwidth]{relative_all_ts_semcounts.png}
+\includegraphics[width=0.49\textwidth]{norm-patents_all_density_semcounts.jpg}
+\includegraphics[width=0.49\textwidth]{norm-patents_all_ts_semcounts.jpg} \\
+\includegraphics[width=0.49\textwidth]{relative_all_density_semcounts.jpg}
+\includegraphics[width=0.49\textwidth]{relative_all_ts_semcounts.jpg}
 %\includegraphics[width=\textwidth]{tiff/Fig7.tif}
 \caption{
 \textbf{Intra-classification overlaps.}
@@ -375,8 +375,8 @@ Overlaps \emph{between} classifications are defined as in (\ref{overlap}), but w
 
 %%%%%%%%%%%%%%%%%%%%%%
 \begin{figure}[!ht]
-\includegraphics[width=0.49\textwidth]{relative_interclassif_all_density_semcounts.png}
-\includegraphics[width=0.49\textwidth]{relative_interclassif_all_ts_semcounts.png}
+\includegraphics[width=0.49\textwidth]{relative_interclassif_all_density_semcounts.jpg}
+\includegraphics[width=0.49\textwidth]{relative_interclassif_all_ts_semcounts.jpg}
 %\includegraphics[width=\textwidth]{tiff/Fig8.tif}
 \caption{\textbf{Distribution of relative overlaps between classifications.} (Left) Distribution of overlaps at all time steps; (Right) Corresponding mean time-series. The decreasing trend starting around 1996 confirms a qualitative regime shift in that period.}
 \label{fig:inter-classif-overlap}
@@ -412,8 +412,8 @@ We document in Fig.~\ref{fig:modularities} both simple and multi-class modularit
 %%%%%%%%%%%%%%%%%%%%%%
 \begin{figure}[!ht]
 \centering
-\includegraphics[width=0.49\textwidth]{simplemodularity}
-\includegraphics[width=0.49\textwidth]{overlappingmodularity}
+\includegraphics[width=0.49\textwidth]{simplemodularity.jpg}
+\includegraphics[width=0.49\textwidth]{overlappingmodularity.jpg}
 %\includegraphics[width=\textwidth]{tiff/Fig9.tif}
 \caption{\textbf{Temporal evolution of semantic and technological modularities of the citation network.} (Left) Simple directed modularity, computed with patent main classes (main technological class and semantic class with larger probability). (Right) Multi-class modularity, computed following~\cite{nicosia2009extending} }
 \label{fig:modularities}
@@ -999,7 +999,7 @@ The example of Fig.1 in main text for a given year yielded the same qualitative 
 %%%%%%%%%%%%%%%%%%%%
 \begin{figure}
 \centering
-\includegraphics[width=\textheight,height=\textwidth,angle=90]{commnum_thetaw_byyears.png}
+\includegraphics[width=\textheight,height=\textwidth,angle=90]{commnum_thetaw_byyears.jpg}
 \caption{Sensitivity plots for $T_0 = 4$ : Number of communities as a function of $\theta_w$, for each year.}
 \label{fig:ext-sensitivity-1}
 \end{figure}
@@ -1008,7 +1008,7 @@ The example of Fig.1 in main text for a given year yielded the same qualitative 
 %%%%%%%%%%%%%%%%%%%%
 \begin{figure}
 \centering
-\includegraphics[width=\textheight,height=\textwidth,angle=90]{vcount_comnum_pareto.png}
+\includegraphics[width=\textheight,height=\textwidth,angle=90]{vcount_comnum_pareto.jpg}
 \caption{Sensitivity plots for $T_0 = 4$ : Pareto plots of number of communities and number of vertices, for each year.}
 \label{fig:ext-sensitivity-2}
 \end{figure}
@@ -1017,7 +1017,7 @@ The example of Fig.1 in main text for a given year yielded the same qualitative 
 %%%%%%%%%%%%%%%%%%%%
 \begin{figure}
 \centering
-\includegraphics[width=\textheight,height=\textwidth,angle=90]{normalizedObjs-dispth_eth4_1e-5.png}
+\includegraphics[width=\textheight,height=\textwidth,angle=90]{normalizedObjs-dispth_eth4_1e-5.jpg}
 \caption{Sensitivity plots for $T_0 = 4$ : normalized objective as a function of $\theta_c$, for each year.}
 \label{fig:ext-sensitivity-3}
 \end{figure}
@@ -1036,7 +1036,7 @@ We show in Fig.~\ref{fig:sensitivity-window3-1}, \ref{fig:sensitivity-window3-2}
 %%%%%%%%%%%%%%%%%%%%
 \begin{figure}
 \centering
-\includegraphics[width=\textheight,height=\textwidth,angle=90]{commnum_thetaw_byyears_window3.png}
+\includegraphics[width=\textheight,height=\textwidth,angle=90]{commnum_thetaw_byyears_window3.jpg}
 \caption{Sensitivity plots for $T_0 = 2$ : Number of communities as a function of $\theta_w$, for each year.}
 \label{fig:sensitivity-window3-1}
 \end{figure}
@@ -1046,7 +1046,7 @@ We show in Fig.~\ref{fig:sensitivity-window3-1}, \ref{fig:sensitivity-window3-2}
 %%%%%%%%%%%%%%%%%%%%
 \begin{figure}
 \centering
-\includegraphics[width=\textheight,height=\textwidth,angle=90]{vcount_comnum_pareto_window3.png}
+\includegraphics[width=\textheight,height=\textwidth,angle=90]{vcount_comnum_pareto_window3.jpg}
 \caption{Sensitivity plots for $T_0 = 2$ : Pareto plots of number of communities and number of vertices, for each year.}
 \label{fig:sensitivity-window3-2}
 \end{figure}
@@ -1056,7 +1056,7 @@ We show in Fig.~\ref{fig:sensitivity-window3-1}, \ref{fig:sensitivity-window3-2}
 %%%%%%%%%%%%%%%%%%%%
 \begin{figure}
 \centering
-\includegraphics[width=\textheight,height=\textwidth,angle=90]{normalizedObjs-dispth_window3_eth4_1e-5.png}
+\includegraphics[width=\textheight,height=\textwidth,angle=90]{normalizedObjs-dispth_window3_eth4_1e-5.jpg}
 \caption{Sensitivity plots for $T_0 = 2$ : normalized objective as a function of $\theta_c$, for each year.}
 \label{fig:sensitivity-window3-3}
 \end{figure}
