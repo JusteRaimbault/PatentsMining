@@ -183,7 +183,7 @@ Text processing operations are implemented in \texttt{python} in order to use bu
 %%%%%%%%%%%%%%%%%%%%
 \subsection{Keywords relevance estimation}
 \label{keywords_est}
-\paragraph{Relevance definition}
+\paragraph*{Relevance definition}
 
 Following the heuristic in~\cite{chavalarias2013phylomemetic}, we estimate relevance score in order to filter multi-stem. The choice of the total number of keywords to be extracted $K_w$ is important, too small a value would yield similar network structures but including less information whereas very large values tend to include too many irrelevant keywords. We choose to set this parameter to $K_w = 100,000$. We first consider the filtration of $k\cdot K_w$ (with $k=4$) to keep a large set of potential keywords but still have a reasonable number of co-occurrences to be computed. This is done on the \emph{unithood} $u_i$, defined for keyword $i$ as $u_i = f_i\cdot \log{(1 + l_i)}$ where $f_i$ is the multi-stem's number of apparitions over the whole corpus and $l_i$ its length in words. A second filtration of $K_w$ keywords is done on the \emph{termhood} $t_i$. The latter is computed as a chi-squared score on the distribution of the stem's co-occurrences and then compared to a uniform distribution within the whole corpus. Intuitively, uniformly distributed terms will be identified as plain language and they are thus not relevant for the classification. More precisely, we compute the co-occurrence matrix $(M_{ij})$, where $M_{ij}$ is defined as the number of patents where stems $i$ and $j$ appear together. The \emph{termhood} score $t_i$ is defined as
 
@@ -191,7 +191,7 @@ Following the heuristic in~\cite{chavalarias2013phylomemetic}, we estimate relev
 t_i = \sum_{j\neq i}\frac{\left( M_{ij} - \sum_{k}M_{ik} \sum_{k} M_{jk}\right)^2}{\sum_{k}M_{ik} \sum_{k} M_{jk}}.
 \]
 
-\paragraph{Moving window estimation}
+\paragraph*{Moving window estimation}
 The previous scores are estimated on a moving window with fixed time length following the idea that the present relevance is given by the most recent context and thus that the influence vanishes when going further into the past. Consequently, the co-occurrence matrix is chosen to be constructed at year $t$ restricting to patent which applied during the time window $\big[ t - T_0 ; t \big]$. Note that the causal property of the window is crucial as the future cannot play any role in the current state of keywords and patents. This way, we will obtain semantic classes which are exploitable on a $T_0$ time span. For example, this enables us to compute the modularity of classes in the citation network as in section \ref{citationmodularity}. In the following, we take $T_0 = 4$ (which corresponds to a five year window) consistently with the choice of maximum time lag for citations made in Section \ref{sub:citation}. Accordingly, the sensitivity analysis for $T_0=2$ can be found in Appendix~\nameref{app:sensitivity}.
 
 %%%%%%%%%%%%%%%%%%%%
@@ -344,7 +344,7 @@ Overlap_{jk} = \frac{1}{N_P}\cdot \sum_{i=1}^{N_P} p_{ij} p_{ik}.
 The overlap is normalized by patent count to account for the effect of corpus size: by convention, we assume the overlap to be maximal when there is only one class in the corpus. A corresponding relative overlap is computed as a set similarity measure in the number of patents common to two classes A and B, given by $o(A,B)=2\cdot \frac{\left|A\cap B\right|}{\left|A\right| + \left|B\right|}$.
 
 
-\paragraph{Intra-classification overlaps}
+\paragraph*{Intra-classification overlaps}
 
 The study of distributions of overlaps inside each classification, i.e. between technological classes and between semantic classes separately, reveals the structural difference between the two classification methods, suggesting their complementary nature. Their evolution in time can furthermore give insights into trends of specialization. We show in Fig.~\ref{fig:intra-classif-overlap} distributions and mean time-series of overlaps for the two classifications. The technological classification globally always follow a decreasing trend, corresponding to more and more isolated classes, i.e. specialized inventions, confirming the stylized fact obtained in previous subsection. For semantic classes, the dynamic is somehow more intriguing and supports the story of a qualitative regime shift suggested before. Although globally decreasing as technological overlap, normalized (resp. relative) mean overlap exhibits a peak (clearer for normalized overlap) culminating in 1996 (resp. 1999). Looking at normalized overlaps, classification structure was somewhat stable until 1990, then strongly increased to peak in 1996 and then decrease at a similar pace up to now. Technologies began to share more and more until a breakpoint when increasing isolation became the rule again. An evolutionary perspective on technological innovation~\cite{ziman2003technological} could shed light on possible interpretations of this regime shift: as species evolve, the fitness landscape first would have been locally favorable to cross-insemination, until each fitness reaches a threshold above which auto-specialization becomes the optimal path. It is very comparable to the establishment of an ecological niche~\cite{holland2012signals}, the strong interdependency originating here during the mutual insemination resulting in a highly path-dependent final situation. 
 %This interpretation is consistent with the dynamics of semantic flows presented in Fig.~\ref{fig:semanticflows}, as the increase period roughly corresponds to a sequence where inter-class flows are stronger.
@@ -366,7 +366,7 @@ The study of distributions of overlaps inside each classification, i.e. between 
 %%%%%%%%%%%%%%%%%%%%%%
 
 
-\paragraph{Inter-classification overlaps}
+\paragraph*{Inter-classification overlaps}
 
 Overlaps \emph{between} classifications are defined as in (\ref{overlap}), but with $j$ standing for the $j$th technological class and $k$ for the $k$th semantic class: $p_{ij}$ are technological probabilities and $p_{ik}$ semantic probabilities. They describe the relative correspondence between the two classifications and are a good indicator to spot relative changes, as shown in Fig.~\ref{fig:inter-classif-overlap}. Mean inter-classification overlap clearly exhibits two linear trends, the first one being constant from 1980 to 1996, followed by a constant decrease. Although difficult to interpret directly, this stylized fact clearly unveils a change in the \emph{nature} of inventions, or at least in the relation between content of inventions and technological classification. As the tipping point is at the same time as the ones observed in the previous section and since the two statistics are different, it is unlikely that this is a mere coincidence. Thus, these observations could be markers of a hidden underlying structural changes in processes. 
 
@@ -534,7 +534,8 @@ Using the fact that communities are constructed yearly, one can construct a meas
 
 \subsection*{S3 File : Semantic Network Visualization}
 
-\textbf{Vector file of the semantic network (Fig.\ref{fig:rawnetwork})} available at \texttt{http://37.187.242.99/files/public/network.svg}
+\textbf{Vector file of the semantic network (Fig.\ref{fig:rawnetwork})} available at\\
+ \url{http://37.187.242.99/files/public/network.svg}
 
 
 \subsection*{S4 Text : Network Sensitivity Analysis\label{app:sensitivity}}
@@ -869,7 +870,7 @@ A utility patent at the USPTO is a document providing intellectual property and 
 Patent laws can be found in http://www.uspto.gov/web/offices/pac/mpep/mpep-9015-appx-l.html\#d0e302376} In practice however, other types of invention including algorithms can also be patented.\footnote{A notable example is the patent \textit{US6285999} protecting the Page Rank algorithm invented by Larry Page in 1998 which was the genesis of Google.} The two following sections of the 35 USC defined the condition an invention must meet to be protected by the USPTO: (i) novelty: the claimed invention cannot be already patented or described in a previous publication (35 USC section 102); (ii) obviousness: \textit{``differences between the claimed invention and the prior art must not be such that the claimed invention as a whole would have been obvious before the effective filing date of the claimed invention to a person having ordinary skill in the art to which the claimed invention pertains''}. (35 USC section 103). After review from the USPTO experts, an application satisfying these requirements will be accepted and a patent granted. The average time lag for such a review is on average a little more than 2 years since 1976, with some patents being granted after much more than two years.\footnote{This time lag, sometimes called the grant lag, is highly heterogeneous across technological fields. In addition, it cannot be considered as totally random. For example, if the patent is really disruptive some competitors might have some incentive in delaying the process by disputing the validity of the patent, for more details see~\cite{regibeau2010}.}
 
 
-\paragraph{Sample restriction}
+\paragraph*{Sample restriction}
 As explained briefly before, we consider every patent granted by the USPTO between 1976 and 2013. For each patent, we gather information on the year of application, the year the patent was granted, the name of the inventors, the name of the assignees and the technological fields in which the patent has been classified (we get back to what these fields are below). We restrict attention to patents applied for before 2007. The choice of the year 2007 is due to the truncation bias: we only want to use information on granted patents and we get rid of all patents that were rejected by the USPTO. However, in order to date them as closely as possible to the date of invention, we use the application date as a reference. As a consequence, as we approach the end of the sample, we only observe a fraction of the patents which have been granted by 2013. Looking at the distribution of time lag between application and grant in the past and assuming that this distribution is complete in time, we can consider that data prior to 2007 are almost complete and that data for 2007 are complete up to 90\%.
 
 
@@ -906,7 +907,7 @@ Everything is stored into a MongoDB database, which latest dump is available at 
 
 The source code for the full workflow is available at \url{https://github.com/JusteRaimbault/PatentsMining}. A simplified shell wrapper is at \texttt{Models/fullpipe.sh}. Note that keywords co-occurrence estimation requires a memory amount in $O(N^2)$ (although optimized using dictionaries) and the operation on the full database requires a consequent infrastructure. Launch specifications are the following :
 
-\paragraph{Setup} 
+\paragraph*{Setup} 
 
 Install the database and required packages.
 
@@ -917,11 +918,11 @@ Install the database and required packages.
 \item specific python packages required : pymongo, python-igraph, nltk (with resources punkt, averaged{\_}perceptron{\_}tagger,porter{\_}test)
 \end{itemize}
 
-\paragraph{Running}
+\paragraph*{Running}
 
 The utility fullpipe.sh launches the successive stages of the processing pipe.
 
-\paragraph{Options}
+\paragraph*{Options}
 
 \textit{this configuration options can be changed in }\texttt{conf/parameters.csv}
 
@@ -936,7 +937,7 @@ The utility fullpipe.sh launches the successive stages of the processing pipe.
 \item \texttt{ethunit} : $\theta_w^{(0)}$
 \end{itemize}
 
-\paragraph{Tasks}
+\paragraph*{Tasks}
 
 The tasks to be done in order : keywords extraction, relevance estimation, network construction, semantic probas construction, are launched with the following options :
 %!! keywords and kw-consolidation tested with python3 ; rest with python2 (igraph compatibility issues)
@@ -950,9 +951,10 @@ The tasks to be done in order : keywords extraction, relevance estimation, netwo
 
 
 
-\paragraph{Classification Data}
+\paragraph*{Classification Data}
 
-The data resulting from the classification process with parameters used here is available as \texttt{csv} files at \url{http://37.187.242.99/files/public/classification_window5_kwLimit100000_dispth0.06_ethunit4.1e-05.zip}. Each files are named according to their content (keywords, patent probabilities, patent measures) and the corresponding time window. The format are the following :
+The data resulting from the classification process with parameters used here is available as \texttt{csv} files at\\
+ \url{http://37.187.242.99/files/public/classification_window5_kwLimit100000_dispth0.06_ethunit4.1e-05.zip}. Each files are named according to their content (keywords, patent probabilities, patent measures) and the corresponding time window. The format are the following :
 
 \begin{itemize}
 \item Keywords files : keyword ; community ; termhood times inverse document frequency ; technological concentration ; document frequency ; termhood ; degree ; weighted degree ; betweenness centrality ; closeness centrality ; eigenvector centrality
@@ -963,7 +965,7 @@ The data resulting from the classification process with parameters used here is 
 
 
 
-\paragraph{Analysis}
+\paragraph*{Analysis}
 
 The results of classification has to be processed for analysis (construction of sparse matrices for efficiency e.g.), following the steps:
 \begin{itemize}
