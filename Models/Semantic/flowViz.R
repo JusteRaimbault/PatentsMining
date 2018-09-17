@@ -24,9 +24,11 @@ semsuffix = paste0('_kwLimit',kwLimitNum,'_dispth',dispth,'_ethunit',ethunit,'.c
 
 coms=list()
 
+plotdata=data.frame()
 for(year in wyears){
   yearrange=paste0((year-windowSize+1),"-",year);show(year)
   currentkws = as.tbl(read.csv(file=paste0(semprefix,yearrange,semsuffix),sep=";",stringsAsFactors = FALSE))
+  plotdata=rbind(plotdata,data.frame(technodisp=currentkws$technodispersion,year=rep(year,nrow(currentkws))))
   currentcoms = list()
   for(i in unlist(unique(currentkws$community))){
     rows = currentkws[currentkws$community==i,]
@@ -36,6 +38,12 @@ for(year in wyears){
   }
   coms[[as.character(year)]]=currentcoms
 }
+
+
+g=ggplot(plotdata)
+g+geom_density(aes(x=technodisp,colour=as.character(year)))
+gsum=ggplot(plotdata%>%group_by(year)%>%summarise(meantechdisp=mean(technodisp)),aes(x=year,y=meantechdisp))
+gsum+geom_point()+geom_line()
 
 # test independance measures for naming
 #pcaname = prcomp(apply(currentkws[,3:11],2,function(col){return((col - min(col))/(max(col)-min(col)))}))
@@ -75,7 +83,7 @@ similarityIndex <- function(com1,com2){
 # compute edges
 years=as.character(wyears)
 #sizeTh=100
-sizeQuantile = 0.97
+sizeQuantile = 0.985
 
 links=list();
 nodes=list()
@@ -125,9 +133,100 @@ names(mlinks)<-c("from","to","weight")
 #mlinks$weight=1000*mlinks$weight
 mnodes = data.frame(id=0:(length(nodes)-1),name=names(nodes))
 
-#plot(graph_from_data_frame(mlinks,vertices=mnodes))
 g = graph_from_data_frame(mlinks,vertices=mnodes)
 V(g)$year=as.numeric(sapply(V(g)$name,function(x){substring(text=x,first=nchar(x)-3)}))
+V(g)$comname = sapply(V(g)$name,function(x){substring(text=x,first=1,last=nchar(x)-5)})
+
+
+# specific algo for layout, using weight proximity
+V(g)$x=V(g)$year
+
+
+# greedy algo optimisation
+
+# uniform init
+deltaymin = 0.5
+
+#V(g)$y = runif(vcount(g),min=0,max=deltaymin*length(which(V(g)$year==wyears[1])))
+for(currentyear in wyears){
+  V(g)$y[V(g)$year==currentyear]=(1:length(which(V(g)$year==currentyear)))*deltaymin
+}
+
+
+# get connex components
+gg = subgraph.edges(g, which(E(g)$weight>0.04))
+
+
+
+plot.igraph(gg,layout=layout_with_fr(gg),
+            vertex.size=0.3,vertex.label=V(gg)$name,vertex.label.cex=0.3,
+            edge.arrow.size=0,edge.width=5*E(gg)$weight#,
+            #edge.curved=TRUE,margin=0
+            )
+
+
+
+
+
+
+
+
+# -- This shitty greedy algo DOES NOT WORK --
+# 
+# nruns = 100
+# maxangles=c()
+# for(r in 1:nruns){
+#   show(r);
+#   currentmaxs=c()
+#   for(currentyear in wyears[2:length(wyears)]){
+#     incoming = E(g)[which(V(g)$year==(currentyear-1))%->%which(V(g)$year==currentyear)]
+#     diff = abs(head_of(g,incoming)$y - tail_of(g,incoming)$y)
+#     angles = atan(diff)/(pi/2)*incoming$weight
+#     # move vertex with largest weighted angle
+#     #show(max(angles))
+#     emove = incoming[angles==max(angles)]
+#     y0=tail_of(g,emove)$y
+#     currentmaxs=append(currentmaxs,max(angles))
+#     tomove = head_of(g,emove);yp=tomove$y;
+#     alltail = head_of(g,incoming);
+#     if(yp>y0){
+#       intermediary = alltail$y<yp&alltail$y>=y0;
+#       V(g)$y[intermediary]=V(g)$y[intermediary]+deltaymin
+#     }else{
+#       intermediary = alltail$y>yp&alltail$y<=y0;
+#       V(g)$y[intermediary]=V(g)$y[intermediary]-deltaymin
+#     }
+#     V(g)$y[tomove] = y0
+#     #show(yp-y0)
+#   }
+#   maxangles=append(maxangles,max(currentmaxs))
+#   currentmaxs=c()
+#   for(currentyear in wyears[seq(from=length(wyears)-1,to=1,by=-1)]){
+#     incoming = E(g)[which(V(g)$year==currentyear)%->%which(V(g)$year==(currentyear+1))]
+#     diff = abs(head_of(g,incoming)$y - tail_of(g,incoming)$y)
+#     angles = atan(diff)/(pi/2)*incoming$weight
+#     # move vertex with largest weighted angle
+#     #show(max(angles))
+#     emove = incoming[angles==max(angles)]
+#     y0=head_of(g,emove)$y
+#     currentmaxs=append(currentmaxs,max(angles))
+#     tomove = tail_of(g,emove);yp=tomove$y;
+#     alltail = tail_of(g,incoming);
+#     if(yp>y0){
+#       intermediary = alltail$y<yp&alltail$y>=y0;
+#       V(g)$y[intermediary]=V(g)$y[intermediary]+deltaymin
+#     }else{
+#       intermediary = alltail$y>yp&alltail$y<=y0;
+#       V(g)$y[intermediary]=V(g)$y[intermediary]-deltaymin
+#     }
+#     V(g)$y[tomove] = y0
+#     #show(yp-y0)
+#   }
+#   maxangles=append(maxangles,max(currentmaxs))
+# }
+
+
+
 
 # Tests for layout
 #V(g)$x = V(g)$year;V(g)$y=runif(vcount(g))
@@ -137,40 +236,35 @@ V(g)$year=as.numeric(sapply(V(g)$name,function(x){substring(text=x,first=nchar(x
 #V(g)$x=2*V(g)$year
 #for(year in unique(V(g)$year)){V(g)$y[V(g)$year==year]=rank(V(g)$y[V(g)$year==year],ties.method="random")*20/length(which(V(g)$year==year))}#V(g)$y[V(g)$year==year]-mean(V(g)$y[V(g)$year==year])}
 
-# specific algo for layout, using weight proximity
-V(g)$x=V(g)$year
 
 
-V(g)$y[V(g)$year==wyears[1]]=(1:length(which(V(g)$year==wyears[1])))#/length(which(V(g)$year==wyears[1])) # random layout for first row
-for(currentyear in wyears[2:length(wyears)]){
-  V(g)$y[V(g)$year==currentyear]=1:length(which(V(g)$year==currentyear))
-  currentvertices = V(g)[V(g)$year==currentyear]
-  for(v in currentvertices){
-    currentedges = E(g)[V(g)%->%v]
-    if(length(currentedges)>0){
-      V(g)$y[V(g)==v] = sum(currentedges$weight/sum(currentedges$weight)*head_of(g,currentedges)$y)
-    }
-  }
-  # put rank for more visibility
-  #V(g)$y[V(g)$year==currentyear] = rank(V(g)$y[V(g)$year==currentyear],ties.method = "random")/length(which(V(g)$year==currentyear))
-}
+# Old algo
 
 
+# 
+# V(g)$y[V(g)$year==wyears[1]]=(1:length(which(V(g)$year==wyears[1])))/length(which(V(g)$year==wyears[1])) # random layout for first row
+# for(currentyear in wyears[2:length(wyears)]){
+#   V(g)$y[V(g)$year==currentyear]=1:length(which(V(g)$year==currentyear))
+#   currentvertices = V(g)[V(g)$year==currentyear]
+#   for(v in currentvertices){
+#     currentedges = E(g)[V(g)%->%v]
+#     if(length(currentedges)>0){
+#       V(g)$y[V(g)==v] = sum(currentedges$weight/sum(currentedges$weight)*head_of(g,currentedges)$y)
+#     }
+#   }
+#   # put rank for more visibility
+#   #V(g)$y[V(g)$year==currentyear] = rank(V(g)$y[V(g)$year==currentyear],ties.method = "random")/length(which(V(g)$year==currentyear))
+#   #V(g)$y[V(g)$year==currentyear] = (V(g)$y[V(g)$year==currentyear] - min(V(g)$y[V(g)$year==currentyear]))/(max(V(g)$y[V(g)$year==currentyear])-min(V(g)$y[V(g)$year==currentyear]))
+# }
 
-plot.igraph(g,#layout=layout_as_tree(g),
-            vertex.size=0.3,vertex.label=NA,#vertex.label.cex=0,
-            edge.arrow.size=0,edge.width=5*E(g)$weight#,
-            #edge.curved=TRUE,margin=0
-            )
 
 
 
 # try brutal optimisation
+#  -> difficult, too much dimensions
 
-penalty<-function(coordinates)
-
-
-optim <- ga(type="real-valued",fitness=penalty,min=rep(0,vcount(g)),max=rep(1,vcount(g)))
+#penalty<-function(coordinates)
+#optim <- ga(type="real-valued",fitness=penalty,min=rep(0,vcount(g)),max=rep(1,vcount(g)))
   
 
 

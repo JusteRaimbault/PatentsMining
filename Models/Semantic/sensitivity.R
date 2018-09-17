@@ -6,13 +6,13 @@ setwd(paste0(Sys.getenv('CS_HOME'),'/PatentsMining/Models/Semantic'))
 
 # analysis of network modularities/size to parameters
 
-#wyears = 1980:2012
-wyears = 1980:2007
-windowSize=5
+#wyears = 1980:2007
+wyears = 1978:2007
+windowSize=3;windowStr="3"
 kwLimit="100000.0"
 eth="10.0"
 
-yearlycount=read.csv(file='data/patentcount_window5.0.csv',sep=";",header=TRUE,stringsAsFactors = FALSE)
+yearlycount=read.csv(file=paste0('data/patentcount_window',windowStr,'.csv'),sep=";",header=TRUE,stringsAsFactors = FALSE)
 
 ethunit=4.1e-5
 # -> mean argmax on all dispth ; lay on pareto front (comnum,vcount) (or very near) for each year
@@ -75,6 +75,8 @@ g+geom_line(aes(x=eth,y=comnum,colour=dispth,group=dispth))+facet_wrap(~year)+
 # all years
 g+geom_point(aes(x=comnum,y=vcount,colour=maxmod),size=1)+facet_wrap(~year)+
   xlab("number of communities")+ylab("number of vertices")+scale_colour_continuous(name="modularity")
+ggsave(file=paste0(Sys.getenv("CS_HOME"),'/PatentsMining/Results/Semantic/Sensitivity/window',windowStr,'/vcount_comnum_pareto_window',windowStr,'.pdf'),width=10,height=7)
+
 
 
 ###
@@ -89,7 +91,7 @@ g+geom_line(aes(x=eth,y=comnum,colour=dispth,group=dispth))+
   geom_vline(xintercept=mean(argmaxs$argmaxeth),color='red',linetype=2)+
   xlab(expression(theta[w]))+ylab("number of communities")+scale_colour_continuous(name=expression(theta[c]))+ theme(axis.title = element_text(size = 22),legend.title = element_text(size = 22), axis.text.x = element_text(size = 15),   axis.text.y = element_text(size = 15))
 
-ggsave(file=paste0(Sys.getenv("CS_HOME"),'/PatentsMining/Results/Semantic/Sensitivity/window5/comnum_thetaw_',year,'.pdf'),width=10,height=7)
+ggsave(file=paste0(Sys.getenv("CS_HOME"),'/PatentsMining/Results/Semantic/Sensitivity/window',windowStr,'/comnum_thetaw_',year,'.pdf'),width=10,height=7)
 
 
 # pareto plot
@@ -102,7 +104,7 @@ g+geom_point(aes(x=comnum,y=vcount,colour=maxmod),size=1)+
   xlab("number of communities")+ylab("number of vertices")+scale_colour_continuous(name="modularity")+ theme(axis.title = element_text(size = 22), axis.text.x = element_text(size = 15),   axis.text.y = element_text(size = 15))
 
 
-ggsave(file=paste0(Sys.getenv("CS_HOME"),'/PatentsMining/Results/Semantic/Sensitivity/window5/comnum_vcount_pareto_',year,'.pdf'),width=10,height=7)
+ggsave(file=paste0(Sys.getenv("CS_HOME"),'/PatentsMining/Results/Semantic/Sensitivity/window',windowStr,'/comnum_vcount_pareto_',year,'.pdf'),width=10,height=7)
 
 
 

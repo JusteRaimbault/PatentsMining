@@ -91,14 +91,17 @@ for(year in wyears){
   #ranks=append(ranks,1:length(semsizes));sortedsizes=append(sortedsizes,sort(semsizes,decreasing = TRUE));sortednsizes=append(sortednsizes,sort(semsizes/nrow(semprobas),decreasing = TRUE))
 }
 
+#save(sizes,years,type,ranks,file='figdata/fig4.RData')
+#load('figdata/fig4.RData')
 
 ## rank size plot 
 
 g=ggplot(data.frame(size=sizes,year=as.character(years),rank=ranks,type=type))
 g+geom_line(aes(x=rank,y=size,colour=year,group=year))+
   scale_x_log10()+scale_y_log10()+facet_wrap(~type,scales="fixed")+ylab("size") + theme(axis.title = element_text(size = 22), 
-    axis.text.x = element_text(size = 15), 
-    axis.text.y = element_text(size = 15))
+    axis.text.x = element_text(size = 15),axis.text.y = element_text(size = 15),
+    strip.text = element_text(size=15),
+    legend.text=element_text(size=15), legend.title=element_text(size=15))
 ggsave(file=paste0(Sys.getenv("CS_HOME"),'/PatentsMining/Results/Semantic/Analysis/window5/sizes/all_raw_counts.pdf'),width=10,height=5)
 
 
@@ -206,14 +209,16 @@ for(year in wyears){
 resdir=paste0(Sys.getenv('CS_HOME'),'/PatentsMining/Results/Semantic/Analysis/window5/overlap/')
 df=data.frame(overlap=overlaps,year=as.character(years),type=as.character(types),measure=measures)#,filter=filters)
 rm(overlaps,years,types);gc()
-save(df,file="res/full-overlaps.RData")
+#save(df,file="res/full-overlaps.RData")
 #load("res/full-overlaps.RData")
 
 plotsIntraOverlap <-function(measure,xlabel){
   g=ggplot(df[df$measure==measure&df$type!="inter-classifications",],aes(x=overlap,colour=year))
   g+geom_density(alpha=0.25)+xlab(xlabel)+ylab("density")+
     scale_x_log10()+facet_wrap(~type,scales="free_y")+
-    theme(axis.title = element_text(size = 22), axis.text.x = element_text(size = 15),  axis.text.y = element_text(size = 15))
+    theme(axis.title = element_text(size = 22), axis.text.x = element_text(size = 15),  axis.text.y = element_text(size = 15),
+          strip.text = element_text(size=15),
+          legend.text=element_text(size=15), legend.title=element_text(size=15))
   ggsave(file=paste0(Sys.getenv("CS_HOME"),'/PatentsMining/Results/Semantic/Analysis/window5/overlap/',measure,'_all_density_semcounts.pdf'),width=10,height=5)
 
   rm(g);gc()
@@ -224,7 +229,7 @@ plotsIntraOverlap <-function(measure,xlabel){
   gsum+geom_point()+geom_line()+
     facet_wrap(~type,scales ="free_y")+
     scale_x_discrete(breaks=as.character(wyears),labels=labs)+ylab(paste0("mean ",xlabel))+
-    theme(legend.position="none",axis.title = element_text(size = 22), axis.text.x = element_text(size = 15),  axis.text.y = element_text(size = 15))
+    theme(legend.position="none",axis.title = element_text(size = 22), axis.text.x = element_text(size = 15),  axis.text.y = element_text(size = 15), strip.text = element_text(size=15))
   ggsave(file=paste0(Sys.getenv("CS_HOME"),'/PatentsMining/Results/Semantic/Analysis/window5/overlap/',measure,'_all_ts_semcounts.pdf'),width=10,height=5)
   
 }
@@ -270,8 +275,8 @@ plotsIntraOverlap("relative","relative overlap")
 
 plotsInterOverlap <-function(measure,xlabel){
   g=ggplot(df[df$measure==measure&df$type=="inter-classifications",],aes(x=overlap,colour=year))
-  g+geom_density(alpha=0.25)+xlab(xlabel)+ylab("density")+scale_x_log10()
-    theme(axis.title = element_text(size = 22), axis.text.x = element_text(size = 15),  axis.text.y = element_text(size = 15))
+  g+geom_density(alpha=0.25)+xlab(xlabel)+ylab("density")+scale_x_log10()+
+    theme(axis.title = element_text(size = 22), axis.text.x = element_text(size = 15),  axis.text.y = element_text(size = 15),legend.text=element_text(size=15), legend.title=element_text(size=15))
   ggsave(file=paste0(Sys.getenv("CS_HOME"),'/PatentsMining/Results/Semantic/Analysis/window5/overlap/',measure,'_interclassif_all_density_semcounts.pdf'),width=10,height=5)
   
   rm(g);gc()
@@ -296,7 +301,7 @@ plotsInterOverlap("relative","relative overlap")
 ##################
 # 1.2) Micro-level : patent level interdisciplinarity
 #
-#
+#  FIG. 5
 
 origs=c();cyears=c();types=c();
 for(year in wyears){
@@ -322,17 +327,24 @@ inds=origs<1
 df = data.frame(originality=origs[inds],year=as.character(cyears[inds]),type=types[inds])
 rm(origs,cyears,types);gc()
 
+#save(df,file='figdata/fig5.RData')
+#load('figdata/fig5.RData)
+
 g=ggplot(df)
 g+geom_density(aes(x=originality,colour=year))+facet_wrap(~type) + 
   xlab("patent diversity")+#scale_y_log10()+
-  theme(axis.title = element_text(size = 22), axis.text.x = element_text(size = 15),  axis.text.y = element_text(size = 15))
+  theme(axis.title = element_text(size = 22), axis.text.x = element_text(size = 15),  axis.text.y = element_text(size = 15),
+        strip.text = element_text(size=15),
+        legend.text=element_text(size=15), legend.title=element_text(size=15))
 ggsave(file=paste0(Sys.getenv("CS_HOME"),'/PatentsMining/Results/Semantic/Analysis/window5/diversity/patentlevelorigs_all_semcounts.pdf'),width=10,height=5)
 rm(g);gc()
 
 g=ggplot(df[df$originality>0,])
 g+geom_density(aes(x=originality,colour=year))+facet_wrap(~type) + 
   xlab("patent diversity")+#scale_y_log10()+
-  theme(axis.title = element_text(size = 22), axis.text.x = element_text(size = 15),  axis.text.y = element_text(size = 15))
+  theme(axis.title = element_text(size = 22), axis.text.x = element_text(size = 15),  axis.text.y = element_text(size = 15),
+        strip.text = element_text(size=15),
+        legend.text=element_text(size=15), legend.title=element_text(size=15))
 ggsave(file=paste0(Sys.getenv("CS_HOME"),'/PatentsMining/Results/Semantic/Analysis/window5/diversity/patentlevelorigs_positive_semcounts.pdf'),width=10,height=5)
 rm(g);gc()
 
@@ -344,7 +356,7 @@ labs=rep("",length(wyears));labs[seq(from=1,to=length(labs),by=5)]=as.character(
 gsum+geom_point()+geom_line()+facet_wrap(~type,scales ="free_y")+
   scale_x_discrete(breaks=as.character(wyears),labels=labs)+
   xlab("year")+ylab("mean patent diversity") +
-  theme(legend.position = "none",axis.title = element_text(size = 22), axis.text.x = element_text(size = 15),  axis.text.y = element_text(size = 15))
+  theme(legend.position = "none",axis.title = element_text(size = 22), axis.text.x = element_text(size = 15),  axis.text.y = element_text(size = 15),strip.text = element_text(size=15))
 ggsave(file=paste0(Sys.getenv("CS_HOME"),'/PatentsMining/Results/Semantic/Analysis/window5/diversity/patentlevelorigs_all_ts_semcounts.pdf'),width=10,height=5)
 
 
@@ -354,7 +366,7 @@ labs=rep("",length(wyears));labs[seq(from=1,to=length(labs),by=5)]=as.character(
 gsum+geom_point()+geom_line()+facet_wrap(~type,scales ="free_y")+
   scale_x_discrete(breaks=as.character(wyears),labels=labs)+
   xlab("year")+ylab("mean patent diversity") +
-  theme(legend.position = "none",axis.title = element_text(size = 22), axis.text.x = element_text(size = 15),  axis.text.y = element_text(size = 15))
+  theme(legend.position = "none",axis.title = element_text(size = 22), axis.text.x = element_text(size = 15),  axis.text.y = element_text(size = 15),strip.text = element_text(size=15))
 ggsave(file=paste0(Sys.getenv("CS_HOME"),'/PatentsMining/Results/Semantic/Analysis/window5/diversity/patentlevelorigs_positive_ts_semcounts.pdf'),width=10,height=5)
 
 
@@ -463,14 +475,14 @@ df = data.frame(year=sapply(modularities,function(l){l$year}),
 
 g=ggplot(data.frame(year=c(df$year,df$year),mod = c(df$technoovmod,df$semovmod),type=c(rep("technological",nrow(df)),rep("semantic",nrow(df)))),aes(x=year,y=mod,colour=type,group=type))
 g+geom_line()+geom_point()+ylab("overlapping modularity")+#scale_y_log10()+
-  theme(axis.title = element_text(size = 22), axis.text.x = element_text(size = 15),  axis.text.y = element_text(size = 15))
+  theme(axis.title = element_text(size = 22), axis.text.x = element_text(size = 15),  axis.text.y = element_text(size = 15),legend.text=element_text(size=15), legend.title=element_text(size=15))
 ggsave(file=paste0(Sys.getenv("CS_HOME"),'/PatentsMining/Results/Semantic/Analysis/window5/citation/overlappingmodularity.pdf'),width=10,height=5)
 
 
 
 g=ggplot(data.frame(year=c(df$year,df$year),mod = c(df$technodirmod,df$semdirmod),type=c(rep("technological",nrow(df)),rep("semantic",nrow(df)))),aes(x=year,y=mod,colour=type,group=type))
 g+geom_line()+geom_point()+ylab("modularity")+#scale_y_log10()+
-  theme(axis.title = element_text(size = 22), axis.text.x = element_text(size = 15),  axis.text.y = element_text(size = 15))
+  theme(axis.title = element_text(size = 22), axis.text.x = element_text(size = 15),  axis.text.y = element_text(size = 15),legend.text=element_text(size=15), legend.title=element_text(size=15))
 ggsave(file=paste0(Sys.getenv("CS_HOME"),'/PatentsMining/Results/Semantic/Analysis/window5/citation/simplemodularity.pdf'),width=10,height=5)
 
 
@@ -481,6 +493,30 @@ g+geom_line(aes(x=year,y=technoovmod,colour="techno"))+geom_line(aes(x=year,y=se
 g+geom_line(aes(x=year,y=technodirmod,colour="techno"))+geom_line(aes(x=year,y=semdirmod,colour="semantic"))
 g+geom_line(aes(x=year,y=technodirgraphmod))
 g+geom_line(aes(x=year,y=semdirgraphmod))
+
+
+
+##############
+## Originalities and Generalities
+
+origgens = read.csv('data/origgen.csv',sep=";")
+
+
+
+g=ggplot(data.frame(year=c(origgens$year,origgens$year),originality=c(origgens$orig.tech,origgens$orig.sem),type=c(rep("technological",nrow(origgens)),rep("semantic",nrow(origgens)))),aes(x=year,y=originality,group=type,colour=type))
+g+geom_line(na.rm=TRUE)+geom_point(na.rm=TRUE)+
+  theme(axis.title = element_text(size = 22), axis.text.x = element_text(size = 15),  axis.text.y = element_text(size = 15),legend.text=element_text(size=15), legend.title=element_text(size=15))
+ggsave(file=paste0(Sys.getenv("CS_HOME"),'/PatentsMining/Results/Semantic/Analysis/window5/originality/originality.pdf'),width=10,height=5)
+
+
+g=ggplot(data.frame(year=c(origgens$year,origgens$year),generality=c(origgens$gen.tech,origgens$gen.sem),type=c(rep("technological",nrow(origgens)),rep("semantic",nrow(origgens)))),aes(x=year,y=generality,group=type,colour=type))
+g+geom_line(na.rm=TRUE)+geom_point(na.rm=TRUE)+
+  theme(axis.title = element_text(size = 22), axis.text.x = element_text(size = 15),  axis.text.y = element_text(size = 15),legend.text=element_text(size=15), legend.title=element_text(size=15))
+ggsave(file=paste0(Sys.getenv("CS_HOME"),'/PatentsMining/Results/Semantic/Analysis/window5/generality/generality.pdf'),width=10,height=5)
+
+
+
+
 
 
 
