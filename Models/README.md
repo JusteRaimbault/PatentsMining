@@ -1,4 +1,9 @@
 
+*Note: this repository has the purpose to reproduce results in the paper.*
+
+*For a more generic and up-to-date code for the corpus semantic analysis, see* [this repository](https://github.com/JusteRaimbault/SemanticPatents).
+
+
 ## Setup
 
  - having a running local `mongod` instance

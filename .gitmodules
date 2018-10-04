@@ -1,0 +1,6 @@
+[submodule "Docs/Papers/Technical/paper"]
+	path = Docs/Papers/Technical/paper
+	url = git@github.com:JusteRaimbault/PatentsMining-paper.git
+[submodule "Docs/Communications/CCS2016/Communication/presentation"]
+	path = Docs/Communications/CCS2016/Communication/presentation
+	url = git@github.com:JusteRaimbault/PatentsMining-ccs16.git
