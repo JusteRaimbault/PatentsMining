@@ -1,0 +1,104 @@
+\input{si.tex}
+
+
+
+\section*{S4 Text : Network Sensitivity Analysis \label{app:sensitivity}}
+
+
+\subsubsection*{Network Sensitivity}
+
+The example of Fig.1 in main text for a given year yielded the same qualitative behavior for all years, as shown in Fig.~\ref{fig:ext-sensitivity-1}, \ref{fig:ext-sensitivity-2} and \ref{fig:ext-sensitivity-3} here.  We also show an other point of view over the Pareto optimization, that is the third plot giving the values of normalized objectives as a function of $\theta_c$.
+
+% Figures :
+
+%%%%%%%%%%%%%%%%%%%%
+\begin{figure}
+\centering
+\includegraphics[width=\textheight,height=\textwidth,angle=90]{figures/commnum_thetaw_byyears.png}
+\caption{Sensitivity plots for $T_0 = 4$ : Number of communities as a function of $\theta_w$, for each year.}
+\label{fig:ext-sensitivity-1}
+\end{figure}
+%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%
+\begin{figure}
+\centering
+\includegraphics[width=\textheight,height=\textwidth,angle=90]{figures/vcount_comnum_pareto.png}
+\caption{Sensitivity plots for $T_0 = 4$ : Pareto plots of number of communities and number of vertices, for each year.}
+\label{fig:ext-sensitivity-2}
+\end{figure}
+%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%
+\begin{figure}
+\centering
+\includegraphics[width=\textheight,height=\textwidth,angle=90]{figures/normalizedObjs-dispth_eth4_1e-5.png}
+\caption{Sensitivity plots for $T_0 = 4$ : normalized objective as a function of $\theta_c$, for each year.}
+\label{fig:ext-sensitivity-3}
+\end{figure}
+%%%%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%%%%%%%%%%%%%%%
+\subsubsection*{Time-window size sensitivity}
+
+% put some graphs for 3-years time window : same qualitative properties but a bit more noisy
+
+We show in Fig.~\ref{fig:sensitivity-window3-1}, \ref{fig:sensitivity-window3-2} and \ref{fig:sensitivity-window3-3} the sensitivity plots used for semantic network construction optimization, for a different time window with $T_0 = 2$. The same qualitative behavior is observed (with different quantitative values, as typically $\theta_w^{(0)}$ is for example expected to vary with document number and semantic regime, thus with window size), what confirms that the method is valid across different time windows.
+
+
+%%%%%%%%%%%%%%%%%%%%
+\begin{figure}
+\centering
+\includegraphics[width=\textheight,height=\textwidth,angle=90]{figures/commnum_thetaw_byyears_window3.png}
+\caption{Sensitivity plots for $T_0 = 2$ : Number of communities as a function of $\theta_w$, for each year.}
+\label{fig:sensitivity-window3-1}
+\end{figure}
+%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%
+\begin{figure}
+\centering
+\includegraphics[width=\textheight,height=\textwidth,angle=90]{figures/vcount_comnum_pareto_window3.png}
+\caption{Sensitivity plots for $T_0 = 2$ : Pareto plots of number of communities and number of vertices, for each year.}
+\label{fig:sensitivity-window3-2}
+\end{figure}
+%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%
+\begin{figure}
+\centering
+\includegraphics[width=\textheight,height=\textwidth,angle=90]{figures/normalizedObjs-dispth_window3_eth4_1e-5.png}
+\caption{Sensitivity plots for $T_0 = 2$ : normalized objective as a function of $\theta_c$, for each year.}
+\label{fig:sensitivity-window3-3}
+\end{figure}
+%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+
+
+
+%\subsubsection*{An alternative filtering method}
+
+%Other heuristic for network construction were tested. We describe one in the following. We assume the highest degree terms do not carry specific information on particular classes and can be thus filtered given a maximal degree threshold $k{max}$. Similarly, edge with small weight must not carry significant information and are filtered according to a minimal edge weight threshold $w_{min}$. Keywords are preliminary filtered by a document frequency window $\left[ f_{min},f_{max} \right]$ which is slightly different from network filtering and complementary. A sensitivity analysis of resulting network topology to these parameters is shown in Fig. .
+
+%
+%%%%%%%%%%%%%%%%%%%%%
+%\begin{figure}[!ht]
+%% values of some topological measures in 2D parameter space
+%\includegraphics[width=\textwidth]{figures/graph_sens_2010_msesizes}
+%\caption{Variation of semantic network indicators across a 4-dimensional parameter space (figure-level axis : $(k_{max},w_{min})$; meta axis: $(f_{min},f_{max})$), for year 2010, where indicators are modularity (louvain method), number of connected components, proximity of class size distribution to technological classes size distribution, communities number, network size, community size balance. A good optimization compromise is given here by $()$.}
+%% TODO change with proportion parameters in new figure
+%% TODO detail which obj to be minimized etc in supplementary material
+%\end{figure}
+%%%%%%%%%%%%%%%%%%%%%
+%
+
+
+
+\end{document}

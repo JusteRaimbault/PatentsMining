@@ -1,0 +1,18 @@
+
+% old text from project that does not have much sense in the current version of the paper
+
+
+
+
+\paragraph{Features}
+
+
+\begin{itemize}
+\item Citation relative centrality regarding technological or semantic classes : given a partition of $\mathcal{P}$ represented by a classification function $C$ (constructed for example by clustering or community detection within technological or semantic networks), a vector feature is for patent $i$
+\[
+\left(\frac{\sum_{j\in c}Cit^{out}(i,j)}{\sum_{j\in c}Cit^{in}(i,j)}\right)_{c\in C(\mathcal{P})}
+\]
+\item Dynamic evolution of classification vector : if $C_t$ is stratified over successive time periods indexed by time $t$, either $\Delta \vec{C}_t (i)$ if $\vec{C}_t$ is a vector of probabilities to belong to each class (in case of a Bayesian approach), or $\Delta (C_t(j))_{Cit(i,j,t)\neq 0}$ in case of a deterministic approach, could both be interesting features.
+\item Deviation from the expected classes given position in other layers of the hypernetwork (it would need explorations if these conditional probabilities first can be well estimated, then if they contain relevant information).
+\end{itemize}
+

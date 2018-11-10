@@ -1,0 +1,184 @@
+%% start of file `template.tex'.
+%% Copyright 2006-2013 Xavier Danaux (xdanaux@gmail.com).
+%
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License version 1.3c,
+% available at http://www.latex-project.org/lppl/.
+
+
+\documentclass[11pt,a4paper,sans]{moderncv}        % possible options include font size ('10pt', '11pt' and '12pt'), paper size ('a4paper', 'letterpaper', 'a5paper', 'legalpaper', 'executivepaper' and 'landscape') and font family ('sans' and 'roman')
+
+\usepackage[document]{ragged2e}
+% pour justifier
+
+
+% moderncv themes
+\moderncvstyle{banking}                            % style options are 'casual' (default), 'classic', 'oldstyle' and 'banking'
+\moderncvcolor{red}                                % color options 'blue' (default), 'orange', 'green', 'red', 'purple', 'grey' and 'black'
+\renewcommand{\familydefault}{\rmdefault}         % to set the default font; use '\sfdefault' for the default sans serif font, '\rmdefault' for the default roman one, or any tex font name
+%\nopagenumbers{}                                  % uncomment to suppress automatic page numbering for CVs longer than one page
+
+
+% character encoding
+\usepackage[utf8]{inputenc}                       % if you are not using xelatex ou lualatex, replace by the encoding you are using
+%\usepackage{CJKutf8}                              % if you need to use CJK to typeset your resume in Chinese, Japanese or Korean
+
+% adjust the page margins
+\usepackage[scale=0.75]{geometry}
+%\setlength{\hintscolumnwidth}{3cm}                % if you want to change the width of the column with the dates
+%\setlength{\makecvtitlenamewidth}{10cm}           % for the 'classic' style, if you want to force the width allocated to your name and avoid line breaks. be careful though, the length is normally calculated to avoid any overlap with your personal info; use this at your own typographical risks...
+
+\usepackage{xparse}
+\DeclareDocumentCommand{\comment}{m o o o o}
+{%
+    \textcolor{red}{#1}
+    \IfValueT{#2}{\textcolor{blue}{#2}}
+    \IfValueT{#3}{\textcolor{ForestGreen}{#3}}
+    \IfValueT{#4}{\textcolor{red!50!blue}{#4}}
+    \IfValueT{#5}{\textcolor{Aquamarine}{#5}}
+}
+
+
+% personal data
+%\name{Yoann}{Potiron}
+%\title{Keio University}                               % optional, remove / comment the line if not wanted
+%\address{Assistant Professor Faculty Business and Commerce}{2-15-45 Mita, Minato-ku, Tokyo, 108-8345}{Japan}% optional, remove / comment the line if not wanted; the "postcode city" and and "country" arguments can be omitted or provided empty
+%\phone[mobile]{+1~(234)~567~890}                   % optional, remove / comment the line if not wanted
+%\phone[fixed]{+81~(0)3~5418~6571}                    % optional, remove / comment the line if not wanted
+%\phone[fax]{+3~(456)~789~012}                      % optional, remove / comment the line if not wanted
+%\email{potiron@fbc.keio.ac.jp}  
+%\extrainfo{yoann.potiron@gmail.com}
+% optional, remove / comment the line if not wanted
+%\homepage{http://www.fbc.keio.ac.jp/\char`\~ potiron}                         % optional, remove / comment the line if not wanted
+%\extrainfo{yoann.potiron@gmail.com}                 % optional, remove / comment the line if not wanted
+%\photo[64pt][0.4pt]{picture}                       % optional, remove / comment the line if not wanted; '64pt' is the height the picture must be resized to, 0.4pt is the thickness of the frame around it (put it to 0pt for no frame) and 'picture' is the name of the picture file
+%\quote{Some quote}                                 % optional, remove / comment the line if not wanted
+
+% to show numerical labels in the bibliography (default is to show no labels); only useful if you make citations in your resume
+%\makeatletter
+%\renewcommand*{\bibliographyitemlabel}{\@biblabel{\arabic{enumiv}}}
+%\makeatother
+%\renewcommand*{\bibliographyitemlabel}{[\arabic{enumiv}]}% CONSIDER REPLACING THE ABOVE BY THIS
+
+% bibliography with mutiple entries
+%\usepackage{multibib}
+%\newcites{book,misc}{{Books},{Others}}
+%----------------------------------------------------------------------------------
+%            content
+%----------------------------------------------------------------------------------
+%-----       letter       ---------------------------------------------------------
+
+
+% must contain :
+%Summarize the study’s contribution to the scientific literature
+%Relate the study to previously published work
+%Specify the type of article (for example, research article, systematic review, meta-analysis, clinical trial)
+%Describe any prior interactions with PLOS regarding the submitted manuscript
+%Suggest appropriate Academic Editors to handle your manuscript (see the full list of Academic Editors)
+%List any opposed reviewers
+\firstname{}
+\lastname{}
+\begin{document}
+
+
+% recipient data
+\recipient{Editor PLOS ONE}{}
+\date{\today}
+\opening{Dear Editor,}
+\closing{Yours faithfully,\\
+Juste Raimbault\\
+Université Paris 7 - UMR CNRS 8504 Géographie-cités
+}
+         % use an optional argument to use a string other than "Enclosure", or redefine \enclname
+\makelettertitle
+
+\justify
+\justify
+Thank you for considering our manuscript ``Classifying Patents Based
+on their Semantic Content'' for possible publication in PLOS ONE. We are also very grateful to your suggestions and comments. This will undoubtedly be of great value to the paper.
+
+We have read carefully your suggestions and comments, and have updated the paper accordingly. We provide you now the point-by-point response to the Editor and referees' reports.
+
+We deal first with the Editor's comments. 
+\begin{enumerate}
+    \item We made adjustments to fully meet PLOS ONE requirements. All figures were converted and assessed using the PACE tool.
+    \item "Authors used co-occurrence of keywords to construct a patent network. Is this a new way? Or at least a discussion of the advantages should be provided." \\
+    $\rightarrow$ The use of co-occurrences to construct a semantic network has already been used, and is the best way to extract the endogenous semantic structure. We added a discussion on this point.
+    \item "Authors introduced a measure to correct the network topology. But how to properly determine the threshold? Why choose the value 0.06 ?"\\
+    $\rightarrow$ Thank you for pointing out this issue. We have been more specific about it now, adding three sentences. Indeed, the explanation at the end of Section 3.3 was sloppy.
+    
+    \item "The research background include complex network analysis, community detection and data analysis, some recent progress in these areas should be reviewed" \\
+    $\rightarrow$ We included some of the references suggested in Section 3.5, as time series complex network analysis is indeed an interesting potential development.
+    \item "All the parameters should be clearly explained."\\
+    $\rightarrow$ Thank you for also pointing this out. We have been clearer on the definition of $K_w$, $k$ and $t_i$ (Section 3.2), $\theta_c$, $\theta_w$ and $\theta_w^{(0)}$ (Section 3.3).
+\end{enumerate}
+
+\bigskip
+
+We also provide you responses to Reviewer \#3. Reviewers \#1 and \#2 did not ask anything specific but their comments were taken into account in the adjustments we made.
+\begin{enumerate}
+\item "Maybe a minor typo in Page 24 - "availability of these data" --> "this data" or "these datasets"".\\
+$\rightarrow$ We corrected accordingly.
+\item "I also did not see a caption for the figures and it is quite hard to read the text in the figures due to their current small size. New readers are attracted to tables and figures, and thus it is useful to have descriptive captions - the current caption for Table 1 does not describe the variables being used (I know the text does it) - a brief description of theta being the likelihood estimates (or similar) would be useful."\\
+$\rightarrow$ We have made the according changes. All captions inside figures were magnified as large as possible to ensure readability.
+\item "I like the authors' approach overall, but would also recommend adding some discussion on how a semantic approach enables information integration and reuse - possibly with how their dataset / ontology can be linked to others already existing in Linked Open Data. If such linking already exists, it should be shown - otherwise, this is a strong direction for future work."\\
+$\rightarrow$ This is indeed a very good suggestion and we add ideas of interesting potential developments by joining our database with existing open databases. We added accordingly a part to the discussion.
+\end{enumerate}
+\justify
+
+%%
+%Antonin Bergeaud received no specific grant from any funding agency in the public, commercial, or not-for-profit sectors for this research.
+
+
+
+%[(Juste) comme je disais dans le mail, je pense vraiment pas utile de citer des trucs qui ont pas grand chose à voir sachant qu'on cite la litérature la plus précise possible sur les techniques qu'on utilise. Je vous laisse juger de ce qu'il propose, je trouve ça scandaleux ce ne sont que de ses papiers qui n'ont quasiment aucun rapport.. si la publi rapide de notre papier n'en dépendait pas, je signalerais l'éditeur pour manquement d'éthique académique, mais bon on va faire des compromis..%
+%    \begin{itemize}
+%    \item Europhysics Letters, 2016, 116: 50001; Gao, Z. K., Small, M., \& Kurths, J. (2017). Complex network analysis of time series. EPL (Europhysics Letters), 116(5), 50001. papier de l'éditeur, sur le lien entre systèmes dynamiques et Complex networks. pas trop de rapport.. gao2017complex
+%    \item Scientific Reports, 2016, 6: 20052 : Gao, Z. K., Yang, Y. X., Zhai, L. S., Dang, W. D., Yu, J. L., \& Jin, N. D. (2016). Multivariate multiscale complex network analysis of vertical upward oil-water two-phase flow in a small diameter pipe. Scientific reports, 6. $\rightarrow$ c'est un papier de l'éditeur, absolument rien à voir avec ce qu'on utilise, si ce n'est le nom de Complex Networks.. gao2016multivariate
+%    \item Europhysics Letters, 2015, 109: 30005; Gao, Z. K., Yang, Y. X., Fang, P. C., Zou, Y., Xia, C. Y., \& Du, M. (2015). Multiscale complex network for analyzing experimental multivariate time series. EPL (Europhysics Letters), 109(3), 30005. ENCORE un papier de l'éditeur gao2015multiscale
+%    \item Scientific Reports, 2015, 5: 8222. Gao, Z. K., Yang, Y. X., Fang, P. C., Jin, N. D., Xia, C. Y., \& Hu, L. D. (2015). Multi-frequency complex network from time series for uncovering oil-water flow structure. Scientific reports, 5, 8222. idem.. gao2015multi
+%    \end{itemize}]
+
+
+%%
+% potential editors
+
+
+%César A Hidalgo
+%Massachusetts Institute of Technology
+%UNITED STATES 
+%Subject Areas: Science policy and economics, Social sciences, Sociology, Communications, Social systems, Computational sociology, Economics, Economic models, Structural economic models, Industrial organization, Economics of technical change, Microeconomics, Urban economics, International trade, Development economics, Economic development, Spatial economic analysis, Computer and information sciences, Computing methods, Computer graphics, Infographics, Data mining, Social networks, Complex systems, Economic geography, Human geography, Engineering and technology, Mathematics, Applied mathematics, Physics, Research monitoring, Publication practices
+
+
+
+%Tobias Preis
+%University of Warwick
+%UNITED KINGDOM 
+%Subject Areas: Social sciences, Communications, Media studies, Economics, Economic models, Structure of markets, Information economics, Microeconomics, Spatial economic analysis, Linguistics, Semantics, Computational linguistics, Lexicography, Computer and information sciences, Computing methods, Mathematical computing, Computer applications, Web-based applications, Information technology, Information architecture, Information storage and retrieval, Natural language processing, Text mining, Information theory, Operations research, Complex systems, Computer modeling, Computerized simulations, Economic geography, Decision analysis, Mathematics, Mathematical economics, Numerical analysis, Applied mathematics, Algorithms, Decision theory, Physics, Interdisciplinary physics, Statistical mechanics
+
+
+%Wolfgang Glanzel
+%Katholieke Universiteit Leuven
+%BELGIUM 
+%Subject Areas: Science policy, Economics, Information economics, Computer and information sciences, Algorithms, Research assessment, Bibliometrics, Publication practices
+
+
+
+%Joshua L Rosenbloom
+%Iowa State University
+%UNITED STATES 
+%Subject Areas: Science policy, Research funding, Science and technology workforce, Science policy and economics, Social sciences, Economics, Human capital, Labor economics, Microeconomics, Commerce, Economic analysis, Economic history, Economic geography
+
+
+
+
+\makeletterclosing
+
+
+
+
+
+\end{document}
+
+
+%% end of file `template.tex'.
