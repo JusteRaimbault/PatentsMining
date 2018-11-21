@@ -211,23 +211,63 @@ $\rightarrow$ 4,666,365 patents with text data (abstract); dated by application 
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Estimation of n-gram relevance}
+\begin{frame}{Estimation of n-gram relevance}\label{slide:relevance}
     
     \begin{itemize}
-        \item Termhood-based selection of a fixed number of keywords $K_W = 100,000$ (\textit{difficulty to select terms in general})
+        \item Termhood-based selection of a fixed number of keywords $K_W = 100,000$ (\textit{difficulty to select terms in general}) \hyperlink{slide:filtration}{\beamerbutton{Definition}}
         % bias to keep fixed size of vocabulary ?
         %  if variable = f(patents) -> arbitrary fixes a number of kws "per patent"; should them optimize regarding an exogenous criteria, which one ?
         %  if fixed, this number varies, so the resolution of classes varies, thus larger classes more recently ? peak in sizes contradicts that, so should not capture this bias significantly (or structure is more important).
-        \item Estimation on temporal moving windows $\left[t - T_w ; t\right]$ (fixed to $T_W = 5y$ after sensitivity analysis)
+        \item Estimation on temporal moving windows $\left[t - T_w ; t\right]$ (fixed to $T_W = 4y$ after sensitivity analysis)
         \item Filtering of network edge (parameter $\theta_w$), with an additional exogenous control by technological class keyword concentration to filter nodes (parameter $\theta_c$)
         % potential bias here -> would capture the exogenous classification system ? idem our results suggest that bias does not dominate results
-        \item Low sensibility to the size of the time windows for the network structure % in comparable lengths of course
+        \item Low sensibility to the length of the time window for the network structure  
+\hyperlink{slide:sensitivity}{\beamerbutton{Sensitivity analysis}}
+% in comparable lengths of course
     \end{itemize}
     
 \end{frame}
 
+
+\begin{frame}{Technical aspects}
+	
+	$\rightarrow$ Temporal complexity: $\mathcal{O}(N_P)$ for keyword extraction and co-occurrences (constant $l_{max}^2$); parallelization on a 60 cores server for a ``reasonable'' computation time. 
+	
+	\bigskip
+	
+	$\rightarrow$ Memory complexity: co-occurrence matrices in $\mathcal{O}(K_W^2)$; necessitates around 600Go RAM when parallelized. 
+	
+	\bigskip
+
+	$\rightarrow$ Database management: MongoDB (nosql suited to big data).	
+	
+	
+	
+	
+\end{frame}
+
+
+
+\begin{frame}{An application of the method to a scientific corpus}
+	 % illustration de la flexibilite de la methode
+	 
+	 
+	 \includegraphics[width=0.49\textwidth]{figures/cyb_Fig6.jpg}
+	 \includegraphics[width=0.49\textwidth]{figures/cyb_Fig8.jpg}
+	
+	\medskip
+	
+	\textit{The method has been applied to a scientific corpus; adaptation of optimization procedures as the topological structure is different.} \cite{raimbault2017exploration}
+	
+		
+\end{frame}
+
+
+
 \section{Results}
 \begin{frame}{Optimizing network structure}
+    
+    
     
     \centering
     \includegraphics[width=\textwidth]{figures/Fig1.png}
@@ -235,6 +275,8 @@ $\rightarrow$ 4,666,365 patents with text data (abstract); dated by application 
     \medskip
     
     \textit{Pareto optimization on cutoff parameters with the objectives of modularity, size and number of communities}
+    
+    \hyperlink{slide:sensitivity}{\beamerbutton{Sensitivity analysis}}
     
 \end{frame}
 
@@ -248,7 +290,7 @@ $\rightarrow$ 4,666,365 patents with text data (abstract); dated by application 
 
 \begin{frame}{Classes Examples (2000-2004)}
 
-\justify
+%\justify
 
 % discuss on naming class here
 
@@ -287,6 +329,10 @@ $\rightarrow$ 4,666,365 patents with text data (abstract); dated by application 
 \end{frame}
 
 \begin{frame}{Evolution of patent diversities}
+
+\label{slide:diversity}
+\hyperlink{slide:measures}{\beamerbutton{Back}}
+
    \centering
     \includegraphics[width=\textwidth]{figures/Fig5.png}
     
@@ -298,7 +344,7 @@ $\rightarrow$ 4,666,365 patents with text data (abstract); dated by application 
 \end{frame}
 
 \begin{frame}{Originality and generality measures}
-   \centering
+    \centering
     \includegraphics[width=\textwidth]{figures/Fig6.png}
     
     \medskip
@@ -332,7 +378,7 @@ $\rightarrow$ 4,666,365 patents with text data (abstract); dated by application 
     
     \smallskip
     
-    $\rightarrow$ an impact of new information technologies ? (regarding knowledge production: from expert and contextualized to automatized search in references e.g.) 
+    $\rightarrow$ an impact of new information technologies (regarding knowledge production: from expert and contextualized to automatized search in references e.g.) ? Linked to structural changes in economy (increase in firm concentration since 90s) ?
     
 \end{frame}
 
@@ -391,8 +437,9 @@ $\rightarrow$ 4,666,365 patents with text data (abstract); dated by application 
     \item An interactive exploration of semantic content?
 \end{itemize}
 \end{frame}
+
 \begin{frame}{Other projects}
-    \justify
+    %\justify
      
      \textbf{At the interface of geography and economics}
      
@@ -444,18 +491,73 @@ $\rightarrow$ Towards reflexive approaches in science and technology to ease tec
     
 \end{frame}
 
-\begin{frame}{Definition of termhood}
+\begin{frame}{Filtration measures}
+
+\label{slide:filtration}
+\hyperlink{slide:relevance}{\beamerbutton{Back}}
+
+
+
+    
+    \textit{1. Unithood: n-gram specific frequency-based filtration ($4\cdot K_W$ keywords)}
+    
+	\[
+	u_i = f_i\cdot \log{(1 + l_i)}
+	\]
+    
+    \medskip
+    
+    \textit{2. Termhood: chi-square statistic for the uniformity of co-occurences}
+    
+    \medskip
+    
+    \begin{eqnarray}
+\label{termhood}
+t_i = \sum_{j\neq i}\frac{\left( M_{ij} - \sum_{k}M_{ik} \sum_{k} M_{jk}\right)^2}{\sum_{k}M_{ik} \sum_{k} M_{jk}}.
+\end{eqnarray}
+
+    \medskip
+
+	\textit{3. Edge weight filtration with a threshold of $\theta_w = \theta_w^{(0)}\cdot N_P$}
+	
+	\medskip
+
+	\textit{4. Node filtration with a threshold $\theta_c$ on technological class concentration given by}
+    
+    \[
+    c_{tech}(s) = \displaystyle \sum_{j=1}^{N^{(tec)}} \frac{k_j(s)^2}{ \left(\sum_i k_i(s)\right)^2}
+    \]
+    
     
 \end{frame}
 
 \begin{frame}{Patent measures}
+\label{slide:measures}
+\hyperlink{slide:diversity}{\beamerbutton{Back}}
+    
+    \textit{Diversity}
+    \[
+D_i^{(z)} = 1 - \sum_{j =1}^{N^{(z)}} {p_{ij}^2}, \text{ with } z \in \{tec, sem\}
+	\]
+    
+    \medskip
+
+	\textit{Originality and Generality}
+
+	\[
+O_i^{(z)} = \displaystyle 1 - \sum_{j =1}^{N^{(z)}}{\left(\frac{\displaystyle \sum_{i' \in I_i}{p_{i'j}}}{\displaystyle \sum_{k =1}^{N^{(z)}}{\displaystyle \sum_{i' \in I_i}{p_{i'k}}}}\right)^2}
+\text{ and } G_i^{(z)} = \displaystyle 1 - \sum_{j =1}^{N^{(z)}}{\left(\frac{\displaystyle \sum_{i' \in \tilde{I}_i}{p_{i'j}}}{\displaystyle \sum_{k =1}^{N^{(z)}}{\displaystyle \sum_{i' \in \tilde{I}_i}{p_{i'k}}}}\right)^2}
+\]
+    
+
     
 \end{frame}
 
 \begin{frame}{Definition of modularities} \label{slide:modularity_def}
 \hyperlink{slide:modularity}{\beamerbutton{Back}}
 
-    Directed simple modularity:
+
+    Directed simple modularity \cite{nicosia2009extending}
     \[
 Q_d^{(z)} = \displaystyle \frac{1}{N_P}\sum_{1\leq i,j\leq N_P}\left[A_{ij} - \frac{k_{i}^{in}k_{j}^{out}}{N_P}\right]\delta(c_i,c_j),
 \]
@@ -475,6 +577,43 @@ where
 \]
     
 \end{frame}
+
+
+
+\begin{frame}{Network sensitivity analysis}
+\label{slide:sensitivity}
+\hyperlink{slide:relevance}{\beamerbutton{Back}}
+
+	\includegraphics[width=\textwidth]{figures/commnum_thetaw_byyears.png}
+\end{frame}
+
+
+\begin{frame}{Network sensitivity analysis ($T_W = 2$)}
+	\includegraphics[width=\textwidth]{figures/commnum_thetaw_byyears_window3.png}
+\end{frame}
+
+
+\begin{frame}{Network sensitivity analysis}
+	\includegraphics[width=\textwidth]{figures/vcount_comnum_pareto.png}
+\end{frame}
+
+
+\begin{frame}{Network sensitivity analysis ($T_W = 2$)}
+	\includegraphics[width=\textwidth]{figures/vcount_comnum_pareto_window3.png}
+\end{frame}
+
+
+\begin{frame}{Network sensitivity analysis}
+	\includegraphics[width=\textwidth]{figures/normalizedObjs-dispth_eth4_1e-5.png}
+\end{frame}
+
+
+\begin{frame}{Network sensitivity analysis ($T_W = 2$)}
+	\includegraphics[width=\textwidth]{figures/normalizedObjs-dispth_window3_eth4_1e-5.png}
+\end{frame}
+
+
+
 
 
 
