@@ -1,3 +1,10 @@
+# scripts
 mongo
 launchdb
+
+# params
+user
+psswd
+authdb
+port
 
