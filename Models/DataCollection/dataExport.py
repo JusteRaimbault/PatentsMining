@@ -4,6 +4,20 @@
 import pymongo
 
 
+#'
+#' This simple request is not implemented by mongo
+def and_text_query(terms,fields,file):
+    mongo = pymongo.MongoClient('mongodb://root:root@127.0.0.1:29019')
+    database = mongo['redbook']
+    projection = {}
+    for field in fields :
+        projection[field]=1
+
+    for term in terms:
+        data = database.raw.find({"$text":{"$search":terms}},{"id":1})
+        println(len(data))
+
+
 def export_redbook_as_csv(fields,file) :
     mongo = pymongo.MongoClient('localhost', 29019)
     database = mongo['redbook']
@@ -61,4 +75,6 @@ def export_classes_as_csv(file,max_year):
 
 #export_redbook_as_csv(['id','grant_date','app_date'],'export/redbook.csv')
 
-export_classes_as_csv('export/classes_76-01.csv',"2002")
+#export_classes_as_csv('export/classes_76-01.csv',"2002")
+
+and_text_query(['cosmetic','wax','oil'],{},'')

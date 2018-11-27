@@ -1,0 +1,95 @@
+\input{si.tex}
+
+
+\section*{S2 Text : Data collection and Workflow}
+
+\label{supp:data}
+
+\subsubsection*{Data Collection Procedure}
+
+Raw version of USPTO redbook with abstracts are available for years 1976-2014 starting from bulk download page at \url{https://bulkdata.uspto.gov/}. A script first automatically downloads files. Before being automatically processed, a few error in files (corresponding to missing end of records probably due to line dropping during the concatenation of weekly files) had to be corrected manually. Files are then processed with the following filters transforming different format and xml schemes into a uniform dictionary data structure :
+
+\begin{itemize}
+\item \texttt{dat} files (1976-2000): handmade parser
+\item \texttt{xml} files (2001-2012): xml parser, used with different schemas definitions.
+\end{itemize}
+
+Everything is stored into a MongoDB database, which latest dump is available at \url{http://dx.doi.org/10.7910/DVN/BW3ACK}
+
+\subsubsection*{Processing Workflow}
+
+The source code for the full workflow is available at \url{https://github.com/JusteRaimbault/PatentsMining}. A simplified shell wrapper is at \texttt{Models/fullpipe.sh}. Note that keywords co-occurrence estimation requires a memory amount in $O(N^2)$ (although optimized using dictionaries) and the operation on the full database requires a consequent infrastructure. Launch specifications are the following :
+
+\paragraph{Setup} 
+
+Install the database and required packages.
+
+\begin{itemize}
+\item Having a running local mongod instance
+\item mongo host, port, user and password to be configured in \texttt{conf/parameters.csv}
+\item raw data import from gz file : use mongorestore -d redbook -c raw --gzip {\$}FILE
+\item specific python packages required : pymongo, python-igraph, nltk (with resources punkt, averaged{\_}perceptron{\_}tagger,porter{\_}test)
+\end{itemize}
+
+\paragraph{Running}
+
+The utility fullpipe.sh launches the successive stages of the processing pipe.
+
+\paragraph{Options}
+
+\textit{this configuration options can be changed in }\texttt{conf/parameters.csv}
+
+\begin{itemize}
+\item window size in years
+\item beginning of first window
+\item beginning of last window
+\item number of parallel runs
+\item \texttt{kwLimit} : total number of keywords $K_W$
+\item \texttt{edge{\_}th} : $\theta_w$ pre-filtering for memory storage purposes
+\item \texttt{dispth} : $\theta_c$
+\item \texttt{ethunit} : $\theta_w^{(0)}$
+\end{itemize}
+
+\paragraph{Tasks}
+
+The tasks to be done in order : keywords extraction, relevance estimation, network construction, semantic probas construction, are launched with the following options :
+%!! keywords and kw-consolidation tested with python3 ; rest with python2 (igraph compatibility issues)
+
+\begin{enumerate}
+\item \texttt{keywords} : extracts keywords
+\item \texttt{kw-consolidation} : consolidate keywords database (techno disp measure)
+\item \texttt{raw-network} : estimates relevance, constructs raw network and perform sensitivity analysis
+\item \texttt{classification} : classify and compute patent probability, keyword measures and patent measures ; here parameters $(\theta_w,\theta_c)$ can be changed in configuration file.
+\end{enumerate}
+
+
+
+\paragraph{Classification Data}
+
+The data resulting from the classification process with parameters used here is available as \texttt{csv} files at \url{http://dx.doi.org/10.7910/DVN/ZULMOY}. Each files are named according to their content (keywords, patent probabilities, patent measures) and the corresponding time window. The format are the following :
+
+\begin{itemize}
+\item Keywords files : keyword ; community ; termhood times inverse document frequency ; technological concentration ; document frequency ; termhood ; degree ; weighted degree ; betweenness centrality ; closeness centrality ; eigenvector centrality
+\item Patents measures : patent id ; total number of potential keywords ; number of classified keywords ; same topological measures as for keywords
+\item Patent probabilities : patent id ; total number of potential keywords ; id of the semantic class ; number of keywords in this class. Probabilities have to be reconstructed by extracting all the lines corresponding to a patent and dividing each count by the total number of classified keywords.
+\end{itemize}
+
+
+
+
+\paragraph{Analysis}
+
+The results of classification has to be processed for analysis (construction of sparse matrices for efficiency e.g.), following the steps:
+\begin{itemize}
+\item from classification files to R variables with \texttt{Semantic/semanalfun.R}
+\item from csv technological classes to R-formatted sparse Matrix with \texttt{Techno/prepareData.R} 
+\item from csv citation file to citation network in R-formatted graph and adjacency sparse matrix with \texttt{Citation/constructNW.R}
+\end{itemize}
+
+Analyses are done in \texttt{Semantic/semanalysis.R}.
+
+
+
+
+
+\end{document}
