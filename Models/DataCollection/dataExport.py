@@ -2,23 +2,37 @@
 # export of data from raw db
 
 import pymongo
+import json
 
 
 #'
 #' This simple request is not implemented by mongo
-def and_text_query(terms,fields,file):
+def and_text_query(terms,fields,f):
     mongo = pymongo.MongoClient('mongodb://root:root@127.0.0.1:29019')
     database = mongo['redbook']
     projection = {}
     for field in fields :
         projection[field]=1
 
+    ids=set()
     for term in terms:
-        data = database.raw.find({"$text":{"$search":terms}},{"id":1})
-        println(len(data))
+        data = database.raw.find({"$text":{"$search":term}},{"id":1})
+        currentids=set([record['id'] for record in list(data)])
+        if len(ids)>0:
+            ids=ids.intersection(currentids)
+        else:
+            ids=currentids
+    #print(ids)
+    ids=list(ids)
+    fulldata= database.raw.find({"id":{"$in":ids}},{"id":1,"abstract":1,"title":1,"year":1,"_id":0})
+    #print(list(fulldata))
+    finaldata=list(fulldata)
+    print(len(finaldata))
+    print(finaldata)
+    json.dump(finaldata,open(f,'w'))
 
 
-def export_redbook_as_csv(fields,file) :
+def export_redbook_as_csv(fields,file):
     mongo = pymongo.MongoClient('localhost', 29019)
     database = mongo['redbook']
 
@@ -30,16 +44,16 @@ def export_redbook_as_csv(fields,file) :
 
     writer = open(file,'w')
 
-    for i in range(len(fields)) :
+    for i in range(len(fields)):
         writer.write(fields[i])
         if i < len(fields)-1:
             writer.write(";")
         else :
             writer.write("\n")
 
-    for row in data :
-        print row
-	for i in range(len(fields)) :
+    for row in data:
+        print(row)
+        for i in range(len(fields)):
             if fields[i] in row : writer.write(row[fields[i]])
             if i < len(fields)-1:
                 writer.write(";")
@@ -56,7 +70,7 @@ def export_classes_as_csv(file,max_year):
     writer.write('id;class;primary\n')
 
     for row in data :
-        print row
+        print(row)
         if 'id' in row :
             patent_id = row['id']
             if 'classes' in row :
@@ -77,4 +91,8 @@ def export_classes_as_csv(file,max_year):
 
 #export_classes_as_csv('export/classes_76-01.csv',"2002")
 
-and_text_query(['cosmetic','wax','oil'],{},'')
+#and_text_query(['cosmetic','wax','oil'],{},'res/cosmetic-wax-oil.json')
+and_text_query(['cosmetic','wax'],{},'res/cosmetic-wax.json')
+and_text_query(['cosmetic','oil'],{},'res/cosmetic-oil.json')
+and_text_query(['oil','wax'],{},'res/oil-wax.json')
+
