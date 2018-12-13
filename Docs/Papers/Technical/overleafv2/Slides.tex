@@ -38,7 +38,9 @@
 \title[Patent Mining]{Classifying Patent Based on their Semantic Content \\ An empirical exploration into patent text mining}
 \author[Bergeaud, Potiron, Raimbault]{Antonin Bergeaud \and Yoann Potiron \and Juste Raimbault}
 \institute[]{Banque de France, Keio University and ISC-PIF}
-\date{November 2018}
+\date[14/12/2018]{Computational and Financial Econometrics\\
+Session Text Mining\\
+14 December 2018}
 
 \begin{document}
 
@@ -47,18 +49,19 @@
 \end{frame}
 
 \section{Introduction}
-\begin{frame}{Motivation}
-    %Patenting is increasing, big data blablabla
-    
-    \textit{Patenting as a footprint of technology and its coevolution with science and culture~\cite{bais2010praise}}
 
-\bigskip
-\centering
-
-\includegraphics[width=0.35\textwidth,angle=90]{figures/USX1}
-\includegraphics[width=0.45\textwidth]{figures/pageRank}
-    
-\end{frame}
+%\begin{frame}{Motivation}
+%    %Patenting is increasing, big data blablabla
+%    
+%    \textit{Patenting as a footprint of technology and its coevolution with science and culture~\cite{bais2010praise}}
+%
+%\bigskip
+%\centering
+%
+%\includegraphics[width=0.35\textwidth,angle=90]{figures/USX1}
+%\includegraphics[width=0.45\textwidth]{figures/pageRank}
+%    
+%\end{frame}
 \begin{frame}{Motivation}
     \begin{figure}
         \includegraphics[width=0.8\linewidth]{figures/patent_usa.png}
@@ -83,30 +86,39 @@ In practice, patent data are available in the form of a relational database.
         \caption{Example of patent front page. Source : USPTO}
     \end{figure}
 \end{frame}
-\begin{frame}{Patents and text-mining}
+\begin{frame}{Why study patents ?}
+
+$\rightarrow$ Although imperfect, patents are the most commonly used measure of innovation in economics. \\ % return to innovation, matching with firms, citation analysis...
+$\rightarrow$ Applied Epistemology : particular case of the ecology and evolution of knowledge; diffusion of knowledge.
+
+\bigskip
+
+\textbf{Patents and text-mining: }
+
     \begin{itemize}
         \item Main usage: matching between patents and firms/inventors
         \item Used in the search of prior-art/litigation
         \item Technology mapping
     \end{itemize}
 \end{frame}
-\begin{frame}{Why study patents ?}
+
+%\begin{frame}{Why study patents ?}
+%\textbf{\textcolor{red}{virer ?}}
 %\justify
+%
+%$\rightarrow$ Although imperfect, patents are the most commonly used measure of innovation in economics. \\ % return to innovation, matching with firms, citation analysis...
+%$\rightarrow$ Applied Epistemology : particular case of the ecology and evolution of knowledge; diffusion of knowledge.
+%\bigskip
 
-$\rightarrow$ Although imperfect, patents are the most commonly used measure of innovation in economics. \\ % return to innovation, matching with firms, citation analysis...
-$\rightarrow$ Applied Epistemology : particular case of the ecology and evolution of knowledge; diffusion of knowledge.
-\bigskip
+%\textbf{Examples :}
 
-\textbf{Examples :}
-
-\begin{itemize}
-\item \cite{griliches1998patent}: patent as an economic indicator
-\item \cite{Youn:2015fk} interaction between technological fields ; combinatorial nature of inventions
-\item \cite{2016arXiv160207928B} citation network analysis to detect emerging research front
-\item \cite{gerken2012new} \cite{tseng2007text} semantic analysis (remains limited to specific fields and time windows)
-\end{itemize} 
-
-\end{frame}
+%\begin{itemize}
+%\item \cite{griliches1998patent}: patent as an economic indicator
+%\item \cite{Youn:2015fk} interaction between technological fields ; combinatorial nature of inventions
+%\item \cite{2016arXiv160207928B} citation network analysis to detect emerging research front
+%\item \cite{gerken2012new} \cite{tseng2007text} semantic analysis (remains limited to specific fields and time windows)
+%\end{itemize} 
+%\end{frame}
 
 
 \begin{frame}{A large scale semantic insight into USPTO database}
@@ -134,6 +146,31 @@ $\rightarrow$ Applied Epistemology : particular case of the ecology and evolutio
     
     
 \end{frame}
+
+\begin{frame}{An example of classification outcome}
+    \begin{center}
+	\includegraphics[width=0.8\textwidth]{figures/6833896.png}
+	\end{center}
+	
+	\medskip
+	\hrule
+	
+\medskip
+	
+	\textbf{Technological classes:} 349 (Liquid Crystal Cells, Elements and Systems), 257 (	Active solid-state devices)
+	
+	\smallskip
+	
+	\textbf{Prior art keywords (Google Patents):} layer, method, gate, electrode, substrate
+	
+	\smallskip
+	
+	\textbf{Most central keywords (our method):} substrat, semiconductor, insul, gate, transistor
+		
+	
+\end{frame}
+
+
 \section{Background}
 
 %\begin{frame}{Patent data}
@@ -206,68 +243,15 @@ $\rightarrow$ 4,666,365 patents with text data (abstract); dated by application 
 \begin{itemize}
 \item Parsing and tokenizing / pos-tagging (word functions) / stemming  with \texttt{nltk}
 \item Selection of potential \textit{n-grams} (with $1 \leq n \leq 3$) with the rule $\bigcap \{NN \cup VBG \cup JJ \}$
-\item Database insertion for instantaneous use (several days $\rightarrow$ 1min)
-\item Estimation of \textit{n-grams} relevance, following co-occurrences statistical distribution (\textit{termhood} score as chi-2 score)
+%\item Database insertion for instantaneous use (several days $\rightarrow$ 1min)
+\item Estimation of \textit{n-grams} relevance, following co-occurrences statistical distribution (\textit{termhood} score as chi-2 score), filtering on relevance to construct co-occurence network
+\item Filtering of network edge (parameter $\theta_w$), with an additional exogenous control by technological class keyword concentration to filter nodes (parameter $\theta_c$)
 \end{itemize}
 \end{frame}
-
-\begin{frame}{Estimation of n-gram relevance}\label{slide:relevance}
-    
-    \begin{itemize}
-        \item Termhood-based selection of a fixed number of keywords $K_W = 100,000$ (\textit{difficulty to select terms in general}) \hyperlink{slide:filtration}{\beamerbutton{Definition}}
-        % bias to keep fixed size of vocabulary ?
-        %  if variable = f(patents) -> arbitrary fixes a number of kws "per patent"; should them optimize regarding an exogenous criteria, which one ?
-        %  if fixed, this number varies, so the resolution of classes varies, thus larger classes more recently ? peak in sizes contradicts that, so should not capture this bias significantly (or structure is more important).
-        \item Estimation on temporal moving windows $\left[t - T_w ; t\right]$ (fixed to $T_W = 4y$ after sensitivity analysis)
-        \item Filtering of network edge (parameter $\theta_w$), with an additional exogenous control by technological class keyword concentration to filter nodes (parameter $\theta_c$)
-        % potential bias here -> would capture the exogenous classification system ? idem our results suggest that bias does not dominate results
-        \item Low sensibility to the length of the time window for the network structure  
-\hyperlink{slide:sensitivity}{\beamerbutton{Sensitivity analysis}}
-% in comparable lengths of course
-    \end{itemize}
-    
-\end{frame}
-
-
-\begin{frame}{Technical aspects}
-	
-	$\rightarrow$ Temporal complexity: $\mathcal{O}(N_P)$ for keyword extraction and co-occurrences (constant $l_{max}^2$); parallelization on a 60 cores server for a ``reasonable'' computation time. 
-	
-	\bigskip
-	
-	$\rightarrow$ Memory complexity: co-occurrence matrices in $\mathcal{O}(K_W^2)$; necessitates around 600Go RAM when parallelized. 
-	
-	\bigskip
-
-	$\rightarrow$ Database management: MongoDB (nosql suited to big data).	
-	
-	
-	
-	
-\end{frame}
-
-
-
-\begin{frame}{An application of the method to a scientific corpus}
-	 % illustration de la flexibilite de la methode
-	 
-	 
-	 \includegraphics[width=0.49\textwidth]{figures/cyb_Fig6.jpg}
-	 \includegraphics[width=0.49\textwidth]{figures/cyb_Fig8.jpg}
-	
-	\medskip
-	
-	\textit{The method has been applied to a scientific corpus; adaptation of optimization procedures as the topological structure is different.} \cite{raimbault2017exploration}
-	
-		
-\end{frame}
-
 
 
 \section{Results}
 \begin{frame}{Optimizing network structure}
-    
-    
     
     \centering
     \includegraphics[width=\textwidth]{figures/Fig1.png}
@@ -275,8 +259,6 @@ $\rightarrow$ 4,666,365 patents with text data (abstract); dated by application 
     \medskip
     
     \textit{Pareto optimization on cutoff parameters with the objectives of modularity, size and number of communities}
-    
-    \hyperlink{slide:sensitivity}{\beamerbutton{Sensitivity analysis}}
     
 \end{frame}
 
@@ -289,8 +271,6 @@ $\rightarrow$ 4,666,365 patents with text data (abstract); dated by application 
 
 
 \begin{frame}{Classes Examples (2000-2004)}
-
-%\justify
 
 % discuss on naming class here
 
@@ -306,16 +286,6 @@ $\rightarrow$ 4,666,365 patents with text data (abstract); dated by application 
  \end{frame}
 
 
-
-\begin{frame}{Size of classes}
-   \centering
-    \includegraphics[width=\textwidth]{figures/Fig3.png}
-    
-    \medskip
-    
-    \textit{A peak in average class size around 1998}
-    
-\end{frame}
 
 \begin{frame}{Hierarchical class structure}
    \centering
@@ -340,16 +310,6 @@ $\rightarrow$ 4,666,365 patents with text data (abstract); dated by application 
 
     \textit{General increase in average invention specialization seen both for semantic and technological; semantic regime shift in 1996} 
     % "change in the regime of specialization, the new regime being caused by more single-class patents" => confirms the idea of a new type of more specialized inventions
-    
-\end{frame}
-
-\begin{frame}{Originality and generality measures}
-    \centering
-    \includegraphics[width=\textwidth]{figures/Fig6.png}
-    
-    \medskip
-    
-    \textit{Systematically lower originality and generality (citation-based measures) for the semantic classification (consistent with the higher modularity shown thereafter).}
     
 \end{frame}
 
@@ -394,14 +354,8 @@ $\rightarrow$ 4,666,365 patents with text data (abstract); dated by application 
     
 \end{frame}
 
-\begin{frame}{Stochastic Block Modeling to evaluate consistency of classifications}
-\begin{itemize}
-    \item   We complete the analysis by developing a statistical model aiming at quantifying performance of both technological and semantic classification systems
-    \item Intuitively, we look at within class citations proportion (for both technological and semantic approaches)
-    \item Question: is the semantic classification better at predicting future within class citations? \\
-    $\longrightarrow$ short answer is \alert{yes}.
-\end{itemize} 
-\end{frame}
+
+
 
 \begin{frame}{Summary of outcomes}
     \begin{itemize}
@@ -437,9 +391,7 @@ $\rightarrow$ 4,666,365 patents with text data (abstract); dated by application 
     \item An interactive exploration of semantic content?
 \end{itemize}
 \end{frame}
-
 \begin{frame}{Other projects}
-    %\justify
      
      \textbf{At the interface of geography and economics}
      
@@ -473,8 +425,12 @@ $\rightarrow$ Towards reflexive approaches in science and technology to ease tec
 
 
 \bigskip
-\bigskip
 
+%\bigskip
+
+\textbf{Paper: } Bergeaud, A., Potiron, Y., \& Raimbault, J. (2017). Classifying patents based on their semantic content. PloS one, 12(4), e0176310.
+
+\medskip
 \textbf{Open repository} at \texttt{https://github.com/JusteRaimbault/PatentsMining}\\\medskip
 \textbf{Raw database} at \texttt{http://dx.doi.org/10.7910/DVN/BW3ACK}\\\medskip 
 \textbf{Semantic classification database} at  \texttt{http:// dx.doi.org/10.7910/DVN/ZULMOY}\\\medskip
@@ -490,6 +446,75 @@ $\rightarrow$ Towards reflexive approaches in science and technology to ease tec
     \textbf{Reserve slides}
     
 \end{frame}
+
+\begin{frame}{Previous work on patents and text-mining}
+
+    \begin{itemize}
+\item \cite{griliches1998patent}: patent as an economic indicator
+\item \cite{Youn:2015fk} interaction between technological fields ; combinatorial nature of inventions
+\item \cite{2016arXiv160207928B} citation network analysis to detect emerging research front
+\item \cite{gerken2012new} \cite{tseng2007text} semantic analysis (remains limited to specific fields and time windows)
+\end{itemize} 
+
+\end{frame}
+
+
+
+\begin{frame}{Technical aspects}
+	
+	$\rightarrow$ Temporal complexity: $\mathcal{O}(N_P)$ for keyword extraction and co-occurrences (constant $l_{max}^2$); parallelization on a 60 cores server for a ``reasonable'' computation time. 
+	
+	\bigskip
+	
+	$\rightarrow$ Memory complexity: co-occurrence matrices in $\mathcal{O}(K_W^2)$; necessitates around 600Go RAM when parallelized. 
+	
+	\bigskip
+
+	$\rightarrow$ Database management: MongoDB (nosql suited to big data).	
+	
+	
+	
+	
+\end{frame}
+
+
+
+\begin{frame}{An application of the method to a scientific corpus}
+	 % illustration de la flexibilite de la methode
+	 
+	 
+	 \includegraphics[width=0.49\textwidth]{figures/cyb_Fig6.jpg}
+	 \includegraphics[width=0.49\textwidth]{figures/cyb_Fig8.jpg}
+	
+	\medskip
+	
+	\textit{The method has been applied to a scientific corpus; adaptation of optimization procedures as the topological structure is different.} \cite{raimbault2017exploration}
+	
+		
+\end{frame}
+
+
+
+
+
+\begin{frame}{Estimation of n-gram relevance}\label{slide:relevance}
+    
+    \begin{itemize}
+        \item Termhood-based selection of a fixed number of keywords $K_W = 100,000$ (\textit{difficulty to select terms in general}) \hyperlink{slide:filtration}{\beamerbutton{Definition}}
+        % bias to keep fixed size of vocabulary ?
+        %  if variable = f(patents) -> arbitrary fixes a number of kws "per patent"; should them optimize regarding an exogenous criteria, which one ?
+        %  if fixed, this number varies, so the resolution of classes varies, thus larger classes more recently ? peak in sizes contradicts that, so should not capture this bias significantly (or structure is more important).
+        \item Estimation on temporal moving windows $\left[t - T_w ; t\right]$ (fixed to $T_W = 4y$ after sensitivity analysis)
+        \item Filtering of network edge (parameter $\theta_w$), with an additional exogenous control by technological class keyword concentration to filter nodes (parameter $\theta_c$)
+        % potential bias here -> would capture the exogenous classification system ? idem our results suggest that bias does not dominate results
+        \item Low sensibility to the length of the time window for the network structure  
+\hyperlink{slide:sensitivity}{\beamerbutton{Sensitivity analysis}}
+% in comparable lengths of course
+    \end{itemize}
+    
+\end{frame}
+
+
 
 \begin{frame}{Filtration measures}
 
@@ -553,11 +578,12 @@ O_i^{(z)} = \displaystyle 1 - \sum_{j =1}^{N^{(z)}}{\left(\frac{\displaystyle \s
     
 \end{frame}
 
+
+
 \begin{frame}{Definition of modularities} \label{slide:modularity_def}
 \hyperlink{slide:modularity}{\beamerbutton{Back}}
 
-
-    Directed simple modularity \cite{nicosia2009extending}
+    Directed simple modularity:
     \[
 Q_d^{(z)} = \displaystyle \frac{1}{N_P}\sum_{1\leq i,j\leq N_P}\left[A_{ij} - \frac{k_{i}^{in}k_{j}^{out}}{N_P}\right]\delta(c_i,c_j),
 \]
@@ -577,6 +603,40 @@ where
 \]
     
 \end{frame}
+
+
+
+\begin{frame}{Size of classes}
+   \centering
+    \includegraphics[width=\textwidth]{figures/Fig3.png}
+    
+    \medskip
+    
+    \textit{A peak in average class size around 1998}
+    
+\end{frame}
+
+
+
+\begin{frame}{Originality and generality measures}
+    \centering
+    \includegraphics[width=\textwidth]{figures/Fig6.png}
+    
+    \medskip
+    
+    \textit{Systematically lower originality and generality (citation-based measures) for the semantic classification (consistent with the higher modularity shown thereafter).}
+    
+\end{frame}
+
+\begin{frame}{Stochastic Block Modeling to evaluate consistency of classifications}
+\begin{itemize}
+    \item   We complete the analysis by developing a statistical model aiming at quantifying performance of both technological and semantic classification systems
+    \item Intuitively, we look at within class citations proportion (for both technological and semantic approaches)
+    \item Question: is the semantic classification better at predicting future within class citations? \\
+    $\longrightarrow$ short answer is \alert{yes}.
+\end{itemize} 
+\end{frame}
+
 
 
 
@@ -613,7 +673,10 @@ where
 \end{frame}
 
 
-
+
+
+
+
 
 
 
