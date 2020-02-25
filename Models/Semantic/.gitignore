@@ -2,7 +2,7 @@
 # -> source
 #classification
 
-processed
+#processed
 processed_old
 #probas
 probasfung
@@ -15,7 +15,8 @@ res/full-overlaps.RData
 .ipynb_checkpoints
 test
 
-pickled
+#pickled
+
 __pycache__
 
 gml

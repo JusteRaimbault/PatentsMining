@@ -1,0 +1,2 @@
+mongod --dbpath $DBPATH --bind_ip 127.0.0.1 --port 29019 --auth
+
